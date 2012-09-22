@@ -1,13 +1,14 @@
 <?php
 
 namespace MageTest\MagentoExtension\Fixture;
+use MageTest\MagentoExtension\Fixture;
 
 /**
  * Product fixtures functionality provider
  *
  * @package MagentoExtension
  */
-class Product
+class Product implements Fixture
 {
     private $_modelFactory = null;
 
@@ -26,7 +27,7 @@ class Product
      *
      * @return null
      */
-    public function create($attributes)
+    public function create(array $attributes)
     {
         $modelFactory = $this->_modelFactory;
         $model = $modelFactory();
