@@ -15,6 +15,14 @@ class Product implements Specification
 
         $factory = function () use ($productModel) { return $productModel; };
         $this->product->isAnInstanceOf('MageTest\MagentoExtension\Fixture\Product', array($factory));
+
+        $entityType = \Mockery::mock(new \Mage_Eav_Model_Entity_Type);
+        $productResourceModel = \Mockery::mock(new \Mage_Catalog_Model_Resource_Product);
+
+        $entityType->shouldReceive('getDefaultAttributeSetId')->andReturn(7);
+        $productResourceModel->shouldReceive('getEntityType')->andReturn($entityType);
+        $this->productModel->shouldReceive('getResource')->andReturn($productResourceModel)->ordered();
+
     }
 
     function it_should_create_a_product_given_all_required_attributes()
@@ -48,7 +56,7 @@ class Product implements Specification
         );
 
         $expected = array(
-            'attribute_set_id' => 9,
+            'attribute_set_id' => 7,
             'name' => 'product name',
             'weight' => 2,
             'visibility'=> \Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
