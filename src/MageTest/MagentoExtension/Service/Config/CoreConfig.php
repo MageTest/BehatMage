@@ -2,11 +2,13 @@
 
 namespace MageTest\MagentoExtension\Service\Config;
 
+use Mage_Core_Model_Config as CoreConfigModel;
+
 class CoreConfig
 {
     protected $coreConfigModel;
     
-    public function __construct($coreConfigModel)
+    public function __construct(CoreConfigModel $coreConfigModel)
     {
         $this->coreConfigModel = $coreConfigModel;
     }

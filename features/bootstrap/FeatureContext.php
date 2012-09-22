@@ -7,10 +7,12 @@ use Behat\Behat\Context\ClosuredContextInterface,
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
+use MageTest\MagentoExtension\Context\MagentoContext;
+
 /**
  * Features context.
  */
-class FeatureContext extends BehatContext
+class FeatureContext extends MagentoContext
 {
     /**
      * Initializes context.
@@ -28,6 +30,8 @@ class FeatureContext extends BehatContext
      */
     public function iRunAnyScenario()
     {
+        $product = $this->getFixture('product');
+        $product->create(array('sku' => 'asdfasdf'));
     }
 
     /**

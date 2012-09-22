@@ -2,7 +2,7 @@
 
 namespace MageTest\MagentoExtension\Fixture;
 
-class Factory
+class FixtureFactory
 {
     /**
      * create the requested fixture generator
