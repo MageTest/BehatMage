@@ -35,7 +35,7 @@ class FeatureContext extends BehatContext
      */
     public function weHaveSomeFilesInTheConfigCacheOfMagento()
     {
-        exec('touch "/tmp/cache/mage--a/mage--PDO123"');
+        exec('touch /tmp/cache/mage--a/mage--PDO123');
     }
 
     /**
@@ -43,7 +43,10 @@ class FeatureContext extends BehatContext
      */
     public function theBeforeHookWillCallTheCacheManagerAndClearTheCache()
     {
-        throw new PendingException();
+        if (file_exists("/tmp/cache/mage--a/mage--PDO123"))
+        {
+            throw new RuntimeException("File should not exist");
+        }
     }
 
     /**

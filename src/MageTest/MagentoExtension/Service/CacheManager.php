@@ -8,6 +8,8 @@ use Mage_Core_Model_App as MageApp;
 
 class CacheManager
 {
+    protected $bootstrap;
+    
     public function __construct(Bootstrap $bootstrap)
     {
         $this->bootstrap = $bootstrap;
@@ -37,7 +39,7 @@ class CacheManager
 
     private function addDefaultSections()
     {
-        $app = $this->bootstrap->createMage();
+        $app = $this->bootstrap->app();
         $this->sections['config'] = new Cache\ConfigurationCache($app);
     }
 }

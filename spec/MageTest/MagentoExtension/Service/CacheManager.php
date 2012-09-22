@@ -9,7 +9,10 @@ class CacheManager implements Specification
     function described_with($bootstrap)
     {
         $bootstrap->isAMockOf('MageTest\MagentoExtension\Service\Bootstrap');
-        $this->cacheManager->isAnInstanceOf('MageTest\MagentoExtension\Service\CacheManager', array($bootstrap));
+        $this->cacheManager->isAnInstanceOf(
+            'MageTest\MagentoExtension\Service\CacheManager',
+            array($bootstrap)
+        );
     }
 
     /**
