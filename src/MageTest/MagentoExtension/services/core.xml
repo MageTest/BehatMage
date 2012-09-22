@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="behat.magento.service.cache_manager">MageTest\MagentoExtension\Service\CacheManager</parameter>
+        <parameter key="behat.magento.service.bootstrap">MageTest\MagentoExtension\Service\Bootstrap</parameter>
+        <parameter key="behat.magento.listener.before_scenario">MageTest\MagentoExtension\EventListener\BeforeScenarioListener</parameter>
+    </parameters>
+    <services>
+        <service id="behat.magento.service.bootstrap" class="%behat.magento.service.bootstrap%" />
+        <service id="behat.magento.service.cache_manager" class="%behat.magento.service.cache_manager%">
+            <argument type="service" id="behat.magento.service.bootstrap" />
+        </service>
+        <service id="behat.magento.listener.before_scenario" class="%behat.magento.listener.before_scenario%">
+            <argument type="service" id="behat.magento.service.cache_manager" />
+            <tag name="behat.event_subscriber" priority="0" />
+        </service>
+    </services>
+</container>

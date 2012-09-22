@@ -9,7 +9,7 @@
     "autoload": {
         "psr-0": {
             "MageTest": "src/",
-            "": "vendor/magento/lib",
+            "": ["vendor/magento/lib","vendor/magento/app"],
             "Mage": "vendor/magento/app/code/core"
         }
     },
