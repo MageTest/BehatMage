@@ -10,7 +10,8 @@
         "psr-0": {
             "MageTest": "src/",
             "": "vendor/magento/lib",
-            "Mage": "vendor/magento/app/code/core"
+            "Mage": "vendor/magento/app/code/core",
+            "": "vendor/magento/app"
         }
     },
     "require-dev": {
