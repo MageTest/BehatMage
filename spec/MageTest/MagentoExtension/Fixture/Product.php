@@ -44,6 +44,7 @@ class Product implements Specification
         $this->productModel->shouldReceive('setData')
             ->with($data)->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
+        $this->productModel->shouldReceive('getId')->andReturn(1);
         $this->productModel->shouldReceive('getIdBySku')->andReturn(false);
 
         $this->product->create($data);
@@ -73,6 +74,7 @@ class Product implements Specification
         $this->productModel->shouldReceive('setData')
             ->with($expected)->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
+        $this->productModel->shouldReceive('getId')->andReturn(1);
         $this->productModel->shouldReceive('getIdBySku')->andReturn(false);
 
         $this->product->create($data);
