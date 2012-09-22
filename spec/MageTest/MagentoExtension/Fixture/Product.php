@@ -9,7 +9,7 @@ class Product implements Specification
     function described_with()
     {
         \Mage::app();
-        $this->productModel = \Mockery::mock(\Mage::getModel('catalog/product'));
+        $this->productModel = \Mockery::mock(new \Mage_Catalog_Model_Product);
 
         $productModel = $this->productModel;
 
