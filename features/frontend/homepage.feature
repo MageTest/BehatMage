@@ -21,9 +21,38 @@ Feature: homepage
 	Given I am on "home page"
 	Then I should see "My Account, My Wishlist, My Cart, Checkout, Log In"
 
-	Scenario: Display Lang
+	Scenario: Display Language
+	Given I am on "home page"
+	Then I should see the text "Your Language"
+	And a dropdown with the options "Czech (Czech Republic), Danish (Denmark), Dutch (Netherlands), English, French, German, Norwegian Bokmai (Norway), Polish (Poland)" 
+
 	Scenario: Display Main Menu
 	Given I am on "home page"
 	Then I should see "Furniture, Electronics, Apparel, Music, Ebooks"
 	
-	
+	Scenario: Display Left Column
+	Given I am on "home page"
+	Then I should see "A Small Banner Advert"
+	And I should see "A Product Feature"
+	And I should see "Popular Tags"
+
+	Scenario: Display Main Content
+	Given I am on "home page"
+	Then I should see "A Large Banner Advert"
+	And I should see "A Wide Banner Advert"
+	And I should see "A Best Selling Product Feature showing 6 products"
+
+	Scenario: Display Right Column
+	Given I am on "home page"
+	Then I should see "A Product Comparison Feature"
+	And I should see "A Mini View of My Cart"
+	And I should see "A Small Banner Advert"
+	And I should see "A Community Poll"
+	And I should see "A PayPal Advert"
+
+	Scenario: Display Footer
+	Given I am on "home page"
+	Then I should see "Select Store" and a dropdown with the values "Blue SKin, Main Store, Modern Theme"
+	And I should see "About Us, Customer Service, privacy Policy, Site Map, Search Terms, Advanced Search, Orders and Returns, Contact Us"
+	And I should see "Help us to Keep Magento Healthy - Report all bugs (ver.1.7.0.2)"
+	And I should see "© 2012 Magento Demo Store. All Rights Reserved." 	
