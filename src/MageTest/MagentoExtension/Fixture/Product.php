@@ -31,6 +31,10 @@ class Product
         $modelFactory = $this->_modelFactory;
         $model = $modelFactory();
 
+        if ($model->getIdBySku($attributes['sku'])) {
+            throw new \Exception("SKU provided to product fixture should not be existing");
+        }
+
         $attributes = array_merge($this->_getDefaultAttributes($model), $attributes);
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
@@ -53,7 +57,7 @@ class Product
     protected function _getDefaultAttributes($model)
     {
         return array(
-            'attribute_set_id' => $model->getResource()->getEntityType()->getDefaultAttributeSetId(),
+            'attribute_set_id' => $this->_retrieveDefaultAttributeSetId($model),
             'name' => 'product name',
             'weight' => 2,
             'visibility'=> \Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
@@ -65,5 +69,12 @@ class Product
             'type_id' => \Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
             'stock_data' => array( 'is_in_stock' => 1, 'qty' => 99999 )
         );
+    }
+
+    protected function _retrieveDefaultAttributeSetId($model)
+    {
+        return $model->getResource()
+            ->getEntityType()
+            ->getDefaultAttributeSetId();
     }
 }

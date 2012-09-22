@@ -44,7 +44,7 @@ class Product implements Specification
     function it_should_populate_missing_attributes_when_creating_product()
     {
         $data = array(
-            'sku' => 'sku1'
+            'sku' => 'sku'.time()
         );
 
         $expected = array(
@@ -59,7 +59,7 @@ class Product implements Specification
             'tax_class_id' => 1,
             'type_id' => \Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
             'stock_data' => array( 'is_in_stock' => 1, 'qty' => 99999 ),
-            'sku' => 'sku1'
+            'sku' => $data['sku']
         );
 
         $this->productModel->shouldReceive('setData')
@@ -67,5 +67,16 @@ class Product implements Specification
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
 
         $this->product->create($data);
+    }
+
+    function it_should_throw_an_exception_if_creating_with_existing_sku()
+    {
+        $data = array(
+            'sku' => 'sku1'
+        );
+
+        $this->productModel->shouldReceive('getIdBySku')->with('sku1')->once()->andReturn(false);
+
+        $this->product->shouldThrow('\Exception')->during(array($this->product, 'create'), array($data));
     }
 }
