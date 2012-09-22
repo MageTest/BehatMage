@@ -6,6 +6,9 @@
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*"
     },
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
     "require-dev": {
         "phpspec/phpspec2": "*"
     },
