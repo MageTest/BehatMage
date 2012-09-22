@@ -8,17 +8,17 @@ $mage = new \Mage_Core_Model_App;
 
 class ConfigurationCache implements Specification
 {
-    function it_should_exist()
+    function described_with($mageApp)
     {
-        $this->object->shouldNotBe(null);
+        $mageApp->isAMockOf("\Mage_Core_Model_App");
+        $this->configurationCache->isAnInstanceOf(
+            'MageTest\MagentoExtension\Service\Cache\ConfigurationCache',
+            array($mageApp));
     }
     
-    /**
-     * @param Prophet $mage mock of \Mage_Core_Model_App
-     */
-    function it_should_clear_the_configuration_cache($mage)
+    function it_should_clear_the_configuration_cache($mageApp)
     {
-        $mage->cleanCache(array('configuration'))->shouldBeCalled();
+        $mageApp->cleanCache(array('configuration'))->shouldBeCalled();
         $this->configurationCache->clear();
     }
 }

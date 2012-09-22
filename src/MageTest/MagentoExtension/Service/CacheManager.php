@@ -2,17 +2,26 @@
 
 namespace MageTest\MagentoExtension\Service;
 
+use MageTest\MagentoExtension\Servcie\Cache\ConfigurationCache;
+
 class CacheManager
 {
+    /**
+     * Array of cache sections / tags to be modified
+     *
+     * @var array
+     **/
+    var $sections;
 
-
-    public function addSection()
+    public function addSection($name, $service)
     {
-        // TODO: implement
+        $this->sections[$name] = $service;
     }
 
     public function clear()
     {
-        // TODO: implement
+        foreach ($this->sections as $name => $service) {
+            $service->clear();
+        }
     }
 }
