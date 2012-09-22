@@ -12,12 +12,12 @@ class Product implements Specification
         $this->productModel = \Mockery::mock(new \Mage_Catalog_Model_Product);
 
         $productModel = $this->productModel;
-
         $factory = function () use ($productModel) { return $productModel; };
+
         $this->product->isAnInstanceOf('MageTest\MagentoExtension\Fixture\Product', array($factory));
 
         $entityType = \Mockery::mock(new \Mage_Eav_Model_Entity_Type);
-        $productResourceModel = \Mockery::mock(new \Mage_Catalog_Model_Resource_Product);
+        $productResourceModel = \Mockery::mock('Mage_Catalog_Model_Resource_Product');
 
         $entityType->shouldReceive('getDefaultAttributeSetId')->andReturn(7);
         $productResourceModel->shouldReceive('getEntityType')->andReturn($entityType);
