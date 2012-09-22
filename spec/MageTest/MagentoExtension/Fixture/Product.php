@@ -79,4 +79,25 @@ class Product implements Specification
 
         $this->product->shouldThrow('\Exception')->during(array($this->product, 'create'), array($data));
     }
+
+    function it_should_return_the_created_objects_id()
+    {
+        $data = array(
+            'sku' => 'sku'.time()
+        );
+
+        $this->productModel->shouldReceive('setData')->once()->andReturn($this->productModel)->ordered();
+        $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
+        $this->productModel->shouldReceive('getId')->once()->andReturn(554)->ordered();
+
+        $this->product->create($data)->shouldBe(554);
+    }
+
+    function it_should_load_object_and_delete_it_when_delete_is_requested()
+    {
+        $this->productModel->shouldReceive('load')->with(554)->once()->andReturn($this->productModel)->ordered();
+        $this->productModel->shouldReceive('delete')->once()->andReturn(null)->ordered();
+
+        $this->product->delete(554);
+    }
 }

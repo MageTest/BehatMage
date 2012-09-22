@@ -25,7 +25,7 @@ class Product implements Fixture
      *
      * @param $attributes array product attributes map using 'label' => 'value' format
      *
-     * @return null
+     * @return int
      */
     public function create(array $attributes)
     {
@@ -41,7 +41,26 @@ class Product implements Fixture
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
         $model->setData($attributes)->save();
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
+
+        return $model->getId();
     }
+
+    /**
+     * Delete the requested fixture from Magento DB
+     *
+     * @param $identifier int object identifier
+     *
+     * @return null
+     */
+    public function delete($identifier) 
+    {
+        $modelFactory = $this->_modelFactory;
+        $model = $modelFactory();
+
+        $model->load($identifier);
+        $model->delete();
+    }
+
 
     /**
      * retrieve default product model factory
