@@ -19,13 +19,13 @@ class Product implements Specification
 
     function it_should_create_a_product_given_all_required_attributes()
     {
-        $this->productModel->shouldReceive('setData')->once()->andReturn($this->productModel)->ordered();
+        $data = array(
+            'sku' => 'sku1'
+        );
+        $this->productModel->shouldReceive('setData')
+            ->with($data)->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
 
-        $this->product->create(
-            array(
-                'sku' => 'sku1'
-            )
-        );
+        $this->product->create($data);
     }
 }
