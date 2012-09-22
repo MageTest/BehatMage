@@ -6,7 +6,12 @@
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*"
     },
-    "bin-dir": "bin",
+    "require-dev": {
+        "phpspec/phpspec2": "*"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
     "minimum-stability": "dev",
     "authors": [
         {
