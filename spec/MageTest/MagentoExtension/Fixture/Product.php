@@ -22,7 +22,6 @@ class Product implements Specification
         $entityType->shouldReceive('getDefaultAttributeSetId')->andReturn(7);
         $productResourceModel->shouldReceive('getEntityType')->andReturn($entityType);
         $this->productModel->shouldReceive('getResource')->andReturn($productResourceModel)->ordered();
-
     }
 
     function it_should_create_a_product_given_all_required_attributes()
@@ -45,6 +44,7 @@ class Product implements Specification
         $this->productModel->shouldReceive('setData')
             ->with($data)->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
+        $this->productModel->shouldReceive('getIdBySku')->andReturn(false);
 
         $this->product->create($data);
     }
@@ -73,6 +73,7 @@ class Product implements Specification
         $this->productModel->shouldReceive('setData')
             ->with($expected)->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
+        $this->productModel->shouldReceive('getIdBySku')->andReturn(false);
 
         $this->product->create($data);
     }
@@ -83,9 +84,9 @@ class Product implements Specification
             'sku' => 'sku1'
         );
 
-        $this->productModel->shouldReceive('getIdBySku')->with('sku1')->once()->andReturn(false);
+        $this->productModel->shouldReceive('getIdBySku')->with('sku1')->once()->andReturn(123);
 
-        $this->product->shouldThrow('\Exception')->during(array($this->product, 'create'), array($data));
+        $this->product->shouldThrow('\Exception', 'SKU provided to product fixture should not be existing')->during('create', array($data));
     }
 
     function it_should_return_the_created_objects_id()
@@ -97,6 +98,7 @@ class Product implements Specification
         $this->productModel->shouldReceive('setData')->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
         $this->productModel->shouldReceive('getId')->once()->andReturn(554)->ordered();
+        $this->productModel->shouldReceive('getIdBySku')->andReturn(false);
 
         $this->product->create($data)->shouldBe(554);
     }
