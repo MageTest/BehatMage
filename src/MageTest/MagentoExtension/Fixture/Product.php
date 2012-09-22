@@ -29,9 +29,11 @@ class Product
     public function create($attributes)
     {
         $modelFactory = $this->_modelFactory;
-
         $model = $modelFactory();
+
+        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
         $model->setData($attributes)->save();
+        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
     }
 
     /**
