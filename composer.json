@@ -8,7 +8,9 @@
     },
     "autoload": {
         "psr-0": {
-            "MageTest": "src/"
+            "MageTest": "src/",
+            "": "vendor/magento/lib",
+            "Mage": "vendor/magento/app/code/core"
         }
     },
     "require-dev": {
