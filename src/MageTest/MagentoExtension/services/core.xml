@@ -8,6 +8,7 @@
         <parameter key="behat.magento.service.config.core_config">MageTest\MagentoExtension\Service\Config\CoreConfig</parameter>
         <parameter key="behat.magento.service.bootstrap">MageTest\MagentoExtension\Service\Bootstrap</parameter>
         <parameter key="behat.magento.listener.before_scenario">MageTest\MagentoExtension\EventListener\BeforeScenarioListener</parameter>
+        <parameter key="behat.magento.context.initializer">MageTest\MagentoExtension\Context\Initializer\MagentoAwareInitializer</parameter>
     </parameters>
     <services>
         <service id="behat.magento.service.bootstrap" class="%behat.magento.service.bootstrap%" />
@@ -21,6 +22,10 @@
         <service id="behat.magento.listener.before_scenario" class="%behat.magento.listener.before_scenario%">
             <argument type="service" id="behat.magento.service.cache_manager" />
             <tag name="behat.event_subscriber" priority="0" />
+        </service>
+        <service id="behat.magento.context.initializer" class="%behat.magento.context.initializer%">
+            <argument type="service" id="behat.magento.service.bootstrap" />
+            <tag name="behat.context.initializer" />
         </service>
     </services>
 </container>
