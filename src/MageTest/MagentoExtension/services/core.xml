@@ -4,11 +4,17 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="behat.magento.service.cache_manager">MageTest\MagentoExtension\Service\CacheManager</parameter>
+        <parameter key="behat.magento.service.config_manager">MageTest\MagentoExtension\Service\ConfigManager</parameter>
+        <parameter key="behat.magento.service.config.core_config">MageTest\MagentoExtension\Service\Config\CoreConfig</parameter>
         <parameter key="behat.magento.service.bootstrap">MageTest\MagentoExtension\Service\Bootstrap</parameter>
         <parameter key="behat.magento.listener.before_scenario">MageTest\MagentoExtension\EventListener\BeforeScenarioListener</parameter>
     </parameters>
     <services>
         <service id="behat.magento.service.bootstrap" class="%behat.magento.service.bootstrap%" />
+        <service id="behat.magento.service.config.core_config" class="%behat.magento.service.config.core_config%" />
+        <service id="behat.magento.service.config_manager" class="behat.magento.service.config_manager">
+            <argument type="service" id="behat.magento.service.bootstrap" />
+        </service>
         <service id="behat.magento.service.cache_manager" class="%behat.magento.service.cache_manager%">
             <argument type="service" id="behat.magento.service.bootstrap" />
         </service>
