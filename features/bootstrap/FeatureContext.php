@@ -7,13 +7,6 @@ use Behat\Behat\Context\ClosuredContextInterface,
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
-//
-// Require 3rd-party libraries here:
-//
-//   require_once 'PHPUnit/Autoload.php';
-//   require_once 'PHPUnit/Framework/Assert/Functions.php';
-//
-
 /**
  * Features context.
  */
@@ -30,15 +23,82 @@ class FeatureContext extends BehatContext
         // Initialize your context here
     }
 
-//
-// Place your definition and hook methods here:
-//
-//    /**
-//     * @Given /^I have done something with "([^"]*)"$/
-//     */
-//    public function iHaveDoneSomethingWith($argument)
-//    {
-//        doSomethingWith($argument);
-//    }
-//
+    /**
+     * @When /^I run any scenario$/
+     */
+    public function iRunAnyScenario()
+    {
+    }
+
+    /**
+     * @Given /^we have some files in the config cache of magento$/
+     */
+    public function weHaveSomeFilesInTheConfigCacheOfMagento()
+    {
+        exec('touch "/tmp/cache/mage--a/mage--PDO123"');
+    }
+
+    /**
+     * @Then /^the before hook will call the cache manager and clear the cache$/
+     */
+    public function theBeforeHookWillCallTheCacheManagerAndClearTheCache()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^I am on "([^"]*)"$/
+     */
+    public function iAmOn($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^I should see "([^"]*)"$/
+     */
+    public function iShouldSee($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^the search box should contain the message "([^"]*)"$/
+     */
+    public function theSearchBoxShouldContainTheMessage($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^I should see a button with the text "([^"]*)"$/
+     */
+    public function iShouldSeeAButtonWithTheText($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^I should see the text "([^"]*)"$/
+     */
+    public function iShouldSeeTheText($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^a dropdown with the options "([^"]*)"$/
+     */
+    public function aDropdownWithTheOptions($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^I should see "([^"]*)" and a dropdown with the values "([^"]*)"$/
+     */
+    public function iShouldSeeAndADropdownWithTheValues($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
 }

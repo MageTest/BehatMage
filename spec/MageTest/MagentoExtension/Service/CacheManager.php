@@ -6,9 +6,10 @@ use PHPSpec2\Specification;
 
 class CacheManager implements Specification
 {
-    function it_should_exist()
+    function described_with($bootstrap)
     {
-        $this->object->shouldNotBe(null);
+        $bootstrap->isAMockOf('MageTest\MagentoExtension\Service\Bootstrap');
+        $this->cacheManager->isAnInstanceOf('MageTest\MagentoExtension\Service\CacheManager', array($bootstrap));
     }
 
     /**
