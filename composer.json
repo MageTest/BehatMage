@@ -1,5 +1,5 @@
 {
-    "name": "BehatMage/BehatMage",
+    "name": "MageTest/MageTest",
     "description": "Magento Behat extension",
     "require": {
         "behat/behat": "2.4.4",
@@ -7,7 +7,9 @@
         "behat/mink-browserkit-driver": "*"
     },
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-0": {
+            "MageTest": "src/"
+        }
     },
     "require-dev": {
         "phpspec/phpspec2": "*"
