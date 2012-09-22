@@ -1,0 +1,105 @@
+{
+    "hash": "ae38941faac556d6a64d22b83a4aa90d",
+    "packages": [
+        {
+            "package": "behat/behat",
+            "version": "v2.4.4"
+        },
+        {
+            "package": "behat/gherkin",
+            "version": "v2.2.4"
+        },
+        {
+            "package": "behat/mink",
+            "version": "dev-develop",
+            "alias-pretty-version": "1.4.x-dev",
+            "alias-version": "1.4.9999999.9999999-dev"
+        },
+        {
+            "package": "behat/mink",
+            "version": "dev-develop",
+            "source-reference": "7e4b1e57d6dfd787436e2aad7073f519a0dd175e",
+            "commit-date": "1348131331"
+        },
+        {
+            "package": "behat/mink-browserkit-driver",
+            "version": "dev-master",
+            "source-reference": "97fa7d67ab5afb13d74515c15ef5c0cab12c0bc0",
+            "commit-date": "1341477260"
+        },
+        {
+            "package": "behat/mink-extension",
+            "version": "dev-master",
+            "source-reference": "37dfaecd230d601c30bfefb47d6574cd73083bc5",
+            "commit-date": "1348151819"
+        },
+        {
+            "package": "symfony/browser-kit",
+            "version": "2.1.x-dev",
+            "source-reference": "v2.1.2",
+            "commit-date": "1347274422"
+        },
+        {
+            "package": "symfony/config",
+            "version": "2.1.x-dev",
+            "source-reference": "3168f7d2c77c5e8309b9f7ff8502315317a94f7c",
+            "commit-date": "1348209286"
+        },
+        {
+            "package": "symfony/console",
+            "version": "2.1.x-dev",
+            "source-reference": "d27430931173cf54186816c3b92f3cfe92d38fce",
+            "commit-date": "1348207508"
+        },
+        {
+            "package": "symfony/css-selector",
+            "version": "2.1.x-dev",
+            "source-reference": "v2.1.0-RC2",
+            "commit-date": "1345643321"
+        },
+        {
+            "package": "symfony/dependency-injection",
+            "version": "2.1.x-dev",
+            "source-reference": "v2.1.2",
+            "commit-date": "1347914517"
+        },
+        {
+            "package": "symfony/dom-crawler",
+            "version": "2.1.x-dev",
+            "source-reference": "v2.1.2",
+            "commit-date": "1347274422"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "2.1.x-dev",
+            "source-reference": "v2.1.2",
+            "commit-date": "1347274422"
+        },
+        {
+            "package": "symfony/finder",
+            "version": "2.1.x-dev",
+            "source-reference": "v2.1.0-RC2",
+            "commit-date": "1345643321"
+        },
+        {
+            "package": "symfony/translation",
+            "version": "2.1.x-dev",
+            "source-reference": "v2.1.2",
+            "commit-date": "1347274422"
+        },
+        {
+            "package": "symfony/yaml",
+            "version": "2.1.x-dev",
+            "source-reference": "v2.1.0-RC2",
+            "commit-date": "1345643321"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": [
+
+    ]
+}

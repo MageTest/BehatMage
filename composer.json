@@ -6,6 +6,7 @@
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*"
     },
+    "bin-dir": "bin",
     "minimum-stability": "dev",
     "authors": [
         {

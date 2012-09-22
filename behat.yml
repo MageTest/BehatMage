@@ -1,0 +1,3 @@
+default:
+    extensions:
+        features/extensions/MagentoExtension.php
