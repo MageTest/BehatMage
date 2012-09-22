@@ -1,0 +1,32 @@
+{
+    "name": "BehatMage/BehatMage",
+    "description": "Magento Behat extension",
+    "require": {
+        "behat/behat": "2.4.4",
+        "behat/mink-extension": "*",
+        "behat/mink-browserkit-driver": "*"
+    },
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Alistair Stead",
+            "email": "astead@sessiondigital.com"
+        },
+        {
+            "name": "Marcello Duarte",
+            "email": "mduarte@sessiondigital.com"
+        },
+        {
+            "name": "Sarunas",
+            "email": "sarunas@sessiondigital.com"
+        },
+        {
+            "name": "Daniel",
+            "email": "daniel@sessiondigital.com"
+        },
+        {
+            "name": "Mark Slocock",
+            "email": "mark@gpmd.co.uk"
+        }
+    ]
+}
