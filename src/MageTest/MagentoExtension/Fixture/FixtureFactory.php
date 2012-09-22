@@ -15,6 +15,7 @@ class FixtureFactory
     {
         switch ($identifier) {
             case 'product': return new Product();
+            case 'user': return new User();
             default: throw new \InvalidArgumentException();
         }
     }
