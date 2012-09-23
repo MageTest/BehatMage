@@ -4,7 +4,8 @@
     "require": {
         "behat/behat": "2.4.4",
         "behat/mink-extension": "*",
-        "behat/mink-browserkit-driver": "*"
+        "behat/mink-browserkit-driver": "*",
+        "behat/mink-goutte-driver": "*"
     },
     "autoload": {
         "psr-0": {
