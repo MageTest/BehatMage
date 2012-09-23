@@ -28,6 +28,15 @@ class MagentoAwareInitializer implements InitializerInterface
         $this->configManager = $config;
         $this->factory = $factory;
         $this->mink = $mink;
+        $this->mink->registerSession(
+            '_default',
+            new \Behat\Mink\Session(
+                new \Behat\Mink\Driver\GoutteDriver(
+                    new \Behat\Mink\Driver\Goutte\Client(array())
+                )
+            )
+        );
+        $this->mink->setDefaultSessionName('_default');
     }
 
     public function supports(ContextInterface $context)

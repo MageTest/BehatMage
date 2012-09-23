@@ -24,13 +24,6 @@ class MagentoContext extends MinkContext implements MagentoAwareInterface, Conte
      */
     public function iLoginAsAdmin()
     {
-        //FIXME: move $mink to initializer
-        $mink = new \Behat\Mink\Mink(array(
-            'goutte1'    => new \Behat\Mink\Session(new \Behat\Mink\Driver\GoutteDriver(new \Behat\Mink\Driver\Goutte\Client(array()))),
-        ));
-        $mink->setDefaultSessionName('goutte1');
-        $this->setMink($mink);
-        //FIXME END
         $sessionService = new Service\Session();
         $sid = $sessionService->adminLogin('admin', '123123pass');
         $this->getSession()->setCookie('adminhtml', $sid);
