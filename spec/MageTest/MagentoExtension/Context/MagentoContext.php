@@ -22,7 +22,7 @@ class MagentoContext implements Specification
     
     function it_should_setCacheManager()
     {
-        $this->magentoContext->shouldSupport()->setCacheManager();
+        $this->magentoContext->shouldHave()->setCacheManager();
     }
     
     function it_should_setConfigManager()
