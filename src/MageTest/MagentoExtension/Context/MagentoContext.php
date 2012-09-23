@@ -25,6 +25,10 @@ class MagentoContext extends BehatContext
     private $minkProperties;
     private $sessionService;
 
+    public function __construct()
+    {
+    }
+
     /**
      * @Given /^I log in as admin$/
      */
@@ -98,5 +102,4 @@ class MagentoContext extends BehatContext
     {
         return $this->factory->create($identifier);
     }
-}
 }

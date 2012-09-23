@@ -26,6 +26,6 @@ class FixtureFactory implements Specification
     function it_should_add_any_requested_fixtures_to_the_registry()
     {
         $fixture = $this->fixtureFactory->create('product');
-        $this->fixtureFactory->getRegistry()->shouldBeLike(array($fixture));
+        $this->fixtureFactory->getRegistry()->shouldBeLike(array($fixture->getProphetSubject()));
     }
 }

@@ -6,6 +6,9 @@ use Behat\Behat\Context\ClassGuesser\ClassGuesserInterface;
 
 class ClassGuesser implements ClassGuesserInterface
 {
+    public function __construct()
+    {
+    }
 
     public function guess()
     {
