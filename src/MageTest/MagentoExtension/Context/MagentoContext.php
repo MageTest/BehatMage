@@ -10,6 +10,7 @@ use Magetest\MagentoExtension\Context\MagentoAwareContext,
     Magetest\MagentoExtension\Fixture\FixtureFactory;
 
 use Behat\MinkExtension\Context\MinkContext,
+    Behat\Mink\Mink,
     Behat\Behat\Context\ContextInterface;
 
 class MagentoContext implements MagentoAwareInterface, ContextInterface
@@ -18,6 +19,7 @@ class MagentoContext implements MagentoAwareInterface, ContextInterface
     private $configManager;
     private $cacheManager;
     private $factory;
+    private $mink;
 
     public function setApp(MageApp $app)
     {
@@ -37,6 +39,11 @@ class MagentoContext implements MagentoAwareInterface, ContextInterface
     public function setFixtureFactory(FixtureFactory $factory)
     {
         $this->factory = $factory;
+    }
+    
+    public function setMink(Mink $mink)
+    {
+        $this->mink = $mink;
     }
 
     public function getFixture($identifier)

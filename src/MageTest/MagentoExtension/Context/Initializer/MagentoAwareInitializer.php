@@ -9,7 +9,8 @@ use MageTest\MagentoExtension\Service\Bootstrap,
     MageTest\MagentoExtension\Context\MagentoAwareInterface;
 
 use Behat\Behat\Context\Initializer\InitializerInterface,
-    Behat\Behat\Context\ContextInterface;
+    Behat\Behat\Context\ContextInterface,
+    Behat\Mink\Mink;
 
 class MagentoAwareInitializer implements InitializerInterface
 {
@@ -17,14 +18,16 @@ class MagentoAwareInitializer implements InitializerInterface
     private $cacheManager;
     private $configManager;
     private $factory;
+    private $mink;
 
     public function __construct(Bootstrap $bootstrap, CacheManager $cache,
-        ConfigManager $config, FixtureFactory $factory)
+        ConfigManager $config, FixtureFactory $factory, Mink $mink)
     {
         $this->app = $bootstrap->app();
         $this->cacheManager = $cache;
         $this->configManager = $config;
         $this->factory = $factory;
+        $this->mink = $mink;
     }
 
     public function supports(ContextInterface $context)
@@ -38,5 +41,6 @@ class MagentoAwareInitializer implements InitializerInterface
         $context->setConfigManager($this->configManager);
         $context->setCacheManager($this->cacheManager);
         $context->setFixtureFactory($this->factory);
+        $context->setMink($this->mink);
     }
 }
