@@ -5,6 +5,7 @@ namespace MageTest\MagentoExtension\Context\Initializer;
 use MageTest\MagentoExtension\Service\Bootstrap,
     MageTest\MagentoExtension\Service\CacheManager,
     MageTest\MagentoExtension\Service\ConfigManager,
+    MageTest\MagentoExtension\Service\Session,
     MageTest\MagentoExtension\Fixture\FixtureFactory,
     MageTest\MagentoExtension\Context\MagentoAwareInterface;
 
@@ -19,14 +20,17 @@ class MagentoAwareInitializer implements InitializerInterface
     private $configManager;
     private $factory;
     private $mink;
+    private $session;
 
     public function __construct(Bootstrap $bootstrap, CacheManager $cache,
-        ConfigManager $config, FixtureFactory $factory, Mink $mink)
+        ConfigManager $config, FixtureFactory $factory, Mink $mink,
+        Session $session)
     {
         $this->app = $bootstrap->app();
         $this->cacheManager = $cache;
         $this->configManager = $config;
         $this->factory = $factory;
+        $this->session = $session;
         $this->mink = $mink;
         $this->mink->registerSession(
             '_default',
@@ -50,6 +54,7 @@ class MagentoAwareInitializer implements InitializerInterface
         $context->setConfigManager($this->configManager);
         $context->setCacheManager($this->cacheManager);
         $context->setFixtureFactory($this->factory);
+        $context->setSessionService($this->session);
         $context->setMink($this->mink);
     }
 }

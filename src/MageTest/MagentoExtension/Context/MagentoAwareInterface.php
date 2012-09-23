@@ -5,9 +5,9 @@ namespace MageTest\MagentoExtension\Context;
 use Mage_Core_Model_App as MageApp;
 use MageTest\MagentoExtension\Service\ConfigManager,
     MageTest\MagentoExtension\Service\CacheManager,
-    MageTest\MagentoExtension\Fixture\FixtureFactory;
+    MageTest\MagentoExtension\Fixture\FixtureFactory,
+    MageTest\MagentoExtension\Service\Session;
 
-use Behat\Mink\Mink;
 
 interface MagentoAwareInterface
 {
@@ -15,5 +15,5 @@ interface MagentoAwareInterface
     public function setConfigManager(ConfigManager $config);
     public function setCacheManager(CacheManager $cache);
     public function setFixtureFactory(FixtureFactory $factory);
-    public function setMink(Mink $mink);
+    public function setSessionService(Session $session);
 }

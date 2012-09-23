@@ -4,6 +4,13 @@ namespace MageTest\MagentoExtension\Service;
 
 class Session
 {
+    private $app;
+
+    public function __construct(Bootstrap $bootstrap)
+    {
+        $this->app = $bootstrap->app();
+    }
+
     /**
      * Login given admin account to Magento session and return session id
      *
@@ -20,7 +27,7 @@ class Session
 
         $_POST['login']=array('username'=>$username);
 
-        \Mage::app()->setResponse(new \Mage_Core_Controller_Response_Http());
+        $this->app->setResponse(new \Mage_Core_Controller_Response_Http());
 
         /** @var $user Mage_Admin_Model_User */
         $user = \Mage::getModel('admin/user');
