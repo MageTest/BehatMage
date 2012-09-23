@@ -27,11 +27,11 @@ class MagentoAwareInitializer implements Specification
      */
     function it_initialises_the_context($context, $app, $config, $cache, $factory)
     {
-        // $context->setApp($app)->shouldBeCalled();
-        // $context->setConfigManager($config)->shouldBeCalled();
-        // $context->setCacheManager($cache)->shouldBeCalled();
-        // $context->setFixtureFactory($factory)->shouldBeCalled();
-        // $this->magentoAwareInitializer->initialize($context);
+        $context->setApp($app)->shouldBeCalled();
+        $context->setConfigManager($config)->shouldBeCalled();
+        $context->setCacheManager($cache)->shouldBeCalled();
+        $context->setFixtureFactory($factory)->shouldBeCalled();
+        $this->magentoAwareInitializer->initialize($context);
     }
 
 }
