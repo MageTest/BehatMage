@@ -30,8 +30,7 @@ class FeatureContext extends MagentoContext
      */
     public function iRunAnyScenario()
     {
-        $product = $this->getFixture('product');
-        $product->create(array('sku' => 'asdfasdf'));
+
     }
 
     /**
@@ -39,7 +38,11 @@ class FeatureContext extends MagentoContext
      */
     public function weHaveSomeFilesInTheConfigCacheOfMagento()
     {
-        exec('touch /tmp/cache/mage--a/mage--PDO123');
+        // TODO Can't create as part of the background as it happens after
+        // the before hook
+        // $dir = Mage::getBaseDir('cache');
+        // exec("mkdir -p $dir/mage--a && touch $dir/mage--a/mage--PDO123");
+        // sleep(5);
     }
 
     /**
@@ -47,64 +50,17 @@ class FeatureContext extends MagentoContext
      */
     public function theBeforeHookWillCallTheCacheManagerAndClearTheCache()
     {
-        if (file_exists("/tmp/cache/mage--a/mage--PDO123"))
+        $dir = Mage::getBaseDir('cache');
+        if (count(glob("$dir/mage*")))
         {
             throw new RuntimeException("File should not exist");
         }
     }
 
     /**
-     * @Given /^I am on "([^"]*)"$/
+     * @Then /^the after hook will clean up and configuration and fixtures$/
      */
-    public function iAmOn($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then /^I should see "([^"]*)"$/
-     */
-    public function iShouldSee($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^the search box should contain the message "([^"]*)"$/
-     */
-    public function theSearchBoxShouldContainTheMessage($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^I should see a button with the text "([^"]*)"$/
-     */
-    public function iShouldSeeAButtonWithTheText($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then /^I should see the text "([^"]*)"$/
-     */
-    public function iShouldSeeTheText($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^a dropdown with the options "([^"]*)"$/
-     */
-    public function aDropdownWithTheOptions($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then /^I should see "([^"]*)" and a dropdown with the values "([^"]*)"$/
-     */
-    public function iShouldSeeAndADropdownWithTheValues($arg1, $arg2)
+    public function theAfterHookWillCleanUpAndConfigurationAndFixtures()
     {
         throw new PendingException();
     }
