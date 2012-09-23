@@ -6,8 +6,25 @@ use PHPSpec2\Specification;
 
 class MagentoContext implements Specification
 {
-    function it_should_exist()
+    function described_with($app)
     {
-        $this->object->shouldNotBe(null);
+        $this->magentoContext->isAnInstanceOf(
+            'MageTest\MagentoExtension\Context\MagentoContext'
+        );
+    }
+    
+    function it_should_setApp($app)
+    {
+        $this->magentoContext->shouldSupport()->setApp();
+    }
+    
+    function it_should_setCacheManager()
+    {
+        $this->magentoContext->shouldSupport()->setCacheManager();
+    }
+    
+    function it_should_setConfigManager()
+    {
+        $this->magentoContext->shouldSupport()->setConfigManager();
     }
 }

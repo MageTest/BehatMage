@@ -3,6 +3,7 @@
 namespace MageTest\MagentoExtension\Context;
 
 use Mage_Core_Model_App as MageApp;
+
 use Magetest\MagentoExtension\Context\MagentoAwareContext,
     Magetest\MagentoExtension\Service\ConfigManager,
     Magetest\MagentoExtension\Service\CacheManager,

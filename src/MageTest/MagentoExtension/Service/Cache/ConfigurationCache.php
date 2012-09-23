@@ -2,6 +2,8 @@
 
 namespace MageTest\MagentoExtension\Service\Cache;
 
+use Mage_Core_Model_App;
+
 class ConfigurationCache
 {
     /**
@@ -11,7 +13,7 @@ class ConfigurationCache
      **/
     private $mageApp;
     
-    public function __construct($mageApp)
+    public function __construct(Mage_Core_Model_App $mageApp)
     {
         $this->mageApp = $mageApp;
     }
