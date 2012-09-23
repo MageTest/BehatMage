@@ -30,11 +30,11 @@ class MagentoContext extends BehatContext
     }
 
     /**
-     * @Given /^I log in as admin$/
+     * @Given /^I log in as admin user "([^"]*)" identified by "([^"]*)"$/
      */
-    public function iLoginAsAdmin()
+    public function iLoginAsAdmin($username, $password)
     {
-        $sid = $this->sessionService->adminLogin('admin', '123123pass');
+        $sid = $this->sessionService->adminLogin($username, $password);
         $this->mink->getSession()->setCookie('adminhtml', $sid);
     }
 
@@ -53,6 +53,14 @@ class MagentoContext extends BehatContext
     }
 
     /**
+     * @When /^I am on "([^"]*)"$/
+     */
+    public function iAmOn($uri)
+    {
+        $this->mink->getSession()->visit($uri);
+    }
+
+    /**
      * @Then /^I should see text "([^"]*)"$/
      */
     public function iShouldSeeText($text)
@@ -61,6 +69,34 @@ class MagentoContext extends BehatContext
         if (!$this->mink->getSession()->getDriver()->find($select)) {
             throw new \Behat\Mink\Exception\ElementNotFoundException($this->mink->getSession(), 'xpath', $select, null);
         }
+    }
+
+    /**
+     * @Then /^I should not see text "([^"]*)"$/
+     */
+    public function iShouldNotSeeText($text)
+    {
+        $select = '//*[text()="'.$text.'"]';
+        if ($this->mink->getSession()->getDriver()->find($select)) {
+            throw new \Exception("the given text \"$text\" is unexpectedly found.");
+        }
+    }
+
+    /**
+     * @Given /^I set config value for "([^"]*)" to "([^"]*)" in "([^"]*)" scope$/
+     */
+    public function iSetConfigValueForScope($path, $value, $scope)
+    {
+        $this->configManager->setCoreConfig($path, $value, $scope);
+    }
+
+
+    /**
+     * @Given /^the cache is clean$/
+     */
+    public function theCacheIsClean()
+    {
+        $this->cacheManager->clear();
     }
 
     public function setApp(MageApp $app)

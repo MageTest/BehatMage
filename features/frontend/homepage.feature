@@ -56,3 +56,18 @@ Feature: Home Page
   # And I should see "About Us, Customer Service, privacy Policy, Site Map, Search Terms, Advanced Search, Orders and Returns, Contact Us"
   # And I should see "Help us to Keep Magento Healthy - Report all bugs (ver.1.7.0.2)"
   # And I should see "© 2012 Magento Demo Store. All Rights Reserved."   
+ 
+
+  Scenario: Contact Us link is shown when active
+  Given I set config value for "contacts/contacts/enabled" to "1" in "default" scope
+  And the cache is clean
+  When I am on "/"
+  Then I should see text "Contact Us"
+
+
+  Scenario: Contact Us link is hidden when disabled
+  Given I set config value for "contacts/contacts/enabled" to "0" in "default" scope
+  And the cache is clean
+  When I am on "/"
+  Then I should not see text "Contact Us"
+

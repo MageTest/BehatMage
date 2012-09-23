@@ -2,7 +2,7 @@
 
 namespace MageTest\MagentoExtension\Service\Config;
 
-use Mage_Core_Model_Config as CoreConfigModel;
+use Mage_Core_Model_Config_Data as CoreConfigModel;
 
 class CoreConfig
 {
@@ -25,7 +25,7 @@ class CoreConfig
 
         // If existing config does not exist create it
         if ($configCollection->count() == 0) {
-            $configData = Mage::getModel('core/config_data');
+            $configData = \Mage::getModel('core/config_data');
             $configData->setPath($path);
             $configData->setValue($value);
             // Calculate scope
