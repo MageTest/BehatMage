@@ -58,57 +58,9 @@ class FeatureContext extends MagentoContext
     }
 
     /**
-     * @Given /^I am on "([^"]*)"$/
+     * @Then /^the after hook will clean up and configuration and fixtures$/
      */
-    public function iAmOn($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then /^I should see "([^"]*)"$/
-     */
-    public function iShouldSee($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^the search box should contain the message "([^"]*)"$/
-     */
-    public function theSearchBoxShouldContainTheMessage($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^I should see a button with the text "([^"]*)"$/
-     */
-    public function iShouldSeeAButtonWithTheText($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then /^I should see the text "([^"]*)"$/
-     */
-    public function iShouldSeeTheText($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given /^a dropdown with the options "([^"]*)"$/
-     */
-    public function aDropdownWithTheOptions($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then /^I should see "([^"]*)" and a dropdown with the values "([^"]*)"$/
-     */
-    public function iShouldSeeAndADropdownWithTheValues($arg1, $arg2)
+    public function theAfterHookWillCleanUpAndConfigurationAndFixtures()
     {
         throw new PendingException();
     }
