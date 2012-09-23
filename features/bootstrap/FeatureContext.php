@@ -50,6 +50,7 @@ class FeatureContext extends MagentoContext
      */
     public function theBeforeHookWillCallTheCacheManagerAndClearTheCache()
     {
+        throw new PendingException();
         $dir = Mage::getBaseDir('cache');
         if (count(glob("$dir/mage*")))
         {

@@ -32,11 +32,12 @@ class Product implements Fixture
         $modelFactory = $this->_modelFactory;
         $model = $modelFactory();
 
-        if ($model->getIdBySku($attributes['sku'])) {
-            throw new \Exception("SKU provided to product fixture should not be existing");
+        $id = $model->getIdBySku($attributes['sku']);
+        if ($id) {
+            $model->load($id);
         }
 
-        $attributes = array_merge($this->_getDefaultAttributes($model), $attributes);
+        $attributes = array_merge($this->_getDefaultAttributes($model), $model->getData(), $attributes);
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
         $model->setData($attributes)->save();

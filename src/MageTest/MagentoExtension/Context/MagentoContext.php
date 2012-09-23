@@ -12,6 +12,7 @@ use MageTest\MagentoExtension\Context\MagentoAwareContext,
 
 use Behat\MinkExtension\Context\MinkAwareInterface,
     Behat\Behat\Context\BehatContext,
+    Behat\Gherkin\Node\TableNode,
     Behat\Mink\Mink;
 
 class MagentoContext extends BehatContext
@@ -97,6 +98,26 @@ class MagentoContext extends BehatContext
     public function theCacheIsClean()
     {
         $this->cacheManager->clear();
+    }
+
+    /**
+     * @Given /the following products exist:/
+     */
+    public function theProductsExist(TableNode $table)
+    {
+        $hash = $table->getHash();
+        $fixtureGenerator = $this->factory->create('product');
+        foreach ($hash as $row) {
+            $row['stock_data'] = array();
+            if (isset($row['is_in_stock'])) {
+                $row['stock_data']['is_in_stock'] = $row['is_in_stock'];
+            }
+            if (isset($row['is_in_stock'])) {
+                $row['stock_data']['qty'] = $row['qty'];
+            }
+            $row['website_ids'] = array(1);
+            $fixtureGenerator->create($row);
+        }
     }
 
     public function setApp(MageApp $app)
