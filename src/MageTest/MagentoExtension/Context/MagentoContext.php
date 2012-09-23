@@ -61,7 +61,7 @@ class MagentoContext extends BehatContext
 
     public function setApp(MageApp $app)
     {
-        $this->$app = $app;
+        $this->app = $app;
     }
 
     public function setConfigManager(ConfigManager $config)
@@ -98,4 +98,5 @@ class MagentoContext extends BehatContext
     {
         return $this->factory->create($identifier);
     }
+}
 }
