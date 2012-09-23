@@ -71,3 +71,6 @@ Feature: Home Page
   When I am on "/"
   Then I should not see text "Contact Us"
 
+  Scenario: Display Welcome Message
+  Given I am on "/"
+  Then I should see text "Default welcome msg! "
