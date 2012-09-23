@@ -30,11 +30,11 @@ class MagentoContext extends BehatContext
     }
 
     /**
-     * @Given /^I log in as admin$/
+     * @Given /^I log in as admin user "([^"]*)" identified by "([^"]*)"$/
      */
-    public function iLoginAsAdmin()
+    public function iLoginAsAdmin($username, $password)
     {
-        $sid = $this->sessionService->adminLogin('admin', '123123pass');
+        $sid = $this->sessionService->adminLogin($username, $password);
         $this->mink->getSession()->setCookie('adminhtml', $sid);
     }
 
