@@ -53,6 +53,14 @@ class MagentoContext extends BehatContext
     }
 
     /**
+     * @When /^I am on "([^"]*)"$/
+     */
+    public function iAmOn($uri)
+    {
+        $this->mink->getSession()->visit($uri);
+    }
+
+    /**
      * @Then /^I should see text "([^"]*)"$/
      */
     public function iShouldSeeText($text)
@@ -61,6 +69,34 @@ class MagentoContext extends BehatContext
         if (!$this->mink->getSession()->getDriver()->find($select)) {
             throw new \Behat\Mink\Exception\ElementNotFoundException($this->mink->getSession(), 'xpath', $select, null);
         }
+    }
+
+    /**
+     * @Then /^I should not see text "([^"]*)"$/
+     */
+    public function iShouldNotSeeText($text)
+    {
+        $select = '//*[text()="'.$text.'"]';
+        if ($this->mink->getSession()->getDriver()->find($select)) {
+            throw new \Exception("the given text \"$text\" is unexpectedly found.");
+        }
+    }
+
+    /**
+     * @Given /^I set config value for "([^"]*)" to "([^"]*)" in "([^"]*)" scope$/
+     */
+    public function iSetConfigValueForScope($path, $value, $scope)
+    {
+        $this->configManager->setCoreConfig($path, $value, $scope);
+    }
+
+
+    /**
+     * @Given /^the cache is clean$/
+     */
+    public function theCacheIsClean()
+    {
+        $this->cacheManager->clear();
     }
 
     public function setApp(MageApp $app)

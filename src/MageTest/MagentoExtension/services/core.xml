@@ -12,15 +12,17 @@
         <parameter key="behat.magento.fixture.fixture_factory">MageTest\MagentoExtension\Fixture\FixtureFactory</parameter>
         <parameter key="behat.magento.service.session">MageTest\MagentoExtension\Service\Session</parameter>
         <parameter key="mage.core.model.config">Mage_Core_Model_Config</parameter>
+        <parameter key="mage.core.model.config.data">Mage_Core_Model_Config_Data</parameter>
         <parameter key="behat.magento.context.class_guesser">MageTest\MagentoExtension\Context\ClassGuesser</parameter>
         <parameter key="behat.mink.mink">Behat\Mink\Mink</parameter>
     </parameters>
     <services>
         <service id="mage.core.model.config" class="%mage.core.model.config%" />
+        <service id="mage.core.model.config.data" class="%mage.core.model.config.data%" />
         <service id="behat.mink.mink" class="%behat.mink.mink%" />
         <service id="behat.magento.service.bootstrap" class="%behat.magento.service.bootstrap%" />
         <service id="behat.magento.service.config.core_config" class="%behat.magento.service.config.core_config%" >
-            <argument type="service" id="mage.core.model.config" />
+            <argument type="service" id="mage.core.model.config.data" />
         </service>
         <service id="behat.magento.service.config_manager" class="%behat.magento.service.config_manager%">
             <argument type="service" id="behat.magento.service.bootstrap" />
