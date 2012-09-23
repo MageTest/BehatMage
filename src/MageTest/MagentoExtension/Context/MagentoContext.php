@@ -50,4 +50,9 @@ class MagentoContext implements MagentoAwareInterface, ContextInterface
     {
         return $this->factory->create($identifier);
     }
+
+    public function getMink()
+    {
+        return $this->mink;
+    }
 }
