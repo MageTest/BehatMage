@@ -1,5 +1,5 @@
 {
-    "name": "MageTest/MageTest",
+    "name": "magetest/magento-behat-extension",
     "description": "Magento Behat extension",
     "require": {
         "behat/behat": "2.4.4",

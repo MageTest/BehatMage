@@ -1,5 +1,5 @@
 {
-    "hash": "1c2428e0a482aad8b3c1eb719e98e14e",
+    "hash": "da54dd06954d02d0ddd74eeac7bc738f",
     "packages": [
         {
             "package": "behat/behat",
@@ -38,12 +38,6 @@
             "version": "dev-master",
             "source-reference": "703a365a0f6c15f91f35c1cc30531b9de7f23a6d",
             "commit-date": "1345633817"
-        },
-        {
-            "package": "fabpot/goutte",
-            "version": "dev-master",
-            "alias-pretty-version": "1.0.x-dev",
-            "alias-version": "1.0.9999999.9999999-dev"
         },
         {
             "package": "fabpot/goutte",
