@@ -30,8 +30,7 @@ class FeatureContext extends MagentoContext
      */
     public function iRunAnyScenario()
     {
-        $product = $this->getFixture('product');
-        $product->create(array('sku' => 'asdfasdf'));
+
     }
 
     /**
@@ -39,7 +38,11 @@ class FeatureContext extends MagentoContext
      */
     public function weHaveSomeFilesInTheConfigCacheOfMagento()
     {
-        exec('touch /tmp/cache/mage--a/mage--PDO123');
+        // TODO Can't create as part of the background as it happens after
+        // the before hook
+        // $dir = Mage::getBaseDir('cache');
+        // exec("mkdir -p $dir/mage--a && touch $dir/mage--a/mage--PDO123");
+        // sleep(5);
     }
 
     /**
@@ -47,7 +50,8 @@ class FeatureContext extends MagentoContext
      */
     public function theBeforeHookWillCallTheCacheManagerAndClearTheCache()
     {
-        if (file_exists("/tmp/cache/mage--a/mage--PDO123"))
+        $dir = Mage::getBaseDir('cache');
+        if (count(glob("$dir/mage*")))
         {
             throw new RuntimeException("File should not exist");
         }

@@ -9,15 +9,16 @@ class ConfigurationCache
      *
      * @var Mage_Core_Model_App
      **/
-    var $mageApp;
+    private $mageApp;
     
     public function __construct($mageApp)
     {
         $this->mageApp = $mageApp;
     }
 
+    // FIXME This is brutal but it is late
     public function clear()
     {
-        $this->mageApp->cleanCache(array('configuration'));
+        $this->mageApp->getCacheInstance()->flush();
     }
 }
