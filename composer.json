@@ -2,6 +2,7 @@
     "name": "magetest/magento-behat-extension",
     "description": "Magento Behat extension",
     "require": {
+        "php": ">=5.3.0",
         "behat/behat": "2.4.4",
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
@@ -31,12 +32,12 @@
             "email": "mduarte@sessiondigital.com"
         },
         {
-            "name": "Sarunas",
-            "email": "sarunas@sessiondigital.com"
+            "name": "Sarunas Valaskevicius",
+            "email": "svalaskevicius@sessiondigital.com"
         },
         {
-            "name": "Daniel",
-            "email": "daniel@sessiondigital.com"
+            "name": "Daniel Kidanemariam",
+            "email": "dkidanemariam@sessiondigital.com"
         },
         {
             "name": "Mark Slocock",
