@@ -20,7 +20,7 @@
         }
     },
     "require-dev": {
-        "phpspec/phpspec2": "magento-demo"
+        "phpspec/phpspec2": "dev-magento-demo"
     },
     "config": {
         "bin-dir": "bin"
