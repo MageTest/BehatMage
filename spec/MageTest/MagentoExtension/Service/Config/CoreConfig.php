@@ -2,17 +2,16 @@
 
 namespace spec\MageTest\MagentoExtension\Service\Config;
 
-use PHPSpec2\Specification;
+use PHPSpec2\ObjectBehavior;
 
-class CoreConfig implements Specification
+class CoreConfig extends ObjectBehavior
 {
-    function described_with($coreConfigModel)
+    /**
+     * @param Mage_Core_Model_Config $coreConfigModel
+     */
+    function let($coreConfigModel)
     {
-        $coreConfigModel->isAMockOf('Mage_Core_Model_Config');
-        $this->coreConfig->isAnInstanceOf(
-            'MageTest\MagentoExtension\Service\Config\CoreConfig',
-            array($coreConfigModel)
-        );
+        $this->beConstructedWith($coreConfigModel);
     }
 
     function it_should_retrieve_a_Mage_Core_Model_Config_Collection($coreConfigModel, $coreConfigModelCollection)
@@ -27,7 +26,7 @@ class CoreConfig implements Specification
         // $coreConfigModelCollection->load()
         //     ->shouldBeCalled()
         //     ->willReturn(array());
-        // 
+        //
         // $coreConfigModel->getCollection()
         //     ->shouldBeCalled()
         //     ->willReturn($coreConfigModelCollection);

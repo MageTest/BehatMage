@@ -13,7 +13,7 @@
         "behat/mink-goutte-driver": "*"
     },
     "require-dev": {
-        "phpspec/phpspec2": "dev-magento-demo"
+        "phpspec/phpspec2": "*"
     },
     "autoload": {
         "psr-0": {

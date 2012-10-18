@@ -2,18 +2,18 @@
 
 namespace spec\MageTest\MagentoExtension\Context;
 
-use PHPSpec2\Specification;
+use PHPSpec2\ObjectBehavior;
 
-class MagentoContext implements Specification
+class MagentoContext extends ObjectBehavior
 {
     function it_should_support_mink()
     {
-        $this->magentoContext->shouldBeAnInstanceOf("Behat\MinkExtension\Context\MinkAwareInterface");
+        $this->shouldBeAnInstanceOf("Behat\MinkExtension\Context\MinkAwareInterface");
     }
 
     function it_should_add_some_magento_goodies()
     {
-        $this->magentoContext->shouldBeAnInstanceOf("MageTest\MagentoExtension\Context\MagentoAwareInterface");
+        $this->shouldBeAnInstanceOf("MageTest\MagentoExtension\Context\MagentoAwareInterface");
     }
 
 }
