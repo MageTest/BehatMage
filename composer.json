@@ -13,7 +13,7 @@
         "behat/mink-goutte-driver": "*"
     },
     "require-dev": {
-        "phpspec/phpspec2": "*"
+        "phpspec/phpspec2": "dev-develop"
     },
     "autoload": {
         "psr-0": {
