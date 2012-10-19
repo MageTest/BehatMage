@@ -2,27 +2,25 @@
 
 namespace spec\MageTest\MagentoExtension\Service\Cache;
 
-use PHPSpec2\Specification;
+use PHPSpec2\ObjectBehavior;
 
-class ConfigurationCache implements Specification
+class ConfigurationCache extends ObjectBehavior
 {
-    function described_with($mageApp, $cacheInstance)
+    /**
+     * @param Mage_Core_Model_App   $mageApp
+     * @param Mage_Core_Model_Cache $cacheInstance
+     */
+    function let($mageApp, $cacheInstance)
     {
-        $cacheInstance->isAMockOf("Mage_Core_Model_Cache");
-        $cacheInstance->flush()
-            ->shouldBeCalled();
+        $mageApp->getCacheInstance()->willReturn($cacheInstance);
 
-        $mageApp->isAMockOf("Mage_Core_Model_App");
-        $mageApp->getCacheInstance()
-            ->willReturn($cacheInstance);
+        $cacheInstance->flush()->shouldBeCalled();
 
-        $this->configurationCache->isAnInstanceOf(
-            'MageTest\MagentoExtension\Service\Cache\ConfigurationCache',
-            array($mageApp));
+        $this->beConstructedWith($mageApp);
     }
 
     function it_should_clear_the_configuration_cache($mageApp, $cacheInstance)
     {
-        $this->configurationCache->clear();
+        $this->clear();
     }
 }

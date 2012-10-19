@@ -1,3 +1,6 @@
+behat.yml
 vendor
 bin/behat
 bin/phpspec
+composer.lock
+composer.phar

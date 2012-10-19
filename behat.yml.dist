@@ -1,3 +1,10 @@
 default:
+    formatter:
+        name: progress
     extensions:
         MageTest\MagentoExtension\Extension: ~
+        Behat\MinkExtension\Extension:
+            base_url: mageplay.development.local
+            goutte:
+                server_parameters:
+                    HTTP_HOST: %behat.mink.base_url%
