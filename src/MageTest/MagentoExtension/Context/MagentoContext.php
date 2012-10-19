@@ -25,6 +25,10 @@ class MagentoContext extends BehatContext implements MinkAwareInterface, Magento
     private $minkProperties;
     private $sessionService;
 
+    public function __construct()
+    {
+    }
+
     /**
      * @Given /^I log in as admin user "([^"]*)" identified by "([^"]*)"$/
      */

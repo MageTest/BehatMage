@@ -12,14 +12,13 @@ class MagentoAwareInitializer extends ObjectBehavior
      * @param MageTest\MagentoExtension\Service\ConfigManager  $config
      * @param MageTest\MagentoExtension\Service\CacheManager   $cache
      * @param MageTest\MagentoExtension\Fixture\FixtureFactory $factory
-     * @param Behat\Mink\Mink                                  $mink
      * @param MageTest\MagentoExtension\Service\Session        $session
      */
     function let($bootstrap, $app, $config, $cache, $factory, $mink, $session)
     {
         $bootstrap->app()->willReturn($app);
 
-        $this->beConstructedWith($bootstrap, $cache, $config, $factory, $mink, $session);
+        $this->beConstructedWith($bootstrap, $cache, $config, $factory, $session);
     }
 
     /**
@@ -31,7 +30,6 @@ class MagentoAwareInitializer extends ObjectBehavior
         $context->setConfigManager($config)->shouldBeCalled();
         $context->setCacheManager($cache)->shouldBeCalled();
         $context->setFixtureFactory($factory)->shouldBeCalled();
-        $context->setMink($mink)->shouldBeCalled();
         $context->setSessionService($session)->shouldBeCalled();
 
         $this->initialize($context);
