@@ -12,15 +12,15 @@
         "behat/mink-browserkit-driver": "*",
         "behat/mink-goutte-driver": "*"
     },
+    "require-dev": {
+        "phpspec/phpspec2": "dev-develop"
+    },
     "autoload": {
         "psr-0": {
             "MageTest": "src/",
             "": ["vendor/magento/lib","vendor/magento/app"],
             "Mage": "vendor/magento/app/code/core"
         }
-    },
-    "require-dev": {
-        "phpspec/phpspec2": "dev-magento-demo"
     },
     "config": {
         "bin-dir": "bin"

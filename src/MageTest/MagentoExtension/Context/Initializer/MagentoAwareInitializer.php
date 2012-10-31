@@ -10,39 +10,28 @@ use MageTest\MagentoExtension\Service\Bootstrap,
     MageTest\MagentoExtension\Context\MagentoAwareInterface;
 
 use Behat\Behat\Context\Initializer\InitializerInterface,
-    Behat\Behat\Context\ContextInterface,
-    Behat\Mink\Mink;
+    Behat\Behat\Context\ContextInterface;
 
 class MagentoAwareInitializer implements InitializerInterface
 {
-    private $app;
-    private $cacheManager;
-    private $configManager;
-    private $factory;
-    private $mink;
-    private $session;
+    private $app = null;
+
+    private $cacheManager = null;
+
+    private $configManager = null;
+
+    private $factory = null;
+
+    private $session = null;
 
     public function __construct(Bootstrap $bootstrap, CacheManager $cache,
-        ConfigManager $config, FixtureFactory $factory, Mink $mink,
-        Session $session)
+        ConfigManager $config, FixtureFactory $factory, Session $session)
     {
         $this->app = $bootstrap->app();
         $this->cacheManager = $cache;
         $this->configManager = $config;
         $this->factory = $factory;
         $this->session = $session;
-        $this->mink = $mink;
-
-        $this->mink->registerSession(
-            '_default',
-            new \Behat\Mink\Session(
-                new \Behat\Mink\Driver\GoutteDriver(
-                    //FIXME: take host from configuration
-                    new \Behat\Mink\Driver\Goutte\Client(array('HTTP_HOST'=>'magentoee.development.local'))
-                )
-            )
-        );
-        $this->mink->setDefaultSessionName('_default');
     }
 
     public function supports(ContextInterface $context)
@@ -57,6 +46,5 @@ class MagentoAwareInitializer implements InitializerInterface
         $context->setCacheManager($this->cacheManager);
         $context->setFixtureFactory($this->factory);
         $context->setSessionService($this->session);
-        $context->setMink($this->mink);
     }
 }

@@ -2,13 +2,13 @@
 
 namespace spec\MageTest\MagentoExtension\Context;
 
-use PHPSpec2\Specification;
+use PHPSpec2\ObjectBehavior;
 
-class ClassGuesser implements Specification
+class ClassGuesser extends ObjectBehavior
 {
-    function it_should_guess_what_context_to_add()
+    function it_should_guess_which_context_to_add()
     {
-        $this->classGuesser->guess()->shouldReturn(
+        $this->guess()->shouldReturn(
             array('MageTest\MagentoExtension\Context\MagentoAwareInterface')
         );
     }
