@@ -2,21 +2,22 @@
 
 namespace spec\MageTest\MagentoExtension\EventListener;
 
-use PHPSpec2\Specification;
+use PHPSpec2\ObjectBehavior;
 
-class BeforeScenarioListener implements Specification
+class BeforeScenarioListener extends ObjectBehavior
 {
-    function described_with($cacheManager)
+    /**
+     * @param MageTest\MagentoExtension\Service\CacheManager $cacheManager
+     */
+    function let($cacheManager)
     {
-        $cacheManager->isAMockOf("MageTest\MagentoExtension\Service\CacheManager");
-        $this->beforeScenarioListener->isAnInstanceOf(
-            'MageTest\MagentoExtension\EventListener\BeforeScenarioListener',
-            array($cacheManager));
+        $this->beConstructedWith($cacheManager);
     }
-    
+
     function it_should_clear_cache($cacheManager)
     {
         $cacheManager->clear()->shouldBeCalled();
-        $this->beforeScenarioListener->beforeScenario();
+
+        $this->beforeScenario();
     }
 }

@@ -2,30 +2,27 @@
 
 namespace spec\MageTest\MagentoExtension\Context\Initializer;
 
-use PHPSpec2\Specification;
+use PHPSpec2\ObjectBehavior;
 
-class MagentoAwareInitializer implements Specification
+class MagentoAwareInitializer extends ObjectBehavior
 {
-    function described_with($bootstrap, $app, $config, $cache, $factory, $mink, $session)
+    /**
+     * @param MageTest\MagentoExtension\Service\Bootstrap      $bootstrap
+     * @param Mage_Core_Model_App                              $app
+     * @param MageTest\MagentoExtension\Service\ConfigManager  $config
+     * @param MageTest\MagentoExtension\Service\CacheManager   $cache
+     * @param MageTest\MagentoExtension\Fixture\FixtureFactory $factory
+     * @param MageTest\MagentoExtension\Service\Session        $session
+     */
+    function let($bootstrap, $app, $config, $cache, $factory, $mink, $session)
     {
-        $bootstrap->isAMockOf('MageTest\MagentoExtension\Service\Bootstrap');
-        $app->isAMockOf('Mage_Core_Model_App');
         $bootstrap->app()->willReturn($app);
 
-        $cache->isAMockOf('MageTest\MagentoExtension\Service\CacheManager');
-        $config->isAMockOf('MageTest\MagentoExtension\Service\ConfigManager');
-        $factory->isAMockOf('MageTest\MagentoExtension\Fixture\FixtureFactory');
-        $mink->isAMockOf('Behat\Mink\Mink');
-        $session->isAMockOf('MageTest\MagentoExtension\Service\Session');
-
-        $this->magentoAwareInitializer->isAnInstanceOf(
-            'MageTest\MagentoExtension\Context\Initializer\MagentoAwareInitializer',
-            array($bootstrap, $cache, $config, $factory, $mink, $session)
-        );
+        $this->beConstructedWith($bootstrap, $cache, $config, $factory, $session);
     }
 
     /**
-     * @param Prophet $context mock of MageTest\MagentoExtension\Context\MagentoContext
+     * @param MageTest\MagentoExtension\Context\MagentoContext $context
      */
     function it_initialises_the_context($context, $app, $config, $cache, $factory, $mink, $session)
     {
@@ -33,9 +30,9 @@ class MagentoAwareInitializer implements Specification
         $context->setConfigManager($config)->shouldBeCalled();
         $context->setCacheManager($cache)->shouldBeCalled();
         $context->setFixtureFactory($factory)->shouldBeCalled();
-        $context->setMink($mink)->shouldBeCalled();
         $context->setSessionService($session)->shouldBeCalled();
-        $this->magentoAwareInitializer->initialize($context);
+
+        $this->initialize($context);
     }
 
 }

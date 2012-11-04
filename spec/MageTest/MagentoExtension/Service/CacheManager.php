@@ -2,26 +2,27 @@
 
 namespace spec\MageTest\MagentoExtension\Service;
 
-use PHPSpec2\Specification;
+use PHPSpec2\ObjectBehavior;
 
-class CacheManager implements Specification
+class CacheManager extends ObjectBehavior
 {
-    function described_with($bootstrap)
+    /**
+     * @param MageTest\MagentoExtension\Service\Bootstrap $bootstrap
+     */
+    function let($bootstrap)
     {
-        $bootstrap->isAMockOf('MageTest\MagentoExtension\Service\Bootstrap');
-        $this->cacheManager->isAnInstanceOf(
-            'MageTest\MagentoExtension\Service\CacheManager',
-            array($bootstrap)
-        );
+        $this->beConstructedWith($bootstrap);
     }
 
     /**
-     * @param Prophet $cache mock of MageTest\MagentoExtension\Service\Cache\ConfigurationCache
+     * @param MageTest\MagentoExtension\Service\Cache\ConfigurationCache $cache
      */
     function it_should_clear_configuration_by_default($cache)
     {
-        $this->cacheManager->addSection('configuration', $cache);
+        $this->addSection('configuration', $cache);
+
         $cache->clear()->shouldBeCalled();
-        $this->cacheManager->clear();
+
+        $this->clear();
     }
 }

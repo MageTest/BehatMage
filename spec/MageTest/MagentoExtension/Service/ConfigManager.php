@@ -2,23 +2,23 @@
 
 namespace spec\MageTest\MagentoExtension\Service;
 
-use PHPSpec2\Specification;
+use PHPSpec2\ObjectBehavior;
 
-class ConfigManager implements Specification
+class ConfigManager extends ObjectBehavior
 {
-    function described_with($bootstrap, $coreConfig)
+    /**
+     * @param MageTest\MagentoExtension\Service\Bootstrap         $bootstrap
+     * @param MageTest\MagentoExtension\Service\Config\CoreConfig $coreConfig
+     */
+    function let($bootstrap, $coreConfig)
     {
-        $bootstrap->isAMockOf('MageTest\MagentoExtension\Service\Bootstrap');
-        $coreConfig->isAmockOf('MageTest\MagentoExtension\Service\Config\CoreConfig');
-        $this->configManager->isAnInstanceOf(
-            'MageTest\MagentoExtension\Service\ConfigManager',
-            array($bootstrap, $coreConfig)
-        );
+        $this->beConstructedWith($bootstrap, $coreConfig);
     }
-    
+
     function it_should_set_core_config($coreConfig)
     {
-        $coreConfig->set()->shouldBeCalled();
-        $this->configManager->setCoreConfig('test/path/to/config', 'value', 1);
+        $coreConfig->set('test/path/to/config', 'value', 1)->shouldBeCalled();
+
+        $this->setCoreConfig('test/path/to/config', 'value', 1);
     }
 }

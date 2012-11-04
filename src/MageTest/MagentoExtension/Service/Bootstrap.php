@@ -4,10 +4,6 @@ namespace MageTest\MagentoExtension\Service;
 
 class Bootstrap
 {
-    public function __construct()
-    {
-    }
-
     public function app()
     {
         return \Mage::app();

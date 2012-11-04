@@ -2,13 +2,20 @@
 
 namespace spec\MageTest\MagentoExtension\Service;
 
-use PHPSpec2\Specification;
+use PHPSpec2\ObjectBehavior;
 
-class Session implements Specification
+class Session extends ObjectBehavior
 {
-    function described_with()
+    /**
+     * @param MageTest\MagentoExtension\Service\Bootstrap $bootstrap
+     */
+    function let($bootstrap)
     {
-        \Mage::app();
-        $this->session->isAnInstanceOf('MageTest\MagentoExtension\Service\Session');
+        $this->beConstructedWith($bootstrap);
+    }
+
+    function it_should_exist()
+    {
+        $this->shouldNotBe(null);
     }
 }

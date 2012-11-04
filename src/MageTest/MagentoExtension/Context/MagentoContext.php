@@ -15,8 +15,7 @@ use Behat\MinkExtension\Context\MinkAwareInterface,
     Behat\Gherkin\Node\TableNode,
     Behat\Mink\Mink;
 
-class MagentoContext extends BehatContext
-    implements MinkAwareInterface, MagentoAwareInterface
+class MagentoContext extends BehatContext implements MinkAwareInterface, MagentoAwareInterface
 {
     private $app;
     private $configManager;
@@ -25,10 +24,6 @@ class MagentoContext extends BehatContext
     private $mink;
     private $minkProperties;
     private $sessionService;
-
-    public function __construct()
-    {
-    }
 
     /**
      * @Given /^I log in as admin user "([^"]*)" identified by "([^"]*)"$/

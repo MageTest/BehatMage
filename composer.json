@@ -10,17 +10,27 @@
         "behat/behat": "2.4.4",
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
-        "behat/mink-goutte-driver": "*"
+        "behat/mink-goutte-driver": ">=1.0.3"
+    },
+    "require-dev": {
+        "phpspec/phpspec2": "dev-develop"
     },
     "autoload": {
         "psr-0": {
             "MageTest": "src/",
-            "": ["vendor/magento/lib","vendor/magento/app"],
-            "Mage": "vendor/magento/app/code/core"
+            "": [
+                "vendor/magento/app",
+                "vendor/magento/app/code/local",
+                "vendor/magento/app/code/community",
+                "vendor/magento/app/code/core",
+                "vendor/magento/lib",
+                "app",
+                "app/code/local",
+                "app/code/community",
+                "app/code/core",
+                "lib"
+            ]
         }
-    },
-    "require-dev": {
-        "phpspec/phpspec2": "dev-magento-demo"
     },
     "config": {
         "bin-dir": "bin"
