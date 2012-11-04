@@ -18,8 +18,18 @@
     "autoload": {
         "psr-0": {
             "MageTest": "src/",
-            "": ["vendor/magento/lib","vendor/magento/app"],
-            "Mage": "vendor/magento/app/code/core"
+            "": [
+                "vendor/magento/app",
+                "vendor/magento/app/code/local",
+                "vendor/magento/app/code/community",
+                "vendor/magento/app/code/core",
+                "vendor/magento/lib",
+                "app",
+                "app/code/local",
+                "app/code/community",
+                "app/code/core",
+                "lib"
+            ]
         }
     },
     "config": {
