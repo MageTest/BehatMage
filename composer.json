@@ -10,7 +10,7 @@
         "behat/behat": "2.4.4",
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
-        "behat/mink-goutte-driver": "*"
+        "behat/mink-goutte-driver": ">=1.0.3"
     },
     "require-dev": {
         "phpspec/phpspec2": "dev-develop"
