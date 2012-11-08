@@ -45,7 +45,7 @@ class Product extends ObjectBehavior
         );
 
         $this->productModel->shouldReceive('setData')
-            ->with($data)->once()->andReturn($this->productModel)->ordered();
+            ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
         $this->productModel->shouldReceive('getId')->andReturn(1);
         $this->productModel->shouldReceive('getIdBySku')->andReturn(false);
@@ -75,7 +75,7 @@ class Product extends ObjectBehavior
         );
 
         $this->productModel->shouldReceive('setData')
-            ->with($expected)->once()->andReturn($this->productModel)->ordered();
+            ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
         $this->productModel->shouldReceive('getId')->andReturn(1);
         $this->productModel->shouldReceive('getIdBySku')->andReturn(false);
@@ -110,7 +110,7 @@ class Product extends ObjectBehavior
         $this->productModel->shouldReceive('getData')
             ->once()->andReturn(array('loaded_attr' => 27));
         $this->productModel->shouldReceive('setData')
-            ->with($expectedData)->once()->andReturn($this->productModel)->ordered();
+            ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
         $this->productModel->shouldReceive('getId')->andReturn(1);
         $this->productModel->shouldReceive('load')->with(123)->once()->andReturn(1);

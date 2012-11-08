@@ -102,7 +102,13 @@ class Product implements FixtureInterface
         if ($this->defaultAttributes) {
             return $this->defaultAttributes;
         }
-        return $this->defaultAttributes = array(
+        $eavAttributes = $this->model->getAttributes();
+        $attributeCodes = array();
+        foreach ($eavAttributes as $attributeObject) {
+            $attributeCodes[$attributeObject->getAttributeCode()] = "";
+        }
+
+        return $this->defaultAttributes = array_merge($attributeCodes, array(
             'sku' => '',
             'attribute_set_id' => $this->retrieveDefaultAttributeSetId(),
             'name' => 'product name',
@@ -115,7 +121,7 @@ class Product implements FixtureInterface
             'tax_class_id' => 1,
             'type_id' => \Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
             'stock_data' => array( 'is_in_stock' => 1, 'qty' => 99999 )
-        );
+        ));
     }
 
     protected function retrieveDefaultAttributeSetId()
