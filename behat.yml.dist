@@ -4,7 +4,7 @@ default:
     extensions:
         MageTest\MagentoExtension\Extension: ~
         Behat\MinkExtension\Extension:
-            base_url: mageplay.development.local
+            base_url: test.magento.loc
             goutte:
                 server_parameters:
                     HTTP_HOST: %behat.mink.base_url%

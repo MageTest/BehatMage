@@ -1,8 +1,8 @@
 <?php
 
-namespace MageTest\MagentoExtension;
+namespace MageTest\MagentoExtension\Fixture;
 
-interface Fixture
+interface FixtureInterface
 {
     /**
      * Create a fixture in Magento DB using the given attributes map and return its ID

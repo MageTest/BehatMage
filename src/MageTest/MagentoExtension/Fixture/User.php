@@ -8,7 +8,7 @@ use MageTest\MagentoExtension\Fixture;
  *
  * @package MagentoExtension
  */
-class User implements Fixture
+class User implements FixtureInterface
 {
     private $_modelFactory = null;
 

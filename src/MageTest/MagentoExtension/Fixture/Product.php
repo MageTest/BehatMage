@@ -8,16 +8,19 @@ use MageTest\MagentoExtension\Fixture;
  *
  * @package MagentoExtension
  */
-class Product implements Fixture
+class Product implements FixtureInterface
 {
-    private $_modelFactory = null;
+    private $modelFactory = null;
+    private $model;
+    private $attributes;
+    private $defaultAttributes;
 
     /**
      * @param $productModelFactory \Closure optional
      */
     public function __construct($productModelFactory = null)
     {
-        $this->_modelFactory = $productModelFactory ?: $this->defaultModelFactory();
+        $this->modelFactory = $productModelFactory ?: $this->defaultModelFactory();
     }
 
     /**
@@ -29,21 +32,40 @@ class Product implements Fixture
      */
     public function create(array $attributes)
     {
-        $modelFactory = $this->_modelFactory;
-        $model = $modelFactory();
+        $modelFactory = $this->modelFactory;
+        $this->model = $modelFactory();
 
-        $id = $model->getIdBySku($attributes['sku']);
+        $id = $this->model->getIdBySku($attributes['sku']);
         if ($id) {
-            $model->load($id);
+            $this->model->load($id);
         }
 
-        $attributes = array_merge($this->_getDefaultAttributes($model), $model->getData(), $attributes);
+        $this->validateAttributes(array_keys($attributes));
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
-        $model->setData($attributes)->save();
+        $this->model->setData($this->mergeAttributes($attributes))->save();
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
-        return $model->getId();
+        return $this->model->getId();
+    }
+
+    function mergeAttributes($attributes)
+    {
+        return array_merge($this->getDefaultAttributes(), $this->model->getData(), $attributes);
+    }
+
+    function validateAttributes($attributes)
+    {
+        foreach ($attributes as $attribute) {
+            if (!$this->attributeExists($attribute)) {
+                throw new \RuntimeException("$attribute is not yet defined as an attribute of Product");
+            }
+        }
+    }
+
+    function attributeExists($attribute)
+    {
+        return in_array($attribute, array_keys($this->getDefaultAttributes()));
     }
 
     /**
@@ -55,7 +77,7 @@ class Product implements Fixture
      */
     public function delete($identifier) 
     {
-        $modelFactory = $this->_modelFactory;
+        $modelFactory = $this->modelFactory;
         $model = $modelFactory();
 
         $model->load($identifier);
@@ -75,10 +97,14 @@ class Product implements Fixture
         };
     }
 
-    protected function _getDefaultAttributes($model)
+    protected function getDefaultAttributes()
     {
-        return array(
-            'attribute_set_id' => $this->_retrieveDefaultAttributeSetId($model),
+        if ($this->defaultAttributes) {
+            return $this->defaultAttributes;
+        }
+        return $this->defaultAttributes = array(
+            'sku' => '',
+            'attribute_set_id' => $this->retrieveDefaultAttributeSetId(),
             'name' => 'product name',
             'weight' => 2,
             'visibility'=> \Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
@@ -92,9 +118,9 @@ class Product implements Fixture
         );
     }
 
-    protected function _retrieveDefaultAttributeSetId($model)
+    protected function retrieveDefaultAttributeSetId()
     {
-        return $model->getResource()
+        return $this->model->getResource()
             ->getEntityType()
             ->getDefaultAttributeSetId();
     }
