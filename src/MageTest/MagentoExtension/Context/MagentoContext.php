@@ -110,7 +110,7 @@ class MagentoContext extends BehatContext implements MinkAwareInterface, Magento
             if (isset($row['is_in_stock'])) {
                 $row['stock_data']['qty'] = $row['qty'];
             }
-            $row['website_ids'] = array(1);
+
             $fixtureGenerator->create($row);
         }
     }
