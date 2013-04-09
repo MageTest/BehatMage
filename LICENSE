@@ -1,16 +1,4 @@
-# BehatMage
-
-Behat extension for Magento, providing Behat context with specific Magento requirements allowing you to quickly define Magento scenarios and steps to enable BDD within Magento projects.
-
-# Documentation
-
-This is coming very soon!
-
-# License and Authors
-
-Authors: <https://github.com/MageTest/BehatMage/contributors>
-
-Copyright (C) 2012-2013
+Copyright (C) 2012-2013 <https://github.com/MageTest/BehatMage/contributors>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
