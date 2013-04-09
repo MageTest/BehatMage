@@ -1,12 +1,36 @@
 <?php
-
+/**
+ * BehatMage
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MIT License, that is bundled with this
+ * package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ *
+ * http://opensource.org/licenses/MIT
+ *
+ * If you did not receive a copy of the license and are unable to obtain it
+ * through the world-wide-web, please send an email
+ * to <magetest@sessiondigital.com> so we can send you a copy immediately.
+ *
+ * @category   MageTest
+ * @package    MagentoExtension
+ * @subpackage Fixture
+ *
+ * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
+ */
 namespace MageTest\MagentoExtension\Fixture;
 use MageTest\MagentoExtension\Fixture;
 
 /**
  * Product fixtures functionality provider
  *
- * @package MagentoExtension
+ * @category   MageTest
+ * @package    MagentoExtension
+ * @subpackage Fixture
+ *
+ * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
 class Product implements FixtureInterface
 {
@@ -75,7 +99,7 @@ class Product implements FixtureInterface
      *
      * @return null
      */
-    public function delete($identifier) 
+    public function delete($identifier)
     {
         $modelFactory = $this->modelFactory;
         $model = $modelFactory();
