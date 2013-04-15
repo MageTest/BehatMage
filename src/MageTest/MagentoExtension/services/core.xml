@@ -45,8 +45,5 @@
             <tag name="behat.context.initializer" />
         </service>
         <service id="behat.magento.fixture.fixture_factory" class="%behat.magento.fixture.fixture_factory%" />
-        <service id="behat.magento.context.class_guesser" class="%behat.magento.context.class_guesser%">
-          <tag name="behat.context.class_guesser" priority="-1" />
-        </service>
     </services>
 </container>
