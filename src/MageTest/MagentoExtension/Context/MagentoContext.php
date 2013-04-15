@@ -30,10 +30,8 @@ use MageTest\MagentoExtension\Context\MagentoAwareContext,
     MageTest\MagentoExtension\Fixture\FixtureFactory,
     MageTest\MagentoExtension\Service\Session;
 
-use Behat\MinkExtension\Context\MinkAwareInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Gherkin\Node\TableNode,
-    Behat\Mink\Mink;
+use Behat\MinkExtension\Context\RawMinkContext,
+    Behat\Gherkin\Node\TableNode;
 
 /**
  * MagentoContext
@@ -44,24 +42,13 @@ use Behat\MinkExtension\Context\MinkAwareInterface,
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class MagentoContext extends BehatContext implements MinkAwareInterface, MagentoAwareInterface
+class MagentoContext extends RawMinkContext implements MagentoAwareInterface
 {
     private $app;
     private $configManager;
     private $cacheManager;
     private $factory;
-    private $mink;
-    private $minkProperties;
     private $sessionService;
-
-    /**
-     * @Given /^I log in as admin user "([^"]*)" identified by "([^"]*)"$/
-     */
-    public function iLoginAsAdmin($username, $password)
-    {
-        $sid = $this->sessionService->adminLogin($username, $password);
-        $this->mink->getSession()->setCookie('adminhtml', $sid);
-    }
 
     /**
      * @When /^I open admin URI "([^"]*)"$/
@@ -71,10 +58,19 @@ class MagentoContext extends BehatContext implements MinkAwareInterface, Magento
         $urlModel = new \Mage_Adminhtml_Model_Url();
         if (preg_match('@^/admin/(.*?)/(.*?)((/.*)?)$@', $uri, $m)) {
             $processedUri = "/admin/{$m[1]}/{$m[2]}/key/".$urlModel->getSecretKey($m[1], $m[2])."/{$m[3]}";
-            $this->mink->getSession()->visit($processedUri);
+            $this->getSession()->visit($processedUri);
         } else {
             throw new \InvalidArgumentException('$uri parameter should start with /admin/ and contain controller and action elements');
         }
+    }
+
+    /**
+     * @When /^I log in as admin user "([^"]*)" identified by "([^"]*)"$/
+     */
+    public function iLoginAsAdmin($username, $password)
+    {
+        $sid = $this->sessionService->adminLogin($username, $password);
+        $this->getSession()->setCookie('adminhtml', $sid);
     }
 
     /**
@@ -82,42 +78,20 @@ class MagentoContext extends BehatContext implements MinkAwareInterface, Magento
      */
     public function iAmOn($uri)
     {
-        $this->mink->getSession()->visit($uri);
+        $this->getSession()->visit($uri);
     }
 
     /**
-     * @Then /^I should see text "([^"]*)"$/
-     */
-    public function iShouldSeeText($text)
-    {
-        $select = '//*[text()="'.$text.'"]';
-        if (!$this->mink->getSession()->getDriver()->find($select)) {
-            throw new \Behat\Mink\Exception\ElementNotFoundException($this->mink->getSession(), 'xpath', $select, null);
-        }
-    }
-
-    /**
-     * @Then /^I should not see text "([^"]*)"$/
-     */
-    public function iShouldNotSeeText($text)
-    {
-        $select = '//*[text()="'.$text.'"]';
-        if ($this->mink->getSession()->getDriver()->find($select)) {
-            throw new \Exception("the given text \"$text\" is unexpectedly found.");
-        }
-    }
-
-    /**
-     * @Given /^I set config value for "([^"]*)" to "([^"]*)" in "([^"]*)" scope$/
+     * @When /^I set config value for "([^"]*)" to "([^"]*)" in "([^"]*)" scope$/
      */
     public function iSetConfigValueForScope($path, $value, $scope)
     {
         $this->configManager->setCoreConfig($path, $value, $scope);
     }
 
-
     /**
      * @Given /^the cache is clean$/
+     * @When /^I clear the cache$/
      */
     public function theCacheIsClean()
     {
@@ -167,16 +141,6 @@ class MagentoContext extends BehatContext implements MinkAwareInterface, Magento
     public function setSessionService(Session $session)
     {
         $this->sessionService = $session;
-    }
-
-    public function setMink(Mink $mink)
-    {
-        $this->mink = $mink;
-    }
-
-    public function setMinkParameters(array $parameters)
-    {
-        $this->minkParameters = $parameters;
     }
 
     public function getFixture($identifier)
