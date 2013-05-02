@@ -69,6 +69,7 @@ class FixtureFactory
         foreach ($this->getRegistry() as $fixtures) {
             $fixture->delete();
         }
+        $this->registry = array();
     }
 
     public function getRegistry()
