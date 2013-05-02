@@ -344,7 +344,7 @@ You can implement step definitions for undefined steps with these snippets:
     }
 ```
 
-As you can see the recommendation to add the following snippet:
+As you can see the recommendation to add the following snippet disappeared
 
 ```php
     /**
@@ -356,7 +356,7 @@ As you can see the recommendation to add the following snippet:
     }
 ```
 
-disappeared and this because BehatMage provides already the implementation of all those common steps generally needed and required to test Magento behaviours. So now let’s use Behat’s advice and add the following to the features/bootstrap/AdminUserContext.php file:
+this because BehatMage provides already the implementation of all those common steps generally needed and required to test Magento behaviours. So now let’s use Behat’s advice and add the following to the features/bootstrap/AdminUserContext.php file:
 
 ```php
 # features/bootstrap/AdminUserContext.php
