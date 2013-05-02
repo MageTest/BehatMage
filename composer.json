@@ -6,7 +6,7 @@
     "homepage": "https://github.com/MageTest/BehatMage",
     "license": "MIT",
     "require": {
-        "php": "~5.3.0",
+        "php": "~5.3",
         "behat/behat": "~2.4.4",
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
