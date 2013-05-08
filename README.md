@@ -423,6 +423,124 @@ Feature: Admin User can manage review visibility
     When I turn reviews off for "Ottoman1" product    # AdminUserContext::iTurnReviewsOffForProduct()
     Then no review should be displayed for "Ottoman1" # AdminUserContext::noReviewShouldBeDisplayedFor()## Some more about Behat basics
 ```
+
+As you can see Behat is providing to the developer, thanks to the BehatMage extension, meaningful and useful information about the next step to take in order to implement the required behaviour. So let's add the needed code to make the first requirement of our step pass. Create the following files based on the suggested code:
+
+```xml
+<!-- app/code/local/BehatMage/Catalog/etc/config.xml -->
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BehatMage_Catalog>
+            <version>0.1.0</version>
+            <depends>
+                <Mage_Catalog />
+            </depends>
+        </BehatMage_Catalog>
+    </modules>
+    <global>
+        <resources>
+            <behatmage_catalog_setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+                <setup>
+                    <module>BehatMage_Catalog</module>
+                    <class>BehatMage_Catalog_Model_Resource_Entity_Setup</class>
+                </setup>
+            </behatmage_catalog_setup>
+        </resources>
+    </global>
+</config>
+```
+
+```xml
+<!-- app/etc/modules/BehatMage_Catalog.xml -->
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BehatMage_Catalog>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_Catalog />
+            </depends>
+        </BehatMage_Catalog>
+    </modules>
+</config>
+
+```
+
+```php
+# app/code/local/BehatMage/Catalog/Model/Resource/Entity/Setup.php
+
+<?php
+class BehatMage_Catalog_Model_Resource_Entity_Setup extends Mage_Eav_Model_Entity_Setup
+{
+
+}
+```
+
+```php
+# app/code/local/BehatMage/Catalog/data/behatmage_catalog_setup/data-install-0.1.0.php
+
+<?php
+$installer = $this;
+
+$installer->startSetup();
+
+$installer->addAttribute('catalog_product', 'accepts_reviews', array(
+    'group' => 'General',
+    'input' => 'yesno',
+    'type' => 'int',
+    'label' => 'Accept Reviews',
+    'backend' => '',
+    'default' => true,
+    'visible' => true,
+    'required' => true,
+    'user_defined' => true,
+    'searchable' => false,
+    'filterable' => false,
+    'comparable' => false,
+    'visible_on_front' => true,
+    'visible_in_advanced_search' => false,
+    'is_html_allowed_on_front' => false,
+    'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
+));
+
+$installer->endSetup();
+```
+
+Once the files have been created clear the Magento cache in order to run the setup script and add the required attribute. It's now time to run Behat again:
+
+```bash
+$ bin/behat
+```
+
+If everything is successful your output should now be something like this:
+
+```bash
+Feature: Admin User can manage review visibility
+  So that our Customers are not influenced by a product with bad review history,
+  as an Admin User
+  I want to disable reviews of those specific products
+
+  Scenario: Turn off reviews per product              # features/reviews/admin_user_manages_review_visibility.feature:7
+    Given the following products exist:               # AdminUserContext::theProductsExist()
+      | sku      | name    | accepts_reviews |
+      | Ottoman1 | Ottoman | 1               |
+    And "Ottoman1" has existing reviews               # AdminUserContext::hasExistingReviews()
+      TODO: write pending definition
+    When I turn reviews off for "Ottoman1" product    # AdminUserContext::iTurnReviewsOffForProduct()
+    Then no review should be displayed for "Ottoman1" # AdminUserContext::noReviewShouldBeDisplayedFor()
+
+1 scenario (1 pending)
+4 steps (1 passed, 2 skipped, 1 pending)
+0m6.478s
+```
+
+Has you can see now that our product definition has the required attribute Behat moved onto the next step of our scenario. As you can imagine now it's only a matter of implementing, step by step, all the required tests and code to adhere to the previously defined scenario.
+
 ## More about Features
 ## More about Steps
 
