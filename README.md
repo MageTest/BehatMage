@@ -539,7 +539,7 @@ Feature: Admin User can manage review visibility
 0m6.478s
 ```
 
-Has you can see now that our product definition has the required attribute Behat moved onto the next step of our scenario. As you can imagine now it's only a matter of implementing, step by step, all the required tests and code to adhere to the previously defined scenario.
+As you can see now that our product definition has the required attribute Behat moved onto the next step of our scenario. As you can imagine now it's only a matter of implementing, step by step, all the required tests and code to adhere to the previously defined scenario.
 
 ## More about Features
 ## More about Steps
