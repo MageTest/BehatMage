@@ -551,6 +551,14 @@ As you can see now that our product definition has the required attribute Behat 
 
 ## What’s Next?
 
+## Issue Submission
+
+Make sure you've read the [issue submission guidelines](https://github.com/MageTest/BehatMage/blob/develop/contributing.md#issue-submission) before you open a [new issue](https://github.com/MageTest/BehatMage/blob/develop/issues/new).
+
+## Contribute
+
+See the [contributing docs](https://github.com/MageTest/BehatMage/blob/develop/contributing.md)
+
 ## License and Authors
 
 Authors: <https://github.com/MageTest/BehatMage/contributors>
