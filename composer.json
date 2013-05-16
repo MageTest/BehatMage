@@ -58,6 +58,10 @@
             "email": "mark@gpmd.co.uk"
         },
         {
+            "name": "Marco De Bortoli",
+            "email": "marco.debortoli@sessiondigital.com"
+        },
+        {
             "name": "Other contributors",
             "homepage": "https://github.com/MageTest/BehatMage/contributors"
         }
