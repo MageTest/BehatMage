@@ -75,6 +75,16 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     }
 
     /**
+     * @Given /^I am logged in as customer "([^"]*)" identified by "([^"]*)"$/
+     * @Given /^I log in as customer "([^"]*)" identified by "([^"]*)"$/
+     */
+    public function iLogInAsCustomerWithPassword($email, $password)
+    {
+        $sid = $this->sessionService->customerLogin($email, $password);
+        $this->getSession()->setCookie('frontend', $sid);
+    }
+
+    /**
      * @When /^I am on "([^"]*)"$/
      */
     public function iAmOn($uri)
