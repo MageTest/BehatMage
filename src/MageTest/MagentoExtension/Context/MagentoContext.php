@@ -143,6 +143,11 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
         $this->sessionService = $session;
     }
 
+    public function getSessionService()
+    {
+        return $this->sessionService;
+    }
+
     public function getFixture($identifier)
     {
         return $this->factory->create($identifier);
