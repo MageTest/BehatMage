@@ -46,6 +46,7 @@ class FixtureFactory
      * @param $identifier string name of fixture generator
      *
      * @return \MageTest\MagentoExtension\Fixture
+     * @throws \InvalidArgumentException
      */
     public function create($identifier)
     {
@@ -66,7 +67,7 @@ class FixtureFactory
 
     public function clean()
     {
-        foreach ($this->getRegistry() as $fixtures) {
+        foreach ($this->getRegistry() as $fixture) {
             $fixture->delete();
         }
         $this->registry = array();
