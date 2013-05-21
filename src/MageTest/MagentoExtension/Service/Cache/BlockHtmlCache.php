@@ -35,5 +35,5 @@ use Mage_Core_Model_App;
  */
 class ConfigurationCache extends BaseCache
 {
-    protected $cacheTypes = array('config');
+    protected $cacheTypes = array('block_html');
 }
