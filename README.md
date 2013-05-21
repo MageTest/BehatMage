@@ -20,7 +20,37 @@ Behat extension for Magento, providing Behat context with specific Magento requi
 
 BehatMage requires PHP 5.3.x or greater.
 
-### Method 1 (composer)
+### Install using composer
+
+For this document we assume the directory layout is as follows.
+```
+project-dir
+├── behat.yml
+├── bin
+│   └── behat
+├── composer.json
+├── composer.lock
+├── htdocs
+│   ├── app
+│   ├── downloader
+│   ├── features
+│   ├── index.php
+│   ├── js
+│   ├── skin
+│   ├── var
+│   └── ...
+└── vendor
+    ├── autoload.php
+    ├── behat
+    ├── magetest
+    └── ...
+```
+We are assuming you will be keeping your behat features declarations inside the Magento installation, but will be calling the behat script from your project directory (one step above your Magento base dir).
+Of course, any other layout is possible, too. Just be aware of the following adjustments you will have to make:
+* The behat.yml file needs to be in the directory where you call the behat script from.
+* The composer.json PSR-0 autoload path declarationwill need to be adjusted.
+* The default.paths.features setting in your behat.yml will need to be adjusted.
+
 
 First, add BehatMage to the list of dependencies inside your `composer.json` and be sure to register few paths for autoloading:
 
@@ -30,7 +60,7 @@ First, add BehatMage to the list of dependencies inside your `composer.json` and
         "bin-dir": "bin"
     },
     "require": {
-            "php": ">=5.3.0"
+        "php": ">=5.3.0"
     },
     "require-dev": {
         "magetest/magento-behat-extension": "dev-develop"
@@ -38,11 +68,11 @@ First, add BehatMage to the list of dependencies inside your `composer.json` and
     "autoload": {
         "psr-0": {
             "": [
-                "app",
-                "app/code/local",
-                "app/code/community",
-                "app/code/core",
-                "lib"
+                "htdocs/app",
+                "htdocs/app/code/local",
+                "htdocs/app/code/community",
+                "htdocs/app/code/core",
+                "htdocs/lib"
             ]
         }
     },
@@ -64,7 +94,7 @@ Change directory to your project one and setup behat inside the directory:
 
 ```bash
 $ cd project
-$ behat --init
+$ bin/behat --init
 ```
 
 The behat --init will create a features/ directory with some basic things to get your started.
@@ -235,17 +265,27 @@ Behat, however, is not aware yet of the Magento domain and it's requiring us to 
 
 ```yml
 default:
-    extensions:
-        MageTest\MagentoExtension\Extension:
-            base_url: "http://project.development.local"
+  extensions:
+    MageTest\MagentoExtension\Extension:
+      base_url: "http://project.development.local"
 
+  # The default is to have the features directory inside the project directory
+  # If you want the features directory inside the Magento installation, set paths.features:
+  paths:
+    features: htdocs/features
 ```
 
-where we tell Behat which extension to load and what store we want to test. Well done so far, we now have to tell Behat that we want to use, just for clarity, a specific sub context for every actor that we have, in our example admin user. In order to do so we have to update the features/bootstrap/FeatureContext.php file as following:
+where we tell Behat which extension to load and what store we want to test. Also we are specifying that behat should look for the features inside the htdocs directory.  So we need to move our features there:
+
+```bash
+$ mv features htdocs/features
+```
+
+Well done so far, we now have to tell Behat that we want to use, just for clarity, a specific sub context for every actor that we have, in our example admin user. In order to do so we have to update the features/bootstrap/FeatureContext.php file as following:
 
 ```php
-# features/bootstrap/FeatureContext.php
 <?php
+# htdocs/features/bootstrap/FeatureContext.php
 
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
@@ -283,8 +323,8 @@ class FeatureContext extends BehatContext
 and create such a sub context as php class extending the MagentoContext provided by the BehatMage extension as following:
 
 ```php
-# features/bootstrap/AdminUserContext.php
 <?php
+# htdocs/features/bootstrap/AdminUserContext.php
 
 use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
@@ -356,11 +396,11 @@ As you can see the recommendation to add the following snippet disappeared
     }
 ```
 
-this because BehatMage provides already the implementation of all those common steps generally needed and required to test Magento behaviours. So now let’s use Behat’s advice and add the following to the features/bootstrap/AdminUserContext.php file:
+this because BehatMage provides already the implementation of all those common steps generally needed and required to test Magento behaviours. So now let’s use Behat’s advice and add the following to the htdocs/features/bootstrap/AdminUserContext.php file:
 
 ```php
-# features/bootstrap/AdminUserContext.php
 <?php
+# htdocs/features/bootstrap/AdminUserContext.php
 
 use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
@@ -427,8 +467,8 @@ Feature: Admin User can manage review visibility
 As you can see Behat is providing to the developer, thanks to the BehatMage extension, meaningful and useful information about the next step to take in order to implement the required behaviour. So let's add the needed code to make the first requirement of our step pass. Create the following files based on the suggested code:
 
 ```xml
-<!-- app/code/local/BehatMage/Catalog/etc/config.xml -->
 <?xml version="1.0"?>
+<!-- app/code/local/BehatMage/Catalog/etc/config.xml -->
 <config>
     <modules>
         <BehatMage_Catalog>
@@ -441,12 +481,9 @@ As you can see Behat is providing to the developer, thanks to the BehatMage exte
     <global>
         <resources>
             <behatmage_catalog_setup>
-                <connection>
-                    <use>core_setup</use>
-                </connection>
                 <setup>
                     <module>BehatMage_Catalog</module>
-                    <class>BehatMage_Catalog_Model_Resource_Entity_Setup</class>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
                 </setup>
             </behatmage_catalog_setup>
         </resources>
@@ -455,8 +492,8 @@ As you can see Behat is providing to the developer, thanks to the BehatMage exte
 ```
 
 ```xml
-<!-- app/etc/modules/BehatMage_Catalog.xml -->
 <?xml version="1.0"?>
+<!-- app/etc/modules/BehatMage_Catalog.xml -->
 <config>
     <modules>
         <BehatMage_Catalog>
@@ -468,43 +505,26 @@ As you can see Behat is providing to the developer, thanks to the BehatMage exte
         </BehatMage_Catalog>
     </modules>
 </config>
-
 ```
 
 ```php
-# app/code/local/BehatMage/Catalog/Model/Resource/Entity/Setup.php
-
 <?php
-class BehatMage_Catalog_Model_Resource_Entity_Setup extends Mage_Eav_Model_Entity_Setup
-{
-
-}
-```
-
-```php
 # app/code/local/BehatMage/Catalog/data/behatmage_catalog_setup/data-install-0.1.0.php
 
-<?php
+/** @var Mage_Catalog_Model_Resource_Setup $this */
 $installer = $this;
 
 $installer->startSetup();
 
 $installer->addAttribute('catalog_product', 'accepts_reviews', array(
     'group' => 'General',
-    'input' => 'yesno',
+    'input' => 'boolean',
     'type' => 'int',
     'label' => 'Accept Reviews',
-    'backend' => '',
     'default' => true,
-    'visible' => true,
-    'required' => true,
     'user_defined' => true,
-    'searchable' => false,
-    'filterable' => false,
-    'comparable' => false,
     'visible_on_front' => true,
     'visible_in_advanced_search' => false,
-    'is_html_allowed_on_front' => false,
     'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
 ));
 
