@@ -22,8 +22,6 @@
  */
 namespace MageTest\MagentoExtension\Service\Cache;
 
-use Mage_Core_Model_App;
-
 /**
  * ConfigurationCache
  *
