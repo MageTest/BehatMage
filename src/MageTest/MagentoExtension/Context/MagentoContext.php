@@ -22,16 +22,7 @@
  */
 namespace MageTest\MagentoExtension\Context;
 
-use Mage_Core_Model_App as MageApp;
-use MageTest\MagentoExtension\Context\MagentoAwareContext,
-    MageTest\MagentoExtension\Service\ConfigManager,
-    MageTest\MagentoExtension\Service\CacheManager,
-    MageTest\MagentoExtension\Service,
-    MageTest\MagentoExtension\Fixture\FixtureFactory,
-    MageTest\MagentoExtension\Service\Session;
-
-use Behat\MinkExtension\Context\RawMinkContext,
-    Behat\Gherkin\Node\TableNode;
+use Behat\Gherkin\Node\TableNode;
 
 /**
  * MagentoContext
@@ -42,14 +33,8 @@ use Behat\MinkExtension\Context\RawMinkContext,
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class MagentoContext extends RawMinkContext implements MagentoAwareInterface
+class MagentoContext extends RawMagentoContext
 {
-    private $app;
-    private $configManager;
-    private $cacheManager;
-    private $factory;
-    private $sessionService;
-
     /**
      * @When /^I open admin URI "([^"]*)"$/
      */
@@ -69,7 +54,7 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
      */
     public function iLoginAsAdmin($username, $password)
     {
-        $sid = $this->sessionService->adminLogin($username, $password);
+        $sid = $this->getSessionService()->adminLogin($username, $password);
         $this->getSession()->setCookie('adminhtml', $sid);
     }
 
@@ -86,7 +71,7 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
      */
     public function iSetConfigValueForScope($path, $value, $scope)
     {
-        $this->configManager->setCoreConfig($path, $value, $scope);
+        $this->getConfigManager()->setCoreConfig($path, $value, $scope);
     }
 
     /**
@@ -95,7 +80,7 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
      */
     public function theCacheIsClean()
     {
-        $this->cacheManager->clear();
+        $this->getCacheManager()->clear();
     }
 
     /**
@@ -104,7 +89,7 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     public function theProductsExist(TableNode $table)
     {
         $hash = $table->getHash();
-        $fixtureGenerator = $this->factory->create('product');
+        $fixtureGenerator = $this->getFixture('product');
         foreach ($hash as $row) {
             $row['stock_data'] = array();
             if (isset($row['is_in_stock'])) {
@@ -116,35 +101,5 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
 
             $fixtureGenerator->create($row);
         }
-    }
-
-    public function setApp(MageApp $app)
-    {
-        $this->app = $app;
-    }
-
-    public function setConfigManager(ConfigManager $config)
-    {
-        $this->configManager = $config;
-    }
-
-    public function setCacheManager(CacheManager $cache)
-    {
-        $this->cacheManager = $cache;
-    }
-
-    public function setFixtureFactory(FixtureFactory $factory)
-    {
-        $this->factory = $factory;
-    }
-
-    public function setSessionService(Session $session)
-    {
-        $this->sessionService = $session;
-    }
-
-    public function getFixture($identifier)
-    {
-        return $this->factory->create($identifier);
     }
 }
