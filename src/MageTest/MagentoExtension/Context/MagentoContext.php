@@ -44,10 +44,29 @@ use Behat\MinkExtension\Context\RawMinkContext,
  */
 class MagentoContext extends RawMinkContext implements MagentoAwareInterface
 {
+    /**
+     * @var MageApp
+     */
     private $app;
+
+    /**
+     * @var ConfigManager
+     */
     private $configManager;
+
+    /**
+     * @var CacheManager
+     */
     private $cacheManager;
+
+    /**
+     * @var FixtureFactory
+     */
     private $factory;
+
+    /**
+     * @var Session
+     */
     private $sessionService;
 
     /**
@@ -56,11 +75,13 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     public function iOpenAdminUri($uri)
     {
         $urlModel = new \Mage_Adminhtml_Model_Url();
-        if (preg_match('@^/admin/(.*?)/(.*?)((/.*)?)$@', $uri, $m)) {
+        $m = explode('/', ltrim($uri, '/'));
+        // Check if frontName matches a configured admin route
+        if ($this->app->getFrontController()->getRouter('admin')->getRouteByFrontName($m[0])) {
             $processedUri = "/admin/{$m[1]}/{$m[2]}/key/".$urlModel->getSecretKey($m[1], $m[2])."/{$m[3]}";
             $this->getSession()->visit($processedUri);
         } else {
-            throw new \InvalidArgumentException('$uri parameter should start with /admin/ and contain controller and action elements');
+            throw new \InvalidArgumentException('$uri parameter should start with a valid admin route and contain controller and action elements');
         }
     }
 
@@ -121,6 +142,11 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     public function setApp(MageApp $app)
     {
         $this->app = $app;
+    }
+
+    public function getApp()
+    {
+        return $this->app;
     }
 
     public function setConfigManager(ConfigManager $config)
