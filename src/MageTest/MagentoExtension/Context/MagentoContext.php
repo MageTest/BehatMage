@@ -65,6 +65,7 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     }
 
     /**
+     * @When /^I am logged in as admin user "([^"]*)" identified by "([^"]*)"$/
      * @When /^I log in as admin user "([^"]*)" identified by "([^"]*)"$/
      */
     public function iLoginAsAdmin($username, $password)
