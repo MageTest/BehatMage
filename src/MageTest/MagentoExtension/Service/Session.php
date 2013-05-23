@@ -96,7 +96,6 @@ class Session
             $_SESSION = null;
         }
 
-        // I once locked my mother in the house and then walked against a wall and
         /** @var $session \Mage_Customer_Model_Session */
         $session = \Mage::getSingleton('customer/session');
 
