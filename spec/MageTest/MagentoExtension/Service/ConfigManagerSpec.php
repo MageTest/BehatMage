@@ -22,10 +22,12 @@
  */
 namespace spec\MageTest\MagentoExtension\Service;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * CacheManager
+ * ConfigManagerSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -33,25 +35,21 @@ use PHPSpec2\ObjectBehavior;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class CacheManager extends ObjectBehavior
+class ConfigManagerSpec extends ObjectBehavior
 {
     /**
-     * @param MageTest\MagentoExtension\Service\Bootstrap $bootstrap
+     * @param MageTest\MagentoExtension\Service\Bootstrap         $bootstrap
+     * @param MageTest\MagentoExtension\Service\Config\CoreConfig $coreConfig
      */
-    function let($bootstrap)
+    function let($bootstrap, $coreConfig)
     {
-        $this->beConstructedWith($bootstrap);
+        $this->beConstructedWith($bootstrap, $coreConfig);
     }
 
-    /**
-     * @param MageTest\MagentoExtension\Service\Cache\ConfigurationCache $cache
-     */
-    function it_should_clear_configuration_by_default($cache)
+    function it_should_set_core_config($coreConfig)
     {
-        $this->addSection('configuration', $cache);
+        $coreConfig->set('test/path/to/config', 'value', 1)->shouldBeCalled();
 
-        $cache->clear()->shouldBeCalled();
-
-        $this->clear();
+        $this->setCoreConfig('test/path/to/config', 'value', 1);
     }
 }

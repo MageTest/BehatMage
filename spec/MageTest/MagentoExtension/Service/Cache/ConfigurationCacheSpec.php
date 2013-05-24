@@ -22,10 +22,12 @@
  */
 namespace spec\MageTest\MagentoExtension\Service\Cache;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * ConfigurationCache
+ * ConfigurationCacheSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -33,7 +35,7 @@ use PHPSpec2\ObjectBehavior;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class ConfigurationCache extends ObjectBehavior
+class ConfigurationCacheSpec extends ObjectBehavior
 {
     /**
      * @param Mage_Core_Model_App   $mageApp

@@ -22,10 +22,12 @@
  */
 namespace spec\MageTest\MagentoExtension\Context\Initializer;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * MagentoAwareInitializer
+ * MagentoAwareInitializerSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -33,7 +35,7 @@ use PHPSpec2\ObjectBehavior;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class MagentoAwareInitializer extends ObjectBehavior
+class MagentoAwareInitializerSpec extends ObjectBehavior
 {
     /**
      * @param MageTest\MagentoExtension\Service\Bootstrap      $bootstrap
