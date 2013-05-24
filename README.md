@@ -30,10 +30,12 @@ project-dir
 │   └── behat
 ├── composer.json
 ├── composer.lock
+├── features
+│   ├── bootstrap
+│   └── ...
 ├── htdocs
 │   ├── app
 │   ├── downloader
-│   ├── features
 │   ├── index.php
 │   ├── js
 │   ├── skin
@@ -45,10 +47,10 @@ project-dir
     ├── magetest
     └── ...
 ```
-We are assuming you will be keeping your behat features declarations inside the Magento installation, but will be calling the behat script from your project directory (one step above your Magento base dir).
+We are assuming you will be keeping your behat features declarations and will be calling the behat script from your project directory (one step above your Magento base dir).
 Of course, any other layout is possible, too. Just be aware of the following adjustments you will have to make:
 * The behat.yml file needs to be in the directory where you call the behat script from.
-* The composer.json PSR-0 autoload path declarationwill need to be adjusted.
+* The composer.json PSR-0 autoload path declaration will need to be adjusted.
 * The default.paths.features setting in your behat.yml will need to be adjusted.
 
 
@@ -271,21 +273,17 @@ default:
 
   # The default is to have the features directory inside the project directory
   # If you want the features directory inside the Magento installation, set paths.features:
-  paths:
-    features: htdocs/features
+  #paths:
+  #  features: htdocs/features
 ```
 
-where we tell Behat which extension to load and what store we want to test. Also we are specifying that behat should look for the features inside the htdocs directory.  So we need to move our features there:
-
-```bash
-$ mv features htdocs/features
-```
+where we tell Behat which extension to load and what store we want to test.
 
 Well done so far, we now have to tell Behat that we want to use, just for clarity, a specific sub context for every actor that we have, in our example admin user. In order to do so we have to update the features/bootstrap/FeatureContext.php file as following:
 
 ```php
 <?php
-# htdocs/features/bootstrap/FeatureContext.php
+# features/bootstrap/FeatureContext.php
 
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
@@ -324,7 +322,7 @@ and create such a sub context as php class extending the MagentoContext provided
 
 ```php
 <?php
-# htdocs/features/bootstrap/AdminUserContext.php
+# features/bootstrap/AdminUserContext.php
 
 use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
@@ -396,11 +394,11 @@ As you can see the recommendation to add the following snippet disappeared
     }
 ```
 
-this because BehatMage provides already the implementation of all those common steps generally needed and required to test Magento behaviours. So now let’s use Behat’s advice and add the following to the htdocs/features/bootstrap/AdminUserContext.php file:
+this because BehatMage provides already the implementation of all those common steps generally needed and required to test Magento behaviours. So now let’s use Behat’s advice and add the following to the features/bootstrap/AdminUserContext.php file:
 
 ```php
 <?php
-# htdocs/features/bootstrap/AdminUserContext.php
+# features/bootstrap/AdminUserContext.php
 
 use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
