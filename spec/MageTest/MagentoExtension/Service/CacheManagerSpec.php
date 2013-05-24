@@ -22,10 +22,12 @@
  */
 namespace spec\MageTest\MagentoExtension\Service;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * Session
+ * CacheManagerSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -33,7 +35,7 @@ use PHPSpec2\ObjectBehavior;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Session extends ObjectBehavior
+class CacheManagerSpec extends ObjectBehavior
 {
     /**
      * @param MageTest\MagentoExtension\Service\Bootstrap $bootstrap
@@ -43,8 +45,15 @@ class Session extends ObjectBehavior
         $this->beConstructedWith($bootstrap);
     }
 
-    function it_should_exist()
+    /**
+     * @param MageTest\MagentoExtension\Service\Cache\ConfigurationCache $cache
+     */
+    function it_should_clear_configuration_by_default($cache)
     {
-        $this->shouldNotBe(null);
+        $this->addSection('configuration', $cache);
+
+        $cache->clear()->shouldBeCalled();
+
+        $this->clear();
     }
 }

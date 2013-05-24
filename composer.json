@@ -13,23 +13,13 @@
         "behat/mink-goutte-driver": ">=1.0.3"
     },
     "require-dev": {
-        "phpspec/phpspec2": "dev-develop"
+        "phpspec/phpspec": "dev-master",
+        "mockery/mockery": "*",
+        "magetest/magento": "*"
     },
     "autoload": {
         "psr-0": {
-            "MageTest": "src/",
-            "": [
-                "vendor/magento/app",
-                "vendor/magento/app/code/local",
-                "vendor/magento/app/code/community",
-                "vendor/magento/app/code/core",
-                "vendor/magento/lib",
-                "app",
-                "app/code/local",
-                "app/code/community",
-                "app/code/core",
-                "lib"
-            ]
+            "MageTest": "src/"
         }
     },
     "config": {

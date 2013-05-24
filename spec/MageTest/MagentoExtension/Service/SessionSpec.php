@@ -15,26 +15,36 @@
  * to <magetest@sessiondigital.com> so we can send you a copy immediately.
  *
  * @category   MageTest
- * @package    Controller
- * @subpackage Response
+ * @package    MagentoExtension
+ * @subpackage Service
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace spec\MageTest\Controller\Response;
+namespace spec\MageTest\MagentoExtension\Service;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * HttpTestCase
+ * SessionSpec
  *
  * @category   MageTest
- * @package    Controller
- * @subpackage Response
+ * @package    MagentoExtension
+ * @subpackage Service
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class HttpTestCase extends ObjectBehavior
+class SessionSpec extends ObjectBehavior
 {
+    /**
+     * @param MageTest\MagentoExtension\Service\Bootstrap $bootstrap
+     */
+    function let($bootstrap)
+    {
+        $this->beConstructedWith($bootstrap);
+    }
+
     function it_should_exist()
     {
         $this->shouldNotBe(null);
