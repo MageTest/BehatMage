@@ -81,4 +81,39 @@ class Session
         $_POST = array();
         return $id;
     }
+
+    /**
+     * Log in the given customer and return the session id
+     *
+     * @param string $email
+     * @param string $password
+     * @return string
+     */
+    public function customerLogin($email, $password)
+    {
+        if (PHP_SESSION_ACTIVE === session_status()) {
+            session_write_close();
+            $_SESSION = null;
+        }
+
+        /** @var $session \Mage_Customer_Model_Session */
+        $session = \Mage::getSingleton('customer/session');
+
+        if (! $session->login($email, $password)) {
+            throw new \Exception('Invalid Customer Email or Password.');
+        }
+
+        $id = $session->getSessionId();
+        session_write_close();
+        $_SESSION = null;
+        $_POST = array();
+        return $id;
+    }
+
+    public function customerLogout()
+    {
+        /** @var $session \Mage_Customer_Model_Session */
+        $session = \Mage::getSingleton('customer/session');
+        $session->logout();
+    }
 }
