@@ -31,7 +31,7 @@ namespace MageTest\MagentoExtension\Service\Cache;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class ConfigurationCache extends BaseCache
+class BlockHtmlCache extends BaseCache
 {
-    protected $cacheTypes = array('config');
+    protected $cacheTypes = array('block_html');
 }
