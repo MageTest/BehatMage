@@ -15,28 +15,36 @@
  * to <magetest@sessiondigital.com> so we can send you a copy immediately.
  *
  * @category   MageTest
- * @package    Controller
- * @subpackage Request
+ * @package    MagentoExtension
+ * @subpackage Context
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace spec\MageTest\Controller\Request;
+namespace spec\MageTest\MagentoExtension\Context;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * HttpTestCase
+ * MagentoContextSpec
  *
  * @category   MageTest
- * @package    Controller
- * @subpackage Request
+ * @package    MagentoExtension
+ * @subpackage Context\Initializer
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class HttpTestCase extends ObjectBehavior
+class MagentoContextSpec extends ObjectBehavior
 {
-    function it_should_exist()
+    function it_should_support_mink()
     {
-        $this->shouldNotBe(null);
+        $this->shouldBeAnInstanceOf("Behat\MinkExtension\Context\MinkAwareInterface");
     }
+
+    function it_should_add_some_magento_goodies()
+    {
+        $this->shouldBeAnInstanceOf("MageTest\MagentoExtension\Context\MagentoAwareInterface");
+    }
+
 }
