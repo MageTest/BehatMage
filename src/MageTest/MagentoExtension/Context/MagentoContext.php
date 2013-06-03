@@ -86,6 +86,7 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     }
 
     /**
+     * @When /^I am logged in as admin user "([^"]*)" identified by "([^"]*)"$/
      * @When /^I log in as admin user "([^"]*)" identified by "([^"]*)"$/
      */
     public function iLoginAsAdmin($username, $password)
@@ -95,11 +96,21 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     }
 
     /**
+     * @Given /^I am logged in as customer "([^"]*)" identified by "([^"]*)"$/
+     * @Given /^I log in as customer "([^"]*)" identified by "([^"]*)"$/
+     */
+    public function iLogInAsCustomerWithPassword($email, $password)
+    {
+        $sid = $this->sessionService->customerLogin($email, $password);
+        $this->getSession()->setCookie('frontend', $sid);
+    }
+
+    /**
      * @When /^I am on "([^"]*)"$/
      */
     public function iAmOn($uri)
     {
-        $this->getSession()->visit($uri);
+        $this->getSession()->visit($this->locatePath($uri));
     }
 
     /**
@@ -172,6 +183,11 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     public function setSessionService(Session $session)
     {
         $this->sessionService = $session;
+    }
+
+    public function getSessionService()
+    {
+        return $this->sessionService;
     }
 
     public function getFixture($identifier)
