@@ -20,7 +20,7 @@
  */
 namespace MageTest\MagentoExtension\Context;
 
-use Behat\Behat\Context\BehatContext;
+use Behat\MinkExtension\Context\MinkContext;
 use Mage_Core_Model_App as MageApp;
 use MageTest\MagentoExtension\Context\MagentoAwareContext;
 use MageTest\MagentoExtension\Fixture\FixtureFactory;
@@ -36,7 +36,7 @@ use MageTest\MagentoExtension\Service\Session;
  * @package    [package]
  * @author     debo <${EMAIL}> (${URL})
  */
-class RawMagentoContext extends BehatContext implements MagentoAwareInterface
+class RawMagentoContext extends MinkContext implements MagentoAwareInterface
 {
     private $app;
     private $configManager;

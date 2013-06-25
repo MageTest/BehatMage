@@ -60,14 +60,6 @@ class MagentoContext extends RawMagentoContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @When /^I am on "([^"]*)"$/
-     */
-    public function iAmOn($uri)
-    {
-        $this->getSession()->visit($uri);
-    }
-
-    /**
      * @When /^I set config value for "([^"]*)" to "([^"]*)" in "([^"]*)" scope$/
      */
     public function iSetConfigValueForScope($path, $value, $scope)
@@ -104,7 +96,7 @@ class MagentoContext extends RawMagentoContext implements PageObjectAwareInterfa
         }
     }
 
-    protected function getPage($name)
+    public function getPage($name)
     {
         return $this->pageFactory->createPage($name);
     }
