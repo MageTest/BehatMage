@@ -23,6 +23,8 @@
 namespace MageTest\MagentoExtension\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 
 /**
  * MagentoContext
@@ -33,20 +35,19 @@ use Behat\Gherkin\Node\TableNode;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class MagentoContext extends RawMagentoContext
+class MagentoContext extends RawMagentoContext implements PageObjectAwareInterface
 {
+    private $pageFactory = null;
+
     /**
-     * @When /^I open admin URI "([^"]*)"$/
+     * @When /^I go to the "(?P<page>[^"]*)" admin page$/
      */
-    public function iOpenAdminUri($uri)
+    public function iOpenAdminUri($page)
     {
         $urlModel = new \Mage_Adminhtml_Model_Url();
-        if (preg_match('@^/admin/(.*?)/(.*?)((/.*)?)$@', $uri, $m)) {
-            $processedUri = "/admin/{$m[1]}/{$m[2]}/key/".$urlModel->getSecretKey($m[1], $m[2])."/{$m[3]}";
-            $this->getSession()->visit($processedUri);
-        } else {
-            throw new \InvalidArgumentException('$uri parameter should start with /admin/ and contain controller and action elements');
-        }
+        $page = $this->getPage($page);
+        $secretKey = $urlModel->getSecretKey($page->getMainController(), $page->getModuleName());
+        $page->open(array('secretKey' => $secretKey));
     }
 
     /**
@@ -101,5 +102,15 @@ class MagentoContext extends RawMagentoContext
 
             $fixtureGenerator->create($row);
         }
+    }
+
+    protected function getPage($name)
+    {
+        return $this->pageFactory->createPage($name);
+    }
+
+    public function setPageFactory(PageFactory $factory)
+    {
+        $this->pageFactory = $factory;
     }
 }
