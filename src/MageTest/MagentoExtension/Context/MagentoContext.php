@@ -104,7 +104,7 @@ class MagentoContext extends RawMagentoContext implements PageObjectAwareInterfa
         }
     }
 
-    protected function getPage($name)
+    public function getPage($name)
     {
         return $this->pageFactory->createPage($name);
     }
