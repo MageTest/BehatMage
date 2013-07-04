@@ -144,8 +144,18 @@ class Product implements FixtureInterface
             'short_description' => 'Product short description',
             'tax_class_id' => 1,
             'type_id' => \Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
-            'stock_data' => array( 'is_in_stock' => 1, 'qty' => 99999 )
+            'stock_data' => array( 'is_in_stock' => 1, 'qty' => 99999 ),
+            'website_ids' => $this->getWebsiteIds(),
         ));
+    }
+
+    protected function getWebsiteIds()
+    {
+        $ids = array();
+        foreach (\Mage::getModel('core/website')->getCollection() as $website) {
+            $ids[] = $website->getId();
+        }
+        return $ids;
     }
 
     protected function retrieveDefaultAttributeSetId()
