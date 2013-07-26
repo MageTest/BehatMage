@@ -91,7 +91,7 @@ class User implements FixtureInterface
     public function defaultModelFactory()
     {
         return function () {
-            return \Mage::getModel('catalog/product');
+            return \Mage::getModel('admin/user');
         };
     }
 }
