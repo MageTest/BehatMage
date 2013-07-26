@@ -56,7 +56,18 @@ class Customer implements FixtureInterface
         $modelFactory = $this->_modelFactory;
         $model = $modelFactory();
 
-        $model->setData($attributes);
+        if (!empty($attributes['email'])) {
+
+            if (!empty($attributes['website_id'])) {
+                $model->setWebsiteId($attributes['website_id']);
+            } else {
+                $model->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
+            }
+
+            $model->loadByEmail($attributes['email']);
+        }
+
+        $model->addData($attributes);
 
         if ($this->validate($model)) {
 
@@ -109,5 +120,10 @@ class Customer implements FixtureInterface
             throw new \Exception("Customer data is incomplete or invalid:\n- " . implode("\n- ", $errors));
         }
         return true;
+    }
+
+    protected function getWebsiteIds()
+    {
+        return Mage::app()->getWebsites();
     }
 }
