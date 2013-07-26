@@ -114,7 +114,7 @@ class Address implements FixtureInterface
             throw new \Exception('There is no customer assigned to the address');
         }
 
-        if (!Mage::getModel('customer/customer')->validateAddress($model->getData(), false)) {
+        if (!\Mage::getModel('customer/customer')->validateAddress($model->getData(), false)) {
             throw new \Exception('Provided address is not valid, please check if all fields are filled correctly');
         }
 
