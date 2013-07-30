@@ -62,6 +62,9 @@ class FixtureFactory
             case 'address':
                 $fixture = new Address();
                 break;
+            case 'order':
+                $fixture = new Order();
+                break;
             default: throw new \InvalidArgumentException();
         }
 
