@@ -79,9 +79,17 @@ class RawMagentoContext extends MinkContext implements MagentoAwareInterface
         $this->factory = $factory;
     }
 
+    public function getFixtureFactory()
+    {
+        if (!$this->factory) {
+            $this->factory = new FixtureFactory;
+        }
+        return $this->factory;
+    }
+
     public function getFixture($identifier)
     {
-        return $this->factory->create($identifier);
+        return $this->getFixtureFactory()->create($identifier);
     }
 
     public function setSessionService(Session $session)
