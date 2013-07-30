@@ -87,9 +87,11 @@ class MagentoContext extends RawMagentoContext implements PageObjectAwareInterfa
             $row['stock_data'] = array();
             if (isset($row['is_in_stock'])) {
                 $row['stock_data']['is_in_stock'] = $row['is_in_stock'];
+                unset($row['is_in_stock']);
             }
-            if (isset($row['is_in_stock'])) {
+            if (isset($row['qty'])) {
                 $row['stock_data']['qty'] = $row['qty'];
+                unset($row['qty']);
             }
 
             $fixtureGenerator->create($row);
