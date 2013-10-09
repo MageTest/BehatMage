@@ -106,11 +106,39 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     }
 
     /**
-     * @When /^I am on "([^"]*)"$/
+     * @Given /^(?:|I )am on "(?P<page>[^"]+)"$/
+     * @When /^(?:|I )go to "(?P<page>[^"]+)"$/
      */
-    public function iAmOn($uri)
+    public function iAmOn($page)
     {
-        $this->getSession()->visit($this->locatePath($uri));
+        $urlModel = new \Mage_Core_Model_Url();
+        $m = explode('/', ltrim($page, '/'));
+        if ($this->app->getFrontController()->getRouter('standard')->getRouteByFrontName($m[0])) {
+            $processedUri = "/{$m[0]}/{$m[1]}";
+            $this->getSession()->visit($processedUri);
+        } else {
+            $xml = <<<CONF
+<frontend>
+    <routers>
+        <{module_name}>
+            <use>standard</use>
+            <args>
+                <module>{module_name}</module>
+                <frontName>%s</frontName>
+            </args>
+        <{module_name}>
+    </routers>
+</frontend>
+CONF;
+            $config = sprintf((string) $xml, $m[0]);
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Missing route for the URI '%s', You should the following XML to your config.xml \n %s",
+                    $page,
+                    $config
+                )
+            );
+        }
     }
 
     /**
