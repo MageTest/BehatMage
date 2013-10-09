@@ -115,7 +115,7 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
         $m = explode('/', ltrim($page, '/'));
         if ($this->app->getFrontController()->getRouter('standard')->getRouteByFrontName($m[0])) {
             $processedUri = "/{$m[0]}/{$m[1]}";
-            $this->getSession()->visit($processedUri);
+            $this->getSession()->visit($this->locatePath($processedUri));
         } else {
             $xml = <<<CONF
 <frontend>
@@ -130,12 +130,14 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     </routers>
 </frontend>
 CONF;
+            $alternate = "Or if you are testing a CMS page ensure the URL is corrrect and the Page is enabled.";
             $config = sprintf((string) $xml, $m[0]);
             throw new \InvalidArgumentException(
                 sprintf(
-                    "Missing route for the URI '%s', You should the following XML to your config.xml \n %s",
+                    "Missing route for the URI '%s', You should the following XML to your config.xml \n %s \n\n%s",
                     $page,
-                    $config
+                    $config,
+                    $alternate
                 )
             );
         }
