@@ -130,7 +130,7 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
     </routers>
 </frontend>
 CONF;
-            $alternate = "Or if you are testing a CMS page ensure the URL is corrrect and the Page is enabled.";
+            $alternate = "Or if you are testing a CMS page ensure the URL is correct and the Page is enabled.";
             $config = sprintf((string) $xml, $m[0]);
             throw new \InvalidArgumentException(
                 sprintf(
