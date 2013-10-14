@@ -65,6 +65,9 @@ class FixtureFactory
             case 'order':
                 $fixture = new Order();
                 break;
+            case 'category':
+                $fixture = new Category();
+                break;
             default: throw new \InvalidArgumentException();
         }
 

@@ -21,7 +21,8 @@
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
 namespace MageTest\MagentoExtension\Fixture;
-use MageTest\MagentoExtension\Fixture;
+use Mage;
+use Mage_Customer_Model_Customer;
 
 /**
  * User fixtures functionality provider
@@ -97,7 +98,7 @@ class Address implements FixtureInterface
     public function defaultModelFactory()
     {
         return function () {
-            return \Mage::getModel('customer/address');
+            return Mage::getModel('customer/address');
         };
     }
 
@@ -114,7 +115,7 @@ class Address implements FixtureInterface
             throw new \Exception('There is no customer assigned to the address');
         }
 
-        if (!\Mage::getModel('customer/customer')->validateAddress($model->getData(), false)) {
+        if (!Mage::getModel('customer/customer')->validateAddress($model->getData(), false)) {
             throw new \Exception('Provided address is not valid, please check if all fields are filled correctly');
         }
 
@@ -124,10 +125,10 @@ class Address implements FixtureInterface
     /**
      * Set customer model to be assigned with the created address(es)
      *
-     * @param \Mage_Customer_Model_Customer $customer
-     * @return \MageTest\MagentoExtension\Fixture\Address
+     * @param Mage_Customer_Model_Customer $customer
+     * @return Address
      */
-    public function setCustomer(\Mage_Customer_Model_Customer $customer)
+    public function setCustomer(Mage_Customer_Model_Customer $customer)
     {
         $this->_customer = $customer;
         $this->_customerId = $customer->getId();
@@ -138,7 +139,7 @@ class Address implements FixtureInterface
     /**
      * Get customer model
      *
-     * @return \Mage_Customer_Model_Customer|null
+     * @return Mage_Customer_Model_Customer|null
      */
     public function getCustomer()
     {
@@ -149,13 +150,13 @@ class Address implements FixtureInterface
      * Set the id of the customer to assign to created address(es)
      *
      * @param int $id
-     * @return \MageTest\MagentoExtension\Fixture\Address
+     * @return Address
      */
     public function setCustomerId($id)
     {
         $this->_customerId = $id;
 
-        if ($this->_customer instanceof \Mage_Customer_Model_Customer && $this->_customer->getId() != $id) {
+        if ($this->_customer instanceof Mage_Customer_Model_Customer && $this->_customer->getId() != $id) {
             $this->_customer = null;
         }
 
@@ -169,7 +170,7 @@ class Address implements FixtureInterface
      */
     public function getCustomerId()
     {
-        if (!$this->_customerId && $this->_customer instanceof \Mage_Customer_Model_Customer) {
+        if (!$this->_customerId && $this->_customer instanceof Mage_Customer_Model_Customer) {
             return $this->_customer->getId();
         }
         return $this->_customerId;

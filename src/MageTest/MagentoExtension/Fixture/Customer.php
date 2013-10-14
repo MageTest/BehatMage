@@ -21,7 +21,8 @@
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
 namespace MageTest\MagentoExtension\Fixture;
-use MageTest\MagentoExtension\Fixture;
+
+use Mage;
 
 /**
  * User fixtures functionality provider
@@ -103,7 +104,7 @@ class Customer implements FixtureInterface
     public function defaultModelFactory()
     {
         return function () {
-            return \Mage::getModel('customer/customer');
+            return Mage::getModel('customer/customer');
         };
     }
 

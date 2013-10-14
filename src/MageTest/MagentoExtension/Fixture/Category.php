@@ -32,18 +32,22 @@ use MageTest\MagentoExtension\Fixture;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Product implements FixtureInterface
+class Category implements FixtureInterface
 {
+    const DEFAULT_ROOT_CATEGORY_ID = 1;
+    const DEFAULT_ATTRIBUTE_SET_ID = 3;
+
     private $modelFactory = null;
     private $model;
+    private $attributes;
     private $defaultAttributes;
 
     /**
      * @param $productModelFactory \Closure optional
      */
-    public function __construct($productModelFactory = null)
+    public function __construct($modelFactory = null)
     {
-        $this->modelFactory = $productModelFactory ?: $this->defaultModelFactory();
+        $this->modelFactory = $modelFactory ?: $this->defaultModelFactory();
     }
 
     /**
@@ -55,23 +59,23 @@ class Product implements FixtureInterface
      */
     public function create(array $attributes)
     {
+        if (empty($attributes['name'])) {
+            throw new \RuntimeException("Cannot generate a category when no 'name' attribute is provided");
+        }
+
+        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
+
         $modelFactory = $this->modelFactory;
         $this->model = $modelFactory();
 
-        $id = $this->model->getIdBySku($attributes['sku']);
+        $id = $this->getIdByName($attributes['name']);
         if ($id) {
             $this->model->load($id);
         }
 
-        if (!empty($attributes['type_id'])) {
-            $this->model->setTypeId($attributes['type_id']);
-        }
-
-        $attributes = $this->sanitizeAttributes($attributes);
-
+        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
         $this->validateAttributes(array_keys($attributes));
 
-        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
         $this->model->setData($this->mergeAttributes($attributes))->save();
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
@@ -87,7 +91,7 @@ class Product implements FixtureInterface
     {
         foreach ($attributes as $attribute) {
             if (!$this->attributeExists($attribute)) {
-                throw new \RuntimeException("$attribute is not yet defined as an attribute of Product");
+                throw new \RuntimeException("$attribute is not yet defined as an attribute of Category");
             }
         }
     }
@@ -95,17 +99,6 @@ class Product implements FixtureInterface
     function attributeExists($attribute)
     {
         return in_array($attribute, array_keys($this->getDefaultAttributes()));
-    }
-
-    protected function sanitizeAttributes($attributes)
-    {
-        foreach ($attributes as $key => $value) {
-            if (!$this->attributeExists($key) && empty($value)) {
-                unset($attributes[$key]);
-            }
-        }
-
-        return $attributes;
     }
 
     /**
@@ -133,14 +126,14 @@ class Product implements FixtureInterface
     public function defaultModelFactory()
     {
         return function () {
-            return \Mage::getModel('catalog/product');
+            return \Mage::getModel('catalog/category');
         };
     }
 
     protected function getDefaultAttributes()
     {
-        if ($this->defaultAttributes[$this->model->getTypeId()]) {
-            return $this->defaultAttributes[$this->model->getTypeId()];
+        if ($this->defaultAttributes) {
+            return $this->defaultAttributes;
         }
         $eavAttributes = $this->model->getAttributes();
         $attributeCodes = array();
@@ -148,20 +141,15 @@ class Product implements FixtureInterface
             $attributeCodes[$attributeObject->getAttributeCode()] = "";
         }
 
-        return $this->defaultAttributes[$this->model->getTypeId()] = array_merge($attributeCodes, array(
-            'sku' => '',
-            'attribute_set_id' => $this->retrieveDefaultAttributeSetId(),
-            'name' => 'product name',
-            'weight' => 2,
-            'visibility'=> \Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
-            'status' => \Mage_Catalog_Model_Product_Status::STATUS_ENABLED,
-            'price' => 100,
-            'description' => 'Product description',
-            'short_description' => 'Product short description',
-            'tax_class_id' => 1,
-            'type_id' => \Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
-            'stock_data' => array( 'is_in_stock' => 1, 'qty' => 99999 ),
+        return $this->defaultAttributes = array_merge($attributeCodes, array(
+            'is_active' => 1,
+            'is_anchor' => 1,
+            'include_in_menu' => 1,
             'website_ids' => $this->getWebsiteIds(),
+            'parent_id' => self::DEFAULT_ROOT_CATEGORY_ID,
+            'path' => self::DEFAULT_ROOT_CATEGORY_ID,
+            'created_at' => date('Y-m-d H:i:s'),
+            'attribute_set_id' => self::DEFAULT_ATTRIBUTE_SET_ID,
         ));
     }
 
@@ -179,5 +167,12 @@ class Product implements FixtureInterface
         return $this->model->getResource()
             ->getEntityType()
             ->getDefaultAttributeSetId();
+    }
+
+    protected function getIdByName($name)
+    {
+        $category = $this->model->getCollection()->addFieldToFilter('name', $name)->getFirstItem();
+
+        return $category ? $category->getId() : null;
     }
 }

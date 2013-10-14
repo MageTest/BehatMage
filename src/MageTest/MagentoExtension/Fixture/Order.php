@@ -527,6 +527,8 @@ class Order implements FixtureInterface
     {
         if (!empty($orderData)) {
 
+            Mage::unregister('rule_data');
+
             $orderBuilder = Mage::getSingleton('adminhtml/sales_order_create');
 
             $this->initSession($orderData['session']);
