@@ -44,13 +44,13 @@ class ConfigurationCacheSpec extends ObjectBehavior
     function let($mageApp, $cacheInstance)
     {
         $mageApp->getCacheInstance()->willReturn($cacheInstance);
-
-        $cacheInstance->flush()->shouldBeCalled();
+        $mageApp->cleanCache(Argument::any())->shouldBeCalled();
+        $cacheInstance->getTagsByType(Argument::any())->willReturn(array("config"));
 
         $this->beConstructedWith($mageApp);
     }
 
-    function it_should_clear_the_configuration_cache($mageApp, $cacheInstance)
+    function it_should_clear_the_configuration_cache()
     {
         $this->clear();
     }

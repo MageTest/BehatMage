@@ -13,7 +13,7 @@
         "behat/mink-goutte-driver": ">=1.0.3"
     },
     "require-dev": {
-        "phpspec/phpspec": "dev-master",
+        "phpspec/phpspec": "2.0.*@dev",
         "mockery/mockery": "*",
         "magetest/magento": "*"
     },

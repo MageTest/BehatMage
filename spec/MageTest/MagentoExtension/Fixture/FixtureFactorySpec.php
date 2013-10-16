@@ -58,6 +58,6 @@ class FixtureFactorySpec extends ObjectBehavior
     {
         $fixture = $this->create('product');
 
-        $this->getRegistry()->shouldBeLike(array($fixture->getWrappedSubject()));
+        $this->getRegistry()->shouldBeLike(array($fixture->getWrappedObject()));
     }
 }

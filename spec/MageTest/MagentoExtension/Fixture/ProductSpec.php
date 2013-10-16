@@ -56,6 +56,7 @@ class ProductSpec extends ObjectBehavior
         $productResourceModel->shouldReceive('getEntityType')->andReturn($entityType);
 
         $this->productModel->shouldReceive('getResource')->andReturn($productResourceModel)->ordered();
+        $this->productModel->shouldReceive('getAttributes')->andReturn(array());
     }
 
     function it_should_create_a_product_given_all_required_attributes()
