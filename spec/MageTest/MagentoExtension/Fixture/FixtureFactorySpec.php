@@ -22,10 +22,12 @@
  */
 namespace spec\MageTest\MagentoExtension\Fixture;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * FixtureFactory
+ * FixtureFactorySpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -33,7 +35,7 @@ use PHPSpec2\ObjectBehavior;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class FixtureFactory extends ObjectBehavior
+class FixtureFactorySpec extends ObjectBehavior
 {
     function it_should_return_a_product_fixture_when_requested()
     {
@@ -56,6 +58,6 @@ class FixtureFactory extends ObjectBehavior
     {
         $fixture = $this->create('product');
 
-        $this->getRegistry()->shouldBeLike(array($fixture->getWrappedSubject()));
+        $this->getRegistry()->shouldBeLike(array($fixture->getWrappedObject()));
     }
 }

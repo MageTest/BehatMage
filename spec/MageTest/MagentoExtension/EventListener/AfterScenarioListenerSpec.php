@@ -16,37 +16,39 @@
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage EventListener
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace spec\MageTest\MagentoExtension\Service;
+namespace spec\MageTest\MagentoExtension\EventListener;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * Bootstrap
+ * AfterScenarioListenerSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage EventListener
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Bootstrap extends ObjectBehavior
+class AfterScenarioListenerSpec extends ObjectBehavior
 {
-    function it_bootstraps_a_mage_app()
+    /**
+     * @param MageTest\MagentoExtension\Fixture\FixtureFactory $factory
+     */
+    function let($factory)
     {
-        $this->app()->shouldBeAnInstanceOf('Mage_Core_Model_App');
+        $this->beConstructedWith($factory);
     }
 
-    function it_provides_a_reflection_of_Mage()
+    function it_should_clean_away_any_generated_fixtures($factory)
     {
-        $this->getMageReflection()->shouldBeAnInstanceOf('ReflectionClass');
-    }
+        $factory->clean()->shouldBeCalled();
 
-    function it_provides_a_reflection_of_Mage_Core_Model_App()
-    {
-        $this->getMageCoreModelAppReflection()->shouldBeAnInstanceOf('ReflectionClass');
+        $this->afterScenario();
     }
 }

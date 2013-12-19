@@ -16,33 +16,40 @@
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Context
+ * @subpackage Service
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace spec\MageTest\MagentoExtension\Context;
+namespace spec\MageTest\MagentoExtension\Service;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * MagentoContext
+ * ConfigManagerSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Context\Initializer
+ * @subpackage Service
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class MagentoContext extends ObjectBehavior
+class ConfigManagerSpec extends ObjectBehavior
 {
-    function it_should_support_mink()
+    /**
+     * @param MageTest\MagentoExtension\Service\Bootstrap         $bootstrap
+     * @param MageTest\MagentoExtension\Service\Config\CoreConfig $coreConfig
+     */
+    function let($bootstrap, $coreConfig)
     {
-        $this->shouldBeAnInstanceOf("Behat\MinkExtension\Context\MinkAwareInterface");
+        $this->beConstructedWith($bootstrap, $coreConfig);
     }
 
-    function it_should_add_some_magento_goodies()
+    function it_should_set_core_config($coreConfig)
     {
-        $this->shouldBeAnInstanceOf("MageTest\MagentoExtension\Context\MagentoAwareInterface");
-    }
+        $coreConfig->set('test/path/to/config', 'value', 1)->shouldBeCalled();
 
+        $this->setCoreConfig('test/path/to/config', 'value', 1);
+    }
 }

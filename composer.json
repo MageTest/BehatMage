@@ -14,23 +14,13 @@
 	    "sensiolabs/behat-page-object-extension": "*"
     },
     "require-dev": {
-        "phpspec/phpspec2": "dev-develop"
+        "phpspec/phpspec": "2.0.*@dev",
+        "mockery/mockery": "*",
+        "magetest/magento": "*"
     },
     "autoload": {
         "psr-0": {
-            "MageTest": "src/",
-            "": [
-                "vendor/magento/app",
-                "vendor/magento/app/code/local",
-                "vendor/magento/app/code/community",
-                "vendor/magento/app/code/core",
-                "vendor/magento/lib",
-                "app",
-                "app/code/local",
-                "app/code/community",
-                "app/code/core",
-                "lib"
-            ]
+            "MageTest": "src/"
         }
     },
     "config": {

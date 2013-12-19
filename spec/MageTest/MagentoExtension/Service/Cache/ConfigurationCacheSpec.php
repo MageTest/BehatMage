@@ -16,42 +16,42 @@
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Service\Cache
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace spec\MageTest\MagentoExtension\Service;
+namespace spec\MageTest\MagentoExtension\Service\Cache;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * CacheManager
+ * ConfigurationCacheSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Service\Cache
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class CacheManager extends ObjectBehavior
+class ConfigurationCacheSpec extends ObjectBehavior
 {
     /**
-     * @param MageTest\MagentoExtension\Service\Bootstrap $bootstrap
+     * @param Mage_Core_Model_App   $mageApp
+     * @param Mage_Core_Model_Cache $cacheInstance
      */
-    function let($bootstrap)
+    function let($mageApp, $cacheInstance)
     {
-        $this->beConstructedWith($bootstrap);
+        $mageApp->getCacheInstance()->willReturn($cacheInstance);
+        $mageApp->cleanCache(Argument::any())->shouldBeCalled();
+        $cacheInstance->getTagsByType(Argument::any())->willReturn(array("config"));
+
+        $this->beConstructedWith($mageApp);
     }
 
-    /**
-     * @param MageTest\MagentoExtension\Service\Cache\ConfigurationCache $cache
-     */
-    function it_should_clear_configuration_by_default($cache)
+    function it_should_clear_the_configuration_cache()
     {
-        $this->addSection('configuration', $cache);
-
-        $cache->clear()->shouldBeCalled();
-
         $this->clear();
     }
 }

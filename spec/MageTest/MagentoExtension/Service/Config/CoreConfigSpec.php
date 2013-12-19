@@ -22,10 +22,12 @@
  */
 namespace spec\MageTest\MagentoExtension\Service\Config;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * CoreConfig
+ * CoreConfigSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -33,7 +35,7 @@ use PHPSpec2\ObjectBehavior;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class CoreConfig extends ObjectBehavior
+class CoreConfigSpec extends ObjectBehavior
 {
     /**
      * @param Mage_Core_Model_Config $coreConfigModel

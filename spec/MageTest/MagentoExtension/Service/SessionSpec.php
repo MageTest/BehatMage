@@ -22,10 +22,12 @@
  */
 namespace spec\MageTest\MagentoExtension\Service;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * ConfigManager
+ * SessionSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -33,21 +35,18 @@ use PHPSpec2\ObjectBehavior;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class ConfigManager extends ObjectBehavior
+class SessionSpec extends ObjectBehavior
 {
     /**
-     * @param MageTest\MagentoExtension\Service\Bootstrap         $bootstrap
-     * @param MageTest\MagentoExtension\Service\Config\CoreConfig $coreConfig
+     * @param MageTest\MagentoExtension\Service\Bootstrap $bootstrap
      */
-    function let($bootstrap, $coreConfig)
+    function let($bootstrap)
     {
-        $this->beConstructedWith($bootstrap, $coreConfig);
+        $this->beConstructedWith($bootstrap);
     }
 
-    function it_should_set_core_config($coreConfig)
+    function it_should_exist()
     {
-        $coreConfig->set('test/path/to/config', 'value', 1)->shouldBeCalled();
-
-        $this->setCoreConfig('test/path/to/config', 'value', 1);
+        $this->shouldNotBe(null);
     }
 }

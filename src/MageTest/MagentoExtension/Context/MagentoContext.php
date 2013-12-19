@@ -22,9 +22,16 @@
  */
 namespace MageTest\MagentoExtension\Context;
 
-use Behat\Gherkin\Node\TableNode;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
+use Mage_Core_Model_App as MageApp;
+use MageTest\MagentoExtension\Context\MagentoAwareContext,
+    MageTest\MagentoExtension\Service\ConfigManager,
+    MageTest\MagentoExtension\Service\CacheManager,
+    MageTest\MagentoExtension\Service,
+    MageTest\MagentoExtension\Fixture\FixtureFactory,
+    MageTest\MagentoExtension\Service\Session;
+
+use Behat\MinkExtension\Context\RawMinkContext,
+    Behat\Gherkin\Node\TableNode;
 
 /**
  * MagentoContext
@@ -35,28 +42,104 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class MagentoContext extends RawMagentoContext implements PageObjectAwareInterface
+class MagentoContext extends RawMinkContext implements MagentoAwareInterface
 {
-    private $pageFactory = null;
+    /**
+     * @var MageApp
+     */
+    private $app;
 
     /**
-     * @When /^I go to the "(?P<page>[^"]*)" admin page$/
+     * @var ConfigManager
      */
-    public function iOpenAdminUri($page)
+    private $configManager;
+
+    /**
+     * @var CacheManager
+     */
+    private $cacheManager;
+
+    /**
+     * @var FixtureFactory
+     */
+    private $factory;
+
+    /**
+     * @var Session
+     */
+    private $sessionService;
+
+    /**
+     * @When /^I open admin URI "([^"]*)"$/
+     */
+    public function iOpenAdminUri($uri)
     {
         $urlModel = new \Mage_Adminhtml_Model_Url();
-        $page = $this->getPage($page);
-        $secretKey = $urlModel->getSecretKey($page->getMainController(), $page->getModuleName());
-        $page->open(array('secretKey' => $secretKey));
+        $m = explode('/', ltrim($uri, '/'));
+        // Check if frontName matches a configured admin route
+        if ($this->app->getFrontController()->getRouter('admin')->getRouteByFrontName($m[0])) {
+            $processedUri = "/{$m[0]}/{$m[1]}/{$m[2]}/key/".$urlModel->getSecretKey($m[0], $m[1])."/{$m[2]}";
+            $this->getSession()->visit($processedUri);
+        } else {
+            throw new \InvalidArgumentException('$uri parameter should start with a valid admin route and contain controller and action elements');
+        }
     }
 
     /**
+     * @When /^I am logged in as admin user "([^"]*)" identified by "([^"]*)"$/
      * @When /^I log in as admin user "([^"]*)" identified by "([^"]*)"$/
      */
     public function iLoginAsAdmin($username, $password)
     {
-        $sid = $this->getSessionService()->adminLogin($username, $password);
+        $sid = $this->sessionService->adminLogin($username, $password);
         $this->getSession()->setCookie('adminhtml', $sid);
+    }
+
+    /**
+     * @Given /^I am logged in as customer "([^"]*)" identified by "([^"]*)"$/
+     * @Given /^I log in as customer "([^"]*)" identified by "([^"]*)"$/
+     */
+    public function iLogInAsCustomerWithPassword($email, $password)
+    {
+        $sid = $this->sessionService->customerLogin($email, $password);
+        $this->getSession()->setCookie('frontend', $sid);
+    }
+
+    /**
+     * @Given /^(?:|I )am on "(?P<page>[^"]+)"$/
+     * @When /^(?:|I )go to "(?P<page>[^"]+)"$/
+     */
+    public function iAmOn($page)
+    {
+        $urlModel = new \Mage_Core_Model_Url();
+        $m = explode('/', ltrim($page, '/'));
+        if ($this->app->getFrontController()->getRouter('standard')->getRouteByFrontName($m[0])) {
+            $this->getSession()->visit($this->locatePath($page));
+        } else {
+            $xml = <<<CONF
+<frontend>
+    <routers>
+        <{module_name}>
+            <use>standard</use>
+            <args>
+                <module>{module_name}</module>
+                <frontName>%s</frontName>
+            </args>
+        <{module_name}>
+    </routers>
+</frontend>
+CONF;
+            $alternate = "Or if you are testing a CMS page ensure the URL is correct and the Page is enabled.";
+            $config = sprintf((string) $xml, $m[0]);
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Missing route for the URI '%s', You should the following XML to your config.xml \n %s \n\n%s",
+                    $page,
+                    $config,
+                    $alternate
+                )
+            );
+        }
     }
 
     /**
@@ -64,7 +147,7 @@ class MagentoContext extends RawMagentoContext implements PageObjectAwareInterfa
      */
     public function iSetConfigValueForScope($path, $value, $scope)
     {
-        $this->getConfigManager()->setCoreConfig($path, $value, $scope);
+        $this->configManager->setCoreConfig($path, $value, $scope);
     }
 
     /**
@@ -73,7 +156,7 @@ class MagentoContext extends RawMagentoContext implements PageObjectAwareInterfa
      */
     public function theCacheIsClean()
     {
-        $this->getCacheManager()->clear();
+        $this->cacheManager->clear();
     }
 
     /**
@@ -82,29 +165,62 @@ class MagentoContext extends RawMagentoContext implements PageObjectAwareInterfa
     public function theProductsExist(TableNode $table)
     {
         $hash = $table->getHash();
-        $fixtureGenerator = $this->getFixture('product');
+        $fixtureGenerator = $this->factory->create('product');
         foreach ($hash as $row) {
             $row['stock_data'] = array();
             if (isset($row['is_in_stock'])) {
                 $row['stock_data']['is_in_stock'] = $row['is_in_stock'];
-                unset($row['is_in_stock']);
             }
-            if (isset($row['qty'])) {
+            if (isset($row['is_in_stock'])) {
                 $row['stock_data']['qty'] = $row['qty'];
-                unset($row['qty']);
             }
 
             $fixtureGenerator->create($row);
         }
     }
 
-    public function getPage($name)
+    public function setApp(MageApp $app)
     {
-        return $this->pageFactory->createPage($name);
+        $this->app = $app;
     }
 
-    public function setPageFactory(PageFactory $factory)
+    public function getApp()
     {
-        $this->pageFactory = $factory;
+        return $this->app;
+    }
+
+    public function setConfigManager(ConfigManager $config)
+    {
+        $this->configManager = $config;
+    }
+
+    public function setCacheManager(CacheManager $cache)
+    {
+        $this->cacheManager = $cache;
+    }
+
+    public function getCacheManager()
+    {
+        return $this->cacheManager;
+    }
+
+    public function setFixtureFactory(FixtureFactory $factory)
+    {
+        $this->factory = $factory;
+    }
+
+    public function setSessionService(Session $session)
+    {
+        $this->sessionService = $session;
+    }
+
+    public function getSessionService()
+    {
+        return $this->sessionService;
+    }
+
+    public function getFixture($identifier)
+    {
+        return $this->factory->create($identifier);
     }
 }

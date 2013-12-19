@@ -15,28 +15,23 @@
  * to <magetest@sessiondigital.com> so we can send you a copy immediately.
  *
  * @category   MageTest
- * @package    Controller
- * @subpackage Request
+ * @package    MagentoExtension
+ * @subpackage Service\Cache
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace spec\MageTest\Controller\Request;
-
-use PHPSpec2\ObjectBehavior;
+namespace MageTest\MagentoExtension\Service\Cache;
 
 /**
- * HttpTestCase
+ * ConfigurationCache
  *
  * @category   MageTest
- * @package    Controller
- * @subpackage Request
+ * @package    MagentoExtension
+ * @subpackage Service\Cache
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class HttpTestCase extends ObjectBehavior
+class BlockHtmlCache extends BaseCache
 {
-    function it_should_exist()
-    {
-        $this->shouldNotBe(null);
-    }
+    protected $cacheTypes = array('block_html');
 }

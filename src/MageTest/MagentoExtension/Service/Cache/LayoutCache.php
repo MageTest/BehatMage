@@ -20,9 +20,7 @@
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace spec\MageTest\MagentoExtension\Service\Cache;
-
-use PHPSpec2\ObjectBehavior;
+namespace MageTest\MagentoExtension\Service\Cache;
 
 /**
  * ConfigurationCache
@@ -33,23 +31,7 @@ use PHPSpec2\ObjectBehavior;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class ConfigurationCache extends ObjectBehavior
+class LayoutCache extends BaseCache
 {
-    /**
-     * @param Mage_Core_Model_App   $mageApp
-     * @param Mage_Core_Model_Cache $cacheInstance
-     */
-    function let($mageApp, $cacheInstance)
-    {
-        $mageApp->getCacheInstance()->willReturn($cacheInstance);
-
-        $cacheInstance->flush()->shouldBeCalled();
-
-        $this->beConstructedWith($mageApp);
-    }
-
-    function it_should_clear_the_configuration_cache($mageApp, $cacheInstance)
-    {
-        $this->clear();
-    }
+    protected $cacheTypes = array('layout');
 }

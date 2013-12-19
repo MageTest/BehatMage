@@ -22,10 +22,12 @@
  */
 namespace spec\MageTest\MagentoExtension\Fixture;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * Product
+ * ProductSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -33,7 +35,7 @@ use PHPSpec2\ObjectBehavior;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Product extends ObjectBehavior
+class ProductSpec extends ObjectBehavior
 {
     private $productModel = null;
 
@@ -54,6 +56,7 @@ class Product extends ObjectBehavior
         $productResourceModel->shouldReceive('getEntityType')->andReturn($entityType);
 
         $this->productModel->shouldReceive('getResource')->andReturn($productResourceModel)->ordered();
+        $this->productModel->shouldReceive('getAttributes')->andReturn(array());
     }
 
     function it_should_create_a_product_given_all_required_attributes()
