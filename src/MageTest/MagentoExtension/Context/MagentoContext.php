@@ -167,12 +167,18 @@ CONF;
         $hash = $table->getHash();
         $fixtureGenerator = $this->factory->create('product');
         foreach ($hash as $row) {
-            $row['stock_data'] = array();
             if (isset($row['is_in_stock'])) {
-                $row['stock_data']['is_in_stock'] = $row['is_in_stock'];
-            }
-            if (isset($row['is_in_stock'])) {
-                $row['stock_data']['qty'] = $row['qty'];
+                if (!isset($row['qty'])) {
+                    throw new \InvalidArgumentException('You have specified is_in_stock but not qty, please add value for qty.');
+                };
+
+                $row['stock_data'] = array(
+                    'is_in_stock' => $row['is_in_stock'],
+                    'qty' => $row['qty']
+                );
+
+                unset($row['is_in_stock']);
+                unset($row['qty']);
             }
 
             $fixtureGenerator->create($row);
