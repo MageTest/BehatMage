@@ -38,7 +38,7 @@
             <argument type="service" id="behat.magento.service.config_manager" />
             <argument type="service" id="behat.magento.fixture.fixture_factory" />
             <argument type="service" id="behat.magento.service.session" />
-            <tag name="behat.context.initializer" />
+            <tag name="context.initializer" />
         </service>
         <service id="behat.magento.fixture.fixture_factory" class="%behat.magento.fixture.fixture_factory%" />
     </services>

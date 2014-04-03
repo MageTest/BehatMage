@@ -22,6 +22,13 @@
  */
 namespace spec\MageTest\MagentoExtension\Context\Initializer;
 
+use Mage_Core_Model_App;
+use MageTest\MagentoExtension\Context\MagentoContext;
+use MageTest\MagentoExtension\Fixture\FixtureFactory;
+use MageTest\MagentoExtension\Service\Bootstrap;
+use MageTest\MagentoExtension\Service\CacheManager;
+use MageTest\MagentoExtension\Service\ConfigManager;
+use MageTest\MagentoExtension\Service\Session;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -37,25 +44,14 @@ use Prophecy\Argument;
  */
 class MagentoAwareInitializerSpec extends ObjectBehavior
 {
-    /**
-     * @param MageTest\MagentoExtension\Service\Bootstrap      $bootstrap
-     * @param Mage_Core_Model_App                              $app
-     * @param MageTest\MagentoExtension\Service\ConfigManager  $config
-     * @param MageTest\MagentoExtension\Service\CacheManager   $cache
-     * @param MageTest\MagentoExtension\Fixture\FixtureFactory $factory
-     * @param MageTest\MagentoExtension\Service\Session        $session
-     */
-    function let($bootstrap, $app, $config, $cache, $factory, $mink, $session)
+    function let(Bootstrap $bootstrap, Mage_Core_Model_App $app, ConfigManager $config, CacheManager $cache, FixtureFactory $factory, Session $session)
     {
         $bootstrap->app()->willReturn($app);
 
         $this->beConstructedWith($bootstrap, $cache, $config, $factory, $session);
     }
 
-    /**
-     * @param MageTest\MagentoExtension\Context\MagentoContext $context
-     */
-    function it_initialises_the_context($context, $app, $config, $cache, $factory, $mink, $session)
+    function it_initialises_the_context(MagentoContext $context, Mage_Core_Model_App $app, ConfigManager $config, CacheManager $cache, FixtureFactory $factory, Session $session)
     {
         $context->setApp($app)->shouldBeCalled();
         $context->setConfigManager($config)->shouldBeCalled();
@@ -63,7 +59,6 @@ class MagentoAwareInitializerSpec extends ObjectBehavior
         $context->setFixtureFactory($factory)->shouldBeCalled();
         $context->setSessionService($session)->shouldBeCalled();
 
-        $this->initialize($context);
+        $this->initializeContext($context);
     }
-
 }
