@@ -1,12 +1,24 @@
 <?php
-
-/*
- * This file is part of the Behat Magento Extension
+/**
+ * BehatMage
  *
- * (c) James Cowie <jcowie@sessiondigital.com>
+ * NOTICE OF LICENSE
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * This source file is subject to the MIT License, that is bundled with this
+ * package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ *
+ * http://opensource.org/licenses/MIT
+ *
+ * If you did not receive a copy of the license and are unable to obtain it
+ * through the world-wide-web, please send an email
+ * to <magetest@sessiondigital.com> so we can send you a copy immediately.
+ *
+ * @category   MageTest
+ * @package    MagentoExtension
+ * @subpackage Service
+ *
+ * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
 
 namespace MageTest\MagentoExtension;
@@ -16,25 +28,16 @@ use Behat\Testwork\ServiceContainer\ExtensionManager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Behat\Behat\Context\ServiceContainer\ContextExtension;
-use Behat\MinkExtension\ServiceContainer\Driver\DriverFactory;
-use Behat\MinkExtension\ServiceContainer\Driver\GoutteFactory;
-use Behat\MinkExtension\ServiceContainer\Driver\SahiFactory;
-use Behat\MinkExtension\ServiceContainer\Driver\SaucelabsFactory;
-use Behat\MinkExtension\ServiceContainer\Driver\Selenium2Factory;
-use Behat\MinkExtension\ServiceContainer\Driver\SeleniumFactory;
-use Behat\MinkExtension\ServiceContainer\Driver\ZombieFactory;
-use Behat\Testwork\EventDispatcher\ServiceContainer\EventDispatcherExtension;
-use Behat\Testwork\ServiceContainer\Exception\ProcessingException;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\Reference;
-
 
 /**
- * Magento extension for Behat class.
+ * Extension
  *
+ * @category   MageTest
+ * @package    MagentoExtension
+ * @subpackage Extension
+ *
+ * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
 class Extension implements ExtensionInterface
 {

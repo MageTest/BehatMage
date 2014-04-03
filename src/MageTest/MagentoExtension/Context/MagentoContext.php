@@ -24,8 +24,7 @@ namespace MageTest\MagentoExtension\Context;
 
 use Behat\Behat\Context\Context;
 use Mage_Core_Model_App as MageApp;
-use MageTest\MagentoExtension\Context\MagentoAwareContext,
-    MageTest\MagentoExtension\Service\ConfigManager,
+use MageTest\MagentoExtension\Service\ConfigManager,
     MageTest\MagentoExtension\Service\CacheManager,
     MageTest\MagentoExtension\Service,
     MageTest\MagentoExtension\Fixture\FixtureFactory,
@@ -71,7 +70,7 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface, Co
     private $sessionService;
 
     /**
-     * @When /^I open admin URI "([^"]*)"$/
+     * @When I open admin URI :uri
      */
     public function iOpenAdminUri($uri)
     {
@@ -87,8 +86,8 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface, Co
     }
 
     /**
-     * @When /^I am logged in as admin user "([^"]*)" identified by "([^"]*)"$/
-     * @When /^I log in as admin user "([^"]*)" identified by "([^"]*)"$/
+     * @When I am logged in as admin user :username identified by :password
+     * @When I log in as admin user :username identified by :password
      */
     public function iLoginAsAdmin($username, $password)
     {
@@ -97,8 +96,8 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface, Co
     }
 
     /**
-     * @Given /^I am logged in as customer "([^"]*)" identified by "([^"]*)"$/
-     * @Given /^I log in as customer "([^"]*)" identified by "([^"]*)"$/
+     * @Given I am logged in as customer :email identified by :password
+     * @Given I log in as customer :email identified by :password
      */
     public function iLogInAsCustomerWithPassword($email, $password)
     {
@@ -107,8 +106,8 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface, Co
     }
 
     /**
-     * @Given /^(?:|I )am on "(?P<page>[^"]+)"$/
-     * @When /^(?:|I )go to "(?P<page>[^"]+)"$/
+     * @Given I am on :page
+     * @When I go to :page
      */
     public function iAmOn($page)
     {
@@ -144,7 +143,7 @@ CONF;
     }
 
     /**
-     * @When /^I set config value for "([^"]*)" to "([^"]*)" in "([^"]*)" scope$/
+     * @When I set config value for :path to :value in :scope scope
      */
     public function iSetConfigValueForScope($path, $value, $scope)
     {
@@ -152,8 +151,8 @@ CONF;
     }
 
     /**
-     * @Given /^the cache is clean$/
-     * @When /^I clear the cache$/
+     * @Given the cache is clean
+     * @When I clear the cache
      */
     public function theCacheIsClean()
     {
