@@ -67,7 +67,14 @@ class Product implements FixtureInterface
         $this->validateAttributes(array_keys($attributes));
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
-        $this->model->setData($this->mergeAttributes($attributes))->save();
+
+        $this->model
+            ->setWebsiteIds(array_map(function($website) {
+                return $website->getId();
+            }, \Mage::app()->getWebsites()))
+            ->setData($this->mergeAttributes($attributes))
+            ->save();
+
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
         return $this->model->getId();

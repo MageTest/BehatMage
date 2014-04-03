@@ -76,6 +76,8 @@ class ProductSpec extends ObjectBehavior
             'sku' => 'sdf'
         );
 
+        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('setData')
             ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
@@ -106,6 +108,8 @@ class ProductSpec extends ObjectBehavior
             'sku' => $data['sku']
         );
 
+        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('setData')
             ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
@@ -141,6 +145,8 @@ class ProductSpec extends ObjectBehavior
 
         $this->productModel->shouldReceive('getData')
             ->once()->andReturn(array('loaded_attr' => 27));
+        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('setData')
             ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
@@ -156,6 +162,8 @@ class ProductSpec extends ObjectBehavior
             'sku' => 'sku'.time()
         );
 
+        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('setData')->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
         $this->productModel->shouldReceive('getId')->once()->andReturn(554)->ordered();
