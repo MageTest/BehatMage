@@ -1,4 +1,8 @@
 default:
+    suites:
+        default:
+            formatter:
+                name: progress
     extensions:
         MageTest\MagentoExtension\Extension: ~
         Behat\MinkExtension\Extension:
