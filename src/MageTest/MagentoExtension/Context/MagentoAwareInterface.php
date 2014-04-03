@@ -23,6 +23,7 @@
 namespace MageTest\MagentoExtension\Context;
 
 use Mage_Core_Model_App as MageApp;
+use Behat\Behat\Context\Context;
 use MageTest\MagentoExtension\Service\ConfigManager,
     MageTest\MagentoExtension\Service\CacheManager,
     MageTest\MagentoExtension\Fixture\FixtureFactory,
@@ -37,7 +38,7 @@ use MageTest\MagentoExtension\Service\ConfigManager,
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-interface MagentoAwareInterface
+interface MagentoAwareInterface extends Context
 {
     public function setApp(MageApp $app);
     public function setConfigManager(ConfigManager $config);

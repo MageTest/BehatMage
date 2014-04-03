@@ -1,10 +1,11 @@
 default:
-    formatter:
-        name: progress
+    suites:
+        default:
+            formatter:
+                name: progress
     extensions:
         MageTest\MagentoExtension\Extension: ~
         Behat\MinkExtension\Extension:
             base_url: test.magento.loc
             goutte:
-                server_parameters:
-                    HTTP_HOST: %behat.mink.base_url%
+                server_parameters: ~

@@ -22,7 +22,8 @@
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\TranslatedContextInterface,
     Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
+    Behat\Behat\Tester\Exception\PendingException;
+use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
@@ -36,17 +37,14 @@ use MageTest\MagentoExtension\Context\MagentoContext;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class FeatureContext extends MagentoContext
+class FeatureContext extends MagentoContext implements SnippetAcceptingContext
 {
     /**
      * Initializes context.
-     * Every scenario gets it's own context object.
-     *
-     * @param array $parameters context parameters (set them up through behat.yml)
      */
-    public function __construct(array $parameters)
+    public function __construct()
     {
-        // Initialize your context here
+
     }
 
     /**

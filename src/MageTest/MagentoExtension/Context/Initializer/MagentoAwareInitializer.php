@@ -22,6 +22,8 @@
  */
 namespace MageTest\MagentoExtension\Context\Initializer;
 
+use Behat\Behat\Context\Context;
+use Behat\Behat\Context\Initializer\ContextInitializer;
 use MageTest\MagentoExtension\Service\Bootstrap,
     MageTest\MagentoExtension\Service\CacheManager,
     MageTest\MagentoExtension\Service\ConfigManager,
@@ -41,7 +43,7 @@ use Behat\Behat\Context\Initializer\InitializerInterface,
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class MagentoAwareInitializer implements InitializerInterface
+class MagentoAwareInitializer implements ContextInitializer
 {
     private $app = null;
 
@@ -53,8 +55,15 @@ class MagentoAwareInitializer implements InitializerInterface
 
     private $session = null;
 
+    /**
+     * @param Bootstrap         $bootstrap
+     * @param CacheManager      $cache
+     * @param ConfigManager     $config
+     * @param FixtureFactory    $factory
+     * @param Session           $session
+     */
     public function __construct(Bootstrap $bootstrap, CacheManager $cache,
-        ConfigManager $config, FixtureFactory $factory, Session $session)
+                                ConfigManager $config, FixtureFactory $factory, Session $session)
     {
         $this->app = $bootstrap->app();
         $this->cacheManager = $cache;
@@ -62,18 +71,22 @@ class MagentoAwareInitializer implements InitializerInterface
         $this->factory = $factory;
         $this->session = $session;
     }
-
-    public function supports(ContextInterface $context)
+    /**
+     * Initializes provided context.
+     *
+     * @param Context $context
+     */
+    public function initializeContext(Context $context)
     {
-        return $context instanceof MagentoAwareInterface;
-    }
+        if (!$context instanceof MagentoAwareInterface) {
+            return;
+        }
 
-    public function initialize(ContextInterface $context)
-    {
         $context->setApp($this->app);
         $context->setConfigManager($this->configManager);
         $context->setCacheManager($this->cacheManager);
         $context->setFixtureFactory($this->factory);
         $context->setSessionService($this->session);
     }
+
 }

@@ -39,7 +39,7 @@ class MagentoContextSpec extends ObjectBehavior
 {
     function it_should_support_mink()
     {
-        $this->shouldBeAnInstanceOf("Behat\MinkExtension\Context\MinkAwareInterface");
+        $this->shouldBeAnInstanceOf("Behat\MinkExtension\Context\MinkAwareContext");
     }
 
     function it_should_add_some_magento_goodies()
