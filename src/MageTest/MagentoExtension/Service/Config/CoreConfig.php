@@ -18,7 +18,7 @@
  * @package    MagentoExtension
  * @subpackage Service\Cache
  *
- * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
+ * @copyright  Copyright (c) 2012-2014 MageTest team and contributors.
  */
 namespace MageTest\MagentoExtension\Service\Config;
 
