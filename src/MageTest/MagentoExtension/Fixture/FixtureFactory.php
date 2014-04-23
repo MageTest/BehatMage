@@ -57,6 +57,18 @@ class FixtureFactory
             case 'user':
                 $fixture = new User();
                 break;
+            case 'customer':
+                $fixture = new Customer();
+                break;
+            case 'address':
+                $fixture = new Address();
+                break;
+            case 'order':
+                $fixture = new Order();
+                break;
+            case 'category':
+                $fixture = new Category();
+                break;
             default: throw new \InvalidArgumentException();
         }
 

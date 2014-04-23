@@ -21,7 +21,8 @@
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
 namespace MageTest\MagentoExtension\Fixture;
-use MageTest\MagentoExtension\Fixture;
+
+use Mage;
 
 /**
  * User fixtures functionality provider
@@ -32,16 +33,16 @@ use MageTest\MagentoExtension\Fixture;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class User implements FixtureInterface
+class Customer implements FixtureInterface
 {
     private $_modelFactory = null;
 
     /**
-     * @param $productModelFactory \Closure optional
+     * @param $modelFactory \Closure optional
      */
-    public function __construct($userModelFactory = null)
+    public function __construct($modelFactory = null)
     {
-        $this->_modelFactory = $userModelFactory ?: $this->defaultModelFactory();
+        $this->_modelFactory = $modelFactory ?: $this->defaultModelFactory();
     }
 
     /**
@@ -56,15 +57,27 @@ class User implements FixtureInterface
         $modelFactory = $this->_modelFactory;
         $model = $modelFactory();
 
-        $model->setData($attributes);
-        if ($model->userExists()) {
-            throw new \Exception('Username provided to user fixture should not be existing');
-        }
-        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
-        $model->save();
-        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
+        if (!empty($attributes['email'])) {
 
-        return $model->getId();
+            if (!empty($attributes['website_id'])) {
+                $model->setWebsiteId($attributes['website_id']);
+            } else {
+                $model->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
+            }
+
+            $model->loadByEmail($attributes['email']);
+        }
+
+        $model->addData($attributes);
+
+        if ($this->validate($model)) {
+
+            $model->save();
+
+            return $model->getId();
+        }
+
+        return null;
     }
 
     /**
@@ -91,7 +104,27 @@ class User implements FixtureInterface
     public function defaultModelFactory()
     {
         return function () {
-            return \Mage::getModel('admin/user');
+            return Mage::getModel('customer/customer');
         };
+    }
+
+    /**
+     * Validates the model and ensures it is ready to be saved. Throws exception if validation fails
+     *
+     * @param Mage_Core_Model_Abstract $model
+     * @return boolean
+     * @throws \Exception
+     */
+    public function validate($model)
+    {
+        if (($errors = $model->validate()) !== true) {
+            throw new \Exception("Customer data is incomplete or invalid:\n- " . implode("\n- ", $errors));
+        }
+        return true;
+    }
+
+    protected function getWebsiteIds()
+    {
+        return Mage::app()->getWebsites();
     }
 }
