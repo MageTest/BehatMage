@@ -20,10 +20,14 @@
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
+namespace spec\MageTest\MagentoExtension\Service;
+
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * Bootstrap
+ * ConfigManagerSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -31,20 +35,21 @@ namespace MageTest\MagentoExtension\Service;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Bootstrap
+class ConfigManagerSpec extends ObjectBehavior
 {
-    public function app()
+    /**
+     * @param MageTest\MagentoExtension\Service\Bootstrap         $bootstrap
+     * @param MageTest\MagentoExtension\Service\Config\CoreConfig $coreConfig
+     */
+    function let($bootstrap, $coreConfig)
     {
-        return \Mage::app();
+        $this->beConstructedWith($bootstrap, $coreConfig);
     }
 
-    public function getMageReflection()
+    function it_should_set_core_config($coreConfig)
     {
-        return new \ReflectionClass('Mage');
-    }
+        $coreConfig->set('test/path/to/config', 'value', 1)->shouldBeCalled();
 
-    public function getMageCoreModelAppReflection()
-    {
-        return new \ReflectionClass('Mage_Core_Model_App');
+        $this->setCoreConfig('test/path/to/config', 'value', 1);
     }
 }

@@ -20,10 +20,14 @@
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
+namespace spec\MageTest\MagentoExtension\Service;
+
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * Bootstrap
+ * CacheManagerSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -31,20 +35,25 @@ namespace MageTest\MagentoExtension\Service;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Bootstrap
+class CacheManagerSpec extends ObjectBehavior
 {
-    public function app()
+    /**
+     * @param MageTest\MagentoExtension\Service\Bootstrap $bootstrap
+     */
+    function let($bootstrap)
     {
-        return \Mage::app();
+        $this->beConstructedWith($bootstrap);
     }
 
-    public function getMageReflection()
+    /**
+     * @param MageTest\MagentoExtension\Service\Cache\ConfigurationCache $cache
+     */
+    function it_should_clear_configuration_by_default($cache)
     {
-        return new \ReflectionClass('Mage');
-    }
+        $this->addSection('configuration', $cache);
 
-    public function getMageCoreModelAppReflection()
-    {
-        return new \ReflectionClass('Mage_Core_Model_App');
+        $cache->clear()->shouldBeCalled();
+
+        $this->clear();
     }
 }

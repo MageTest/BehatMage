@@ -6,30 +6,21 @@
     "homepage": "https://github.com/MageTest/BehatMage",
     "license": "MIT",
     "require": {
-        "php": ">=5.3.0",
-        "behat/behat": "2.4.4",
+        "php": "~5.3",
+        "behat/behat": "~2.4.4",
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
-        "behat/mink-goutte-driver": ">=1.0.3"
+        "behat/mink-goutte-driver": ">=1.0.3",
+	    "sensiolabs/behat-page-object-extension": "*"
     },
     "require-dev": {
-        "phpspec/phpspec2": "dev-develop"
+        "phpspec/phpspec": "2.0.*@dev",
+        "mockery/mockery": "*",
+        "magetest/magento": "*"
     },
     "autoload": {
         "psr-0": {
-            "MageTest": "src/",
-            "": [
-                "vendor/magento/app",
-                "vendor/magento/app/code/local",
-                "vendor/magento/app/code/community",
-                "vendor/magento/app/code/core",
-                "vendor/magento/lib",
-                "app",
-                "app/code/local",
-                "app/code/community",
-                "app/code/core",
-                "lib"
-            ]
+            "MageTest": "src/"
         }
     },
     "config": {
@@ -56,6 +47,14 @@
         {
             "name": "Mark Slocock",
             "email": "mark@gpmd.co.uk"
+        },
+        {
+            "name": "Marco De Bortoli",
+            "email": "marco.debortoli@sessiondigital.com"
+        },
+        {
+            "name": "Other contributors",
+            "homepage": "https://github.com/MageTest/BehatMage/contributors"
         }
     ]
 }

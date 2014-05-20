@@ -32,10 +32,6 @@
         <service id="behat.magento.service.session" class="%behat.magento.service.session%">
             <argument type="service" id="behat.magento.service.bootstrap" />
         </service>
-        <service id="behat.magento.listener.before_scenario" class="%behat.magento.listener.before_scenario%">
-            <argument type="service" id="behat.magento.service.cache_manager" />
-            <tag name="behat.event_subscriber" priority="0" />
-        </service>
         <service id="behat.magento.context.initializer" class="%behat.magento.context.initializer%">
             <argument type="service" id="behat.magento.service.bootstrap" />
             <argument type="service" id="behat.magento.service.cache_manager" />
@@ -45,8 +41,5 @@
             <tag name="behat.context.initializer" />
         </service>
         <service id="behat.magento.fixture.fixture_factory" class="%behat.magento.fixture.fixture_factory%" />
-        <service id="behat.magento.context.class_guesser" class="%behat.magento.context.class_guesser%">
-          <tag name="behat.context.class_guesser" priority="-1" />
-        </service>
     </services>
 </container>

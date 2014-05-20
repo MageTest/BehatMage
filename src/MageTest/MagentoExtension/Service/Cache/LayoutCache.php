@@ -16,35 +16,22 @@
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Service\Cache
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
+namespace MageTest\MagentoExtension\Service\Cache;
 
 /**
- * Bootstrap
+ * ConfigurationCache
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Service\Cache
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Bootstrap
+class LayoutCache extends BaseCache
 {
-    public function app()
-    {
-        return \Mage::app();
-    }
-
-    public function getMageReflection()
-    {
-        return new \ReflectionClass('Mage');
-    }
-
-    public function getMageCoreModelAppReflection()
-    {
-        return new \ReflectionClass('Mage_Core_Model_App');
-    }
+    protected $cacheTypes = array('layout');
 }

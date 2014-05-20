@@ -16,35 +16,42 @@
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Service\Cache
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
+namespace spec\MageTest\MagentoExtension\Service\Cache;
+
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * Bootstrap
+ * ConfigurationCacheSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Service\Cache
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Bootstrap
+class ConfigurationCacheSpec extends ObjectBehavior
 {
-    public function app()
+    /**
+     * @param Mage_Core_Model_App   $mageApp
+     * @param Mage_Core_Model_Cache $cacheInstance
+     */
+    function let($mageApp, $cacheInstance)
     {
-        return \Mage::app();
+        $mageApp->getCacheInstance()->willReturn($cacheInstance);
+        $mageApp->cleanCache(Argument::any())->shouldBeCalled();
+        $cacheInstance->getTagsByType(Argument::any())->willReturn(array("config"));
+
+        $this->beConstructedWith($mageApp);
     }
 
-    public function getMageReflection()
+    function it_should_clear_the_configuration_cache()
     {
-        return new \ReflectionClass('Mage');
-    }
-
-    public function getMageCoreModelAppReflection()
-    {
-        return new \ReflectionClass('Mage_Core_Model_App');
+        $this->clear();
     }
 }

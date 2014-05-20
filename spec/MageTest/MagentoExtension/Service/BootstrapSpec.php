@@ -20,10 +20,14 @@
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
+namespace spec\MageTest\MagentoExtension\Service;
+
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * Bootstrap
+ * BootstrapSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -31,20 +35,20 @@ namespace MageTest\MagentoExtension\Service;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Bootstrap
+class BootstrapSpec extends ObjectBehavior
 {
-    public function app()
+    function it_bootstraps_a_mage_app()
     {
-        return \Mage::app();
+        $this->app()->shouldBeAnInstanceOf('Mage_Core_Model_App');
     }
 
-    public function getMageReflection()
+    function it_provides_a_reflection_of_Mage()
     {
-        return new \ReflectionClass('Mage');
+        $this->getMageReflection()->shouldBeAnInstanceOf('ReflectionClass');
     }
 
-    public function getMageCoreModelAppReflection()
+    function it_provides_a_reflection_of_Mage_Core_Model_App()
     {
-        return new \ReflectionClass('Mage_Core_Model_App');
+        $this->getMageCoreModelAppReflection()->shouldBeAnInstanceOf('ReflectionClass');
     }
 }

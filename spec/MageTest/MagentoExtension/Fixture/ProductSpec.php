@@ -1,10 +1,41 @@
 <?php
-
+/**
+ * BehatMage
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MIT License, that is bundled with this
+ * package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ *
+ * http://opensource.org/licenses/MIT
+ *
+ * If you did not receive a copy of the license and are unable to obtain it
+ * through the world-wide-web, please send an email
+ * to <magetest@sessiondigital.com> so we can send you a copy immediately.
+ *
+ * @category   MageTest
+ * @package    MagentoExtension
+ * @subpackage Fixure
+ *
+ * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
+ */
 namespace spec\MageTest\MagentoExtension\Fixture;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
-class Product extends ObjectBehavior
+
+/**
+ * ProductSpec
+ *
+ * @category   MageTest
+ * @package    MagentoExtension
+ * @subpackage Fixture
+ *
+ * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
+ */
+class ProductSpec extends ObjectBehavior
 {
     private $productModel = null;
 
@@ -25,6 +56,7 @@ class Product extends ObjectBehavior
         $productResourceModel->shouldReceive('getEntityType')->andReturn($entityType);
 
         $this->productModel->shouldReceive('getResource')->andReturn($productResourceModel)->ordered();
+        $this->productModel->shouldReceive('getAttributes')->andReturn(array());
     }
 
     function it_should_create_a_product_given_all_required_attributes()
@@ -44,6 +76,8 @@ class Product extends ObjectBehavior
             'sku' => 'sdf'
         );
 
+        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('setData')
             ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
@@ -74,6 +108,8 @@ class Product extends ObjectBehavior
             'sku' => $data['sku']
         );
 
+        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('setData')
             ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
@@ -109,6 +145,8 @@ class Product extends ObjectBehavior
 
         $this->productModel->shouldReceive('getData')
             ->once()->andReturn(array('loaded_attr' => 27));
+        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('setData')
             ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
@@ -124,6 +162,8 @@ class Product extends ObjectBehavior
             'sku' => 'sku'.time()
         );
 
+        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('setData')->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
         $this->productModel->shouldReceive('getId')->once()->andReturn(554)->ordered();

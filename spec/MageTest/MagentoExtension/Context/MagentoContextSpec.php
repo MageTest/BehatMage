@@ -16,35 +16,35 @@
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Context
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
+namespace spec\MageTest\MagentoExtension\Context;
+
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * Bootstrap
+ * MagentoContextSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Context\Initializer
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Bootstrap
+class MagentoContextSpec extends ObjectBehavior
 {
-    public function app()
+    function it_should_support_mink()
     {
-        return \Mage::app();
+        $this->shouldBeAnInstanceOf("Behat\MinkExtension\Context\MinkAwareInterface");
     }
 
-    public function getMageReflection()
+    function it_should_add_some_magento_goodies()
     {
-        return new \ReflectionClass('Mage');
+        $this->shouldBeAnInstanceOf("MageTest\MagentoExtension\Context\MagentoAwareInterface");
     }
 
-    public function getMageCoreModelAppReflection()
-    {
-        return new \ReflectionClass('Mage_Core_Model_App');
-    }
 }
