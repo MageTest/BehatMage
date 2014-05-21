@@ -78,8 +78,8 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface
         $m = explode('/', ltrim($uri, '/'));
         // Check if frontName matches a configured admin route
         if ($this->app->getFrontController()->getRouter('admin')->getRouteByFrontName($m[0])) {
-            $processedUri = "/{$m[0]}/{$m[1]}/{$m[2]}/key/".$urlModel->getSecretKey($m[0], $m[1])."/{$m[2]}";
-            $this->getSession()->visit($processedUri);
+            $processedUri = "/{$m[0]}/{$m[1]}/{$m[2]}/key/".$urlModel->getSecretKey($m[1], $m[2]);
+            $this->getSession()->visit($this->locatePath($processedUri));
         } else {
             throw new \InvalidArgumentException('$uri parameter should start with a valid admin route and contain controller and action elements');
         }
