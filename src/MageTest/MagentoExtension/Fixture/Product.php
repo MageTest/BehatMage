@@ -77,8 +77,16 @@ class Product implements FixtureInterface
             ->setWebsiteIds(array_map(function($website) {
                 return $website->getId();
             }, \Mage::app()->getWebsites()))
-            ->setData($this->mergeAttributes($attributes))
-            ->save();
+            ->setData($this->mergeAttributes($attributes));
+
+            if (!empty($attributes['image'])) {
+                $imagePath = getcwd() . '/' . $attributes['image'];
+                $visibility =array('thumbnail', 'small_image', 'image');
+                $this->model
+                    ->addImageToMediaGallery($imagePath, $visibility, false, false);
+            }
+
+            $this->model->save();
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
