@@ -22,6 +22,7 @@
  */
 namespace spec\MageTest\MagentoExtension\Fixture;
 
+use MageTest\MagentoExtension\Helper\Website;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -46,8 +47,13 @@ class ProductSpec extends ObjectBehavior
         // Class is final, we can only use a partial mock
         $this->productModel = $productModel = \Mockery::mock(new \Mage_Catalog_Model_Product);
 
+        $websiteHelper = \Mockery::mock(new Website());
+        $websiteHelper->shouldReceive('getWebsiteIds')->andReturn(array());
+        $websiteHelper->shouldReceive('getWebsites')->andReturn(array());
+
         $factory = function () use ($productModel) { return $productModel; };
-        $this->beConstructedWith($factory);
+
+        $this->beConstructedWith($factory, $websiteHelper);
 
         $entityType = \Mockery::mock(new \Mage_Eav_Model_Entity_Type);
         $entityType->shouldReceive('getDefaultAttributeSetId')->andReturn(7);
@@ -78,8 +84,9 @@ class ProductSpec extends ObjectBehavior
 
         $this->productModel->shouldReceive('setWebsiteIds')->with(array())
             ->once()->andReturn($this->productModel)->ordered();
-        $this->productModel->shouldReceive('setData')
-            ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
+        $this->productModel->shouldReceive('setTypeId')->with(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)->andReturn($this->productModel);
+        $this->productModel->shouldReceive('getTypeId')->andReturn(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE);
+        $this->productModel->shouldReceive('setData')->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
         $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
         $this->productModel->shouldReceive('getId')->andReturn(1);
         $this->productModel->shouldReceive('getIdBySku')->andReturn(false);

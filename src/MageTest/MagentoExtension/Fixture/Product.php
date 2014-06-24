@@ -22,6 +22,8 @@
  */
 namespace MageTest\MagentoExtension\Fixture;
 use MageTest\MagentoExtension\Fixture;
+use MageTest\MagentoExtension\Helper\Website;
+use MageTest\MagentoExtension\Helper\WebsiteHelperInterface;
 
 /**
  * Product fixtures functionality provider
@@ -34,16 +36,25 @@ use MageTest\MagentoExtension\Fixture;
  */
 class Product implements FixtureInterface
 {
+    const MAGE_PRODUCT_MODEL_PATH = 'catalog/product';
+
     private $modelFactory = null;
     private $model;
     private $defaultAttributes;
 
     /**
-     * @param $productModelFactory \Closure optional
+     * @var \MageTest\MagentoExtension\Helper\WebsiteHelperInterface
      */
-    public function __construct($productModelFactory = null)
+    protected $websiteHelper;
+
+    /**
+     * @param null $productModelFactory
+     * @param null $websiteHelperFactory
+     */
+    public function __construct($productModelFactory = null, $websiteHelperFactory = null)
     {
-        $this->modelFactory = $productModelFactory ?: $this->defaultModelFactory();
+        $this->modelFactory  = $productModelFactory  ?: $this->defaultModelFactory();
+        $this->websiteHelper = $websiteHelperFactory ?: $this->defaultWebsiteHelperFactory();
     }
 
     /**
@@ -56,7 +67,9 @@ class Product implements FixtureInterface
     public function create(array $attributes)
     {
         $modelFactory = $this->modelFactory;
-        $this->model = $modelFactory();
+        $this->model  = $modelFactory();
+
+        $attributes   = $this->sanitizeAttributes($attributes);
 
         $id = $this->model->getIdBySku($attributes['sku']);
         if ($id) {
@@ -67,7 +80,6 @@ class Product implements FixtureInterface
             $this->model->setTypeId($attributes['type_id']);
         }
 
-        $attributes = $this->sanitizeAttributes($attributes);
 
         $this->validateAttributes(array_keys($attributes));
 
@@ -76,7 +88,7 @@ class Product implements FixtureInterface
         $this->model
             ->setWebsiteIds(array_map(function($website) {
                 return $website->getId();
-            }, \Mage::app()->getWebsites()))
+            }, $this->websiteHelper->getWebsites()))
             ->setData($this->mergeAttributes($attributes))
             ->save();
 
@@ -85,34 +97,18 @@ class Product implements FixtureInterface
         return $this->model->getId();
     }
 
-    function mergeAttributes($attributes)
+    private function mergeAttributes($attributes)
     {
         return array_merge($this->getDefaultAttributes(), $this->model->getData(), $attributes);
     }
 
-    function validateAttributes($attributes)
+    private function validateAttributes($attributes)
     {
         foreach ($attributes as $attribute) {
             if (!$this->attributeExists($attribute)) {
                 throw new \RuntimeException("$attribute is not yet defined as an attribute of Product");
             }
         }
-    }
-
-    function attributeExists($attribute)
-    {
-        return in_array($attribute, array_keys($this->getDefaultAttributes()));
-    }
-
-    protected function sanitizeAttributes($attributes)
-    {
-        foreach ($attributes as $key => $value) {
-            if (!$this->attributeExists($key) && empty($value)) {
-                unset($attributes[$key]);
-            }
-        }
-
-        return $attributes;
     }
 
     /**
@@ -140,45 +136,66 @@ class Product implements FixtureInterface
     public function defaultModelFactory()
     {
         return function () {
-            return \Mage::getModel('catalog/product');
+            return \Mage::app()->getModel(self::MAGE_PRODUCT_MODEL_PATH);
         };
+    }
+
+    /**
+     * Retrieve default Website helper used in the class
+     *
+     * @return Website
+     */
+    private function defaultWebsiteHelperFactory()
+    {
+        return new Website();
+    }
+
+
+    protected function sanitizeAttributes($attributes)
+    {
+        foreach ($attributes as $key => $value) {
+            if (!$this->attributeExists($key) && empty($value)) {
+                unset($attributes[$key]);
+            }
+        }
+
+        return $attributes;
+    }
+
+    private function attributeExists($attribute)
+    {
+        return in_array($attribute, array_keys($this->getDefaultAttributes()));
     }
 
     protected function getDefaultAttributes()
     {
-        if ($this->defaultAttributes[$this->model->getTypeId()]) {
-            return $this->defaultAttributes[$this->model->getTypeId()];
+        $typeId = $this->model->getTypeId();
+
+        if ($this->defaultAttributes[$typeId]) {
+            return $this->defaultAttributes[$typeId];
         }
-        $eavAttributes = $this->model->getAttributes();
+
+        $eavAttributes  = $this->model->getAttributes();
         $attributeCodes = array();
         foreach ($eavAttributes as $attributeObject) {
-            $attributeCodes[$attributeObject->getAttributeCode()] = "";
+            $attributeCodes[$attributeObject->getAttributeCode()] = '';
         }
 
-        return $this->defaultAttributes[$this->model->getTypeId()] = array_merge($attributeCodes, array(
-            'sku' => '',
-            'attribute_set_id' => $this->retrieveDefaultAttributeSetId(),
-            'name' => 'product name',
-            'weight' => 2,
-            'visibility'=> \Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
-            'status' => \Mage_Catalog_Model_Product_Status::STATUS_ENABLED,
-            'price' => 100,
-            'description' => 'Product description',
+        return $this->defaultAttributes[$typeId] = array_merge($attributeCodes, array(
+            'sku'               => '',
+            'attribute_set_id'  => $this->retrieveDefaultAttributeSetId(),
+            'name'              => 'product name',
+            'weight'            => 2,
+            'visibility'        => \Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
+            'status'            => \Mage_Catalog_Model_Product_Status::STATUS_ENABLED,
+            'price'             => 100,
+            'description'       => 'Product description',
             'short_description' => 'Product short description',
-            'tax_class_id' => 1,
-            'type_id' => \Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
-            'stock_data' => array( 'is_in_stock' => 1, 'qty' => 99999 ),
-            'website_ids' => $this->getWebsiteIds(),
+            'tax_class_id'      => 1,
+            'type_id'           => \Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
+            'stock_data'        => array( 'is_in_stock' => 1, 'qty' => 99999 ),
+            'website_ids'       => $this->websiteHelper->getWebsiteIds(),
         ));
-    }
-
-    protected function getWebsiteIds()
-    {
-        $ids = array();
-        foreach (\Mage::getModel('core/website')->getCollection() as $website) {
-            $ids[] = $website->getId();
-        }
-        return $ids;
     }
 
     protected function retrieveDefaultAttributeSetId()
