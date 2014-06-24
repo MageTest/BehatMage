@@ -21,9 +21,9 @@
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
 namespace MageTest\MagentoExtension\Fixture;
+
 use MageTest\MagentoExtension\Fixture;
 use MageTest\MagentoExtension\Helper\Website;
-use MageTest\MagentoExtension\Helper\WebsiteHelperInterface;
 
 /**
  * Product fixtures functionality provider
@@ -36,14 +36,12 @@ use MageTest\MagentoExtension\Helper\WebsiteHelperInterface;
  */
 class Product implements FixtureInterface
 {
-    const MAGE_PRODUCT_MODEL_PATH = 'catalog/product';
-
     private $modelFactory = null;
     private $model;
     private $defaultAttributes;
 
     /**
-     * @var \MageTest\MagentoExtension\Helper\WebsiteHelperInterface
+     * @var \MageTest\MagentoExtension\Helper\Website
      */
     protected $websiteHelper;
 
@@ -79,7 +77,6 @@ class Product implements FixtureInterface
         if (!empty($attributes['type_id'])) {
             $this->model->setTypeId($attributes['type_id']);
         }
-
 
         $this->validateAttributes(array_keys($attributes));
 
@@ -127,7 +124,6 @@ class Product implements FixtureInterface
         $model->delete();
     }
 
-
     /**
      * retrieve default product model factory
      *
@@ -136,7 +132,7 @@ class Product implements FixtureInterface
     public function defaultModelFactory()
     {
         return function () {
-            return \Mage::app()->getModel(self::MAGE_PRODUCT_MODEL_PATH);
+            return \Mage::app()->getModel('catalog/product');
         };
     }
 
@@ -149,7 +145,6 @@ class Product implements FixtureInterface
     {
         return new Website();
     }
-
 
     protected function sanitizeAttributes($attributes)
     {
