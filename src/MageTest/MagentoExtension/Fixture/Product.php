@@ -156,6 +156,7 @@ class Product implements FixtureInterface
         }
 
         return $this->defaultAttributes[$this->model->getTypeId()] = array_merge($attributeCodes, array(
+            'created_at' => strtotime('now'),
             'sku' => '',
             'attribute_set_id' => $this->retrieveDefaultAttributeSetId(),
             'name' => 'product name',
