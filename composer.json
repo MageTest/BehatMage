@@ -20,6 +20,13 @@
     },
     "autoload": {
         "psr-0": {
+            "":[
+                "vendor/magetest/magento/src/app",
+                "vendor/magetest/magento/src/lib",
+                "vendor/magetest/magento/src/app/code/local",
+                "vendor/magetest/magento/src/app/code/community",
+                "vendor/magetest/magento/src/app/code/core"
+            ],
             "MageTest": "src/"
         }
     },
