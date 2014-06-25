@@ -23,11 +23,8 @@ class Website
      */
     public function getWebsiteIds()
     {
-        /** @var \Mage_Core_Model_Website $coreWebsite */
-        $coreWebsite = \Mage::app()->getModel('core/website');
         $ids = array();
-
-        foreach ($coreWebsite->getCollection() as $website) {
+        foreach (\Mage::app()->getModel('core/website')->getCollection() as $website) {
             $ids[] = $website->getId();
         }
 
