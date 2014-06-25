@@ -91,9 +91,15 @@ class Session
      */
     public function customerLogin($email, $password)
     {
-        if (PHP_SESSION_ACTIVE === session_status()) {
-            session_write_close();
-            $_SESSION = null;
+        if (version_compare(phpversion(), '5.4.0', '>=')) {
+            if (PHP_SESSION_ACTIVE === session_status()) {
+                session_write_close();
+                $_SESSION = null;
+            }
+        } else {
+            if (session_id() !== '') {
+                $_SESSION = null;
+            }
         }
 
         /** @var $session \Mage_Customer_Model_Session */
