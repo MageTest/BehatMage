@@ -113,7 +113,7 @@ class Product implements FixtureInterface
     public function defaultModelFactory()
     {
         return function () {
-            return \Mage::app()->getModel('catalog/product');
+            return \Mage::getModel('catalog/product');
         };
     }
 
