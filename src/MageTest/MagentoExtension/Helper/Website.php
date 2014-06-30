@@ -49,7 +49,7 @@ class Website
     public function getWebsiteIds()
     {
         $ids = array();
-        foreach (\Mage::app()->getModel('core/website')->getCollection() as $website) {
+        foreach (\Mage::getModel('core/website')->getCollection() as $website) {
             $ids[] = $website->getId();
         }
 
