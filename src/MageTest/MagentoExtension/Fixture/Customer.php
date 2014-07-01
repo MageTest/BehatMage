@@ -22,7 +22,8 @@
  */
 namespace MageTest\MagentoExtension\Fixture;
 
-use Mage;
+use Mage,
+    MageTest\MagentoExtension\Helper\Website;
 
 /**
  * User fixtures functionality provider
@@ -35,14 +36,18 @@ use Mage;
  */
 class Customer implements FixtureInterface
 {
-    private $_modelFactory = null;
+    /**
+     * @var \MageTest\MagentoExtension\Helper\Website
+     */
+    protected $serviceContainer;
 
     /**
-     * @param $modelFactory \Closure optional
+     * @param array $serviceContainer
      */
-    public function __construct($modelFactory = null)
+    public function __construct(array $serviceContainer = null)
     {
-        $this->_modelFactory = $modelFactory ?: $this->defaultModelFactory();
+        $this->serviceContainer['customerModel'] = isset($serviceContainer['customerModel']) ? $serviceContainer['customerModel'] : $this->defaultModelFactory();
+        $this->serviceContainer['websiteHelper'] = isset($serviceContainer['websiteHelper']) ? $serviceContainer['websiteHelper'] : $this->defaultWebsiteHelperFactory();
     }
 
     /**
@@ -54,8 +59,7 @@ class Customer implements FixtureInterface
      */
     public function create(array $attributes)
     {
-        $modelFactory = $this->_modelFactory;
-        $model = $modelFactory();
+        $model = $this->serviceContainer['customerModel']();
 
         if (!empty($attributes['email'])) {
 
@@ -89,29 +93,15 @@ class Customer implements FixtureInterface
      */
     public function delete($identifier)
     {
-        $modelFactory = $this->_modelFactory;
-        $model = $modelFactory();
-
+        $model = $this->serviceContainer['customerModel']();
         $model->load($identifier);
         $model->delete();
     }
 
     /**
-     * retrieve default product model factory
-     *
-     * @return \Closure
-     */
-    public function defaultModelFactory()
-    {
-        return function () {
-            return Mage::getModel('customer/customer');
-        };
-    }
-
-    /**
      * Validates the model and ensures it is ready to be saved. Throws exception if validation fails
      *
-     * @param Mage_Core_Model_Abstract $model
+     * @param \Mage_Core_Model_Abstract $model
      * @return boolean
      * @throws \Exception
      */
@@ -125,6 +115,30 @@ class Customer implements FixtureInterface
 
     protected function getWebsiteIds()
     {
-        return Mage::app()->getWebsites();
+        return $this->serviceContainer['websiteHelper']()->getWebsiteIds();
+    }
+
+    /**
+     * retrieve default product model factory
+     *
+     * @return \Closure
+     */
+    public function defaultModelFactory()
+    {
+        return function () {
+            return \Mage::getModel('customer/customer');
+        };
+    }
+
+    /**
+     * Retrieve default Website helper used in the class
+     *
+     * @return callable
+     */
+    private function defaultWebsiteHelperFactory()
+    {
+        return function() {
+            return new Website();
+        };
     }
 }
