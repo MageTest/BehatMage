@@ -83,7 +83,7 @@ class UserSpec extends ObjectBehavior
         $this->shouldThrow('\Exception', 'Username provided to user fixture should not be existing')->during('create', array($data));
     }
 
-    function it_should_return_the_created_objects_id()
+    function it_should_return_the_fixture()
     {
         $data = array(
             'sku' => 'sku'.time()
@@ -94,7 +94,7 @@ class UserSpec extends ObjectBehavior
         $this->userModel->shouldReceive('getId')->once()->andReturn(554)->ordered();
         $this->userModel->shouldReceive('userExists')->andReturn(false);
 
-        $this->create($data)->shouldBe(554);
+        $this->create($data)->shouldHaveType('\MageTest\MagentoExtension\Fixture\User');
     }
 
     function it_should_load_object_and_delete_it_when_delete_is_requested()

@@ -36,6 +36,7 @@ use Mage,
  */
 class Customer implements FixtureInterface
 {
+    private $model;
     /**
      * @var \MageTest\MagentoExtension\Helper\Website
      */
@@ -59,43 +60,48 @@ class Customer implements FixtureInterface
      */
     public function create(array $attributes)
     {
-        $model = $this->serviceContainer['customerModel']();
+        $this->model = $this->serviceContainer['customerModel']();
 
         if (!empty($attributes['email'])) {
 
             if (!empty($attributes['website_id'])) {
-                $model->setWebsiteId($attributes['website_id']);
+                $this->model->setWebsiteId($attributes['website_id']);
             } else {
-                $model->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
+                $this->model->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
             }
 
-            $model->loadByEmail($attributes['email']);
+            $this->model->loadByEmail($attributes['email']);
         }
 
-        $model->addData($attributes);
+        $this->model->addData($attributes);
 
-        if ($this->validate($model)) {
+        if ($this->validate($this->model)) {
 
-            $model->save();
+            $this->model->save();
 
-            return $model->getId();
+            return $this->model->getId();
         }
 
-        return null;
+        return $this->model;
     }
 
     /**
      * Delete the requested fixture from Magento DB
      *
-     * @param $identifier int object identifier
-     *
      * @return null
      */
-    public function delete($identifier)
+    public function delete()
     {
+        if ($this->model) {
+            $this->model->delete();
+        }
+    }
+
+    /**
         $model = $this->serviceContainer['customerModel']();
         $model->load($identifier);
         $model->delete();
+        };
     }
 
     /**

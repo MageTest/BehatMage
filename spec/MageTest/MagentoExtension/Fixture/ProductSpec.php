@@ -37,14 +37,14 @@ use Prophecy\Argument;
  */
 class ProductSpec extends ObjectBehavior
 {
-    private $productModel = null;
+    private $model = null;
 
     function let()
     {
         \Mage::app();
 
         // Class is final, we can only use a partial mock
-        $this->productModel = $productModel = \Mockery::mock(new \Mage_Catalog_Model_Product);
+        $this->model = $productModel = \Mockery::mock(new \Mage_Catalog_Model_Product);
 
         $websiteHelper = \Mockery::mock(new Website());
         $websiteHelper->shouldReceive('getWebsiteIds')->andReturn(array());
@@ -67,8 +67,8 @@ class ProductSpec extends ObjectBehavior
         $productResourceModel = \Mockery::mock('Mage_Catalog_Model_Resource_Product');
         $productResourceModel->shouldReceive('getEntityType')->andReturn($entityType);
 
-        $this->productModel->shouldReceive('getResource')->andReturn($productResourceModel)->ordered();
-        $this->productModel->shouldReceive('getAttributes')->andReturn(array());
+        $this->model->shouldReceive('getResource')->andReturn($productResourceModel)->ordered();
+        $this->model->shouldReceive('getAttributes')->andReturn(array());
     }
 
     function it_should_create_a_product_given_all_required_attributes()
@@ -88,18 +88,24 @@ class ProductSpec extends ObjectBehavior
             'sku'               => 'sdf'
         );
 
-        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
-            ->once()->andReturn($this->productModel)->ordered();
+        $this->model->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('setTypeId')->with(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)->andReturn($this->model);
+        $this->model->shouldReceive('getTypeId')->andReturn(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE);
+        $this->model->shouldReceive('setData')->with(\Mockery::any())->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('save')->once()->andReturn(true)->ordered();
+        $this->model->shouldReceive('getId')->andReturn(1);
+        $this->model->shouldReceive('getIdBySku')->andReturn(false);
 
-        $this->productModel->shouldReceive('setCreatedAt')->with(null)
-            ->once()->andReturn($this->productModel);
+        $this->model->shouldReceive('setCreatedAt')->with(null)
+            ->once()->andReturn($this->model);
 
-        $this->productModel->shouldReceive('setTypeId')->with(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)->andReturn($this->productModel);
-        $this->productModel->shouldReceive('getTypeId')->andReturn(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE);
-        $this->productModel->shouldReceive('setData')->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
-        $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
-        $this->productModel->shouldReceive('getId')->andReturn(1);
-        $this->productModel->shouldReceive('getIdBySku')->andReturn(false);
+        $this->model->shouldReceive('setTypeId')->with(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)->andReturn($this->model);
+        $this->model->shouldReceive('getTypeId')->andReturn(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE);
+        $this->model->shouldReceive('setData')->with(\Mockery::any())->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('save')->once()->andReturn(true)->ordered();
+        $this->model->shouldReceive('getId')->andReturn(1);
+        $this->model->shouldReceive('getIdBySku')->andReturn(false);
 
         $this->create($data);
     }
@@ -125,15 +131,15 @@ class ProductSpec extends ObjectBehavior
             'sku'               => $data['sku']
         );
 
-        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
-            ->once()->andReturn($this->productModel)->ordered();
-        $this->productModel->shouldReceive('setCreatedAt')->with(null)
-            ->once()->andReturn($this->productModel);
-        $this->productModel->shouldReceive('setData')
-            ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
-        $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
-        $this->productModel->shouldReceive('getId')->andReturn(1);
-        $this->productModel->shouldReceive('getIdBySku')->andReturn(false);
+        $this->model->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('setData')
+            ->once()->andReturn($this->model);
+        $this->model->shouldReceive('setData')
+            ->with(\Mockery::any())->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('save')->once()->andReturn(true)->ordered();
+        $this->model->shouldReceive('getId')->andReturn(1);
+        $this->model->shouldReceive('getIdBySku')->andReturn(false);
 
         $this->create($data);
     }
@@ -160,44 +166,44 @@ class ProductSpec extends ObjectBehavior
             'sku'               => $data['sku']
         );
 
-        $this->productModel->shouldReceive('getIdBySku')->with('sku1')->once()->andReturn(123);
-        $this->productModel->shouldReceive('getData')
+        $this->model->shouldReceive('getIdBySku')->with('sku1')->once()->andReturn(123);
+        $this->model->shouldReceive('getData')
             ->once()->andReturn(array('loaded_attr' => 27));
-        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
-            ->once()->andReturn($this->productModel)->ordered();
-        $this->productModel->shouldReceive('setCreatedAt')->with(null)
-            ->once()->andReturn($this->productModel);
-        $this->productModel->shouldReceive('setData')
-            ->with(\Mockery::any())->once()->andReturn($this->productModel)->ordered();
-        $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
-        $this->productModel->shouldReceive('getId')->andReturn(1);
-        $this->productModel->shouldReceive('load')->with(123)->once()->andReturn(1);
+        $this->model->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('setData')
+            ->once()->andReturn($this->model);
+        $this->model->shouldReceive('setData')
+            ->with(\Mockery::any())->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('save')->once()->andReturn(true)->ordered();
+        $this->model->shouldReceive('getId')->andReturn(1);
+        $this->model->shouldReceive('load')->with(123)->once()->andReturn(1);
 
         $this->create($data);
     }
 
-    function it_should_return_the_created_objects_id()
+    function it_should_return_the_fixture()
     {
         $data = array(
             'sku' => 'sku'.time()
         );
 
-        $this->productModel->shouldReceive('setWebsiteIds')->with(array())
-            ->once()->andReturn($this->productModel)->ordered();
-        $this->productModel->shouldReceive('setCreatedAt')->with(null)
-            ->once()->andReturn($this->productModel);
-        $this->productModel->shouldReceive('setData')->once()->andReturn($this->productModel)->ordered();
-        $this->productModel->shouldReceive('save')->once()->andReturn(true)->ordered();
-        $this->productModel->shouldReceive('getId')->once()->andReturn(554)->ordered();
-        $this->productModel->shouldReceive('getIdBySku')->andReturn(false);
+        $this->model->shouldReceive('setWebsiteIds')->with(array())
+            ->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('setCreatedAt')->with(null)
+            ->once()->andReturn($this->model);
+        $this->model->shouldReceive('setData')->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('save')->once()->andReturn(true)->ordered();
+        $this->model->shouldReceive('getId')->once()->andReturn(554)->ordered();
+        $this->model->shouldReceive('getIdBySku')->andReturn(false);
 
-        $this->create($data)->shouldBe(554);
+        $this->create($data)->shouldHaveType('\MageTest\MagentoExtension\Fixture\Product');
     }
 
     function it_should_load_object_and_delete_it_when_delete_is_requested()
     {
-        $this->productModel->shouldReceive('load')->with(554)->once()->andReturn($this->productModel)->ordered();
-        $this->productModel->shouldReceive('delete')->once()->andReturn(null)->ordered();
+        $this->model->shouldReceive('load')->with(554)->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('delete')->once()->andReturn(null)->ordered();
 
         $this->delete(554);
     }

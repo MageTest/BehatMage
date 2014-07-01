@@ -36,6 +36,7 @@ use MageTest\MagentoExtension\Helper\Website;
  */
 class Product implements FixtureInterface
 {
+    private $model;
     private $defaultAttributes;
 
     /**
@@ -57,53 +58,50 @@ class Product implements FixtureInterface
      *
      * @param $attributes array product attributes map using 'label' => 'value' format
      *
-     * @return int
+     * @return $this
      */
     public function create(array $attributes)
     {
-        $productModel  = $this->serviceContainer['productModel']();
+        $this->model = $this->serviceContainer['productModel']();
         $websiteHelper = $this->serviceContainer['websiteHelper']();
 
         $attributes   = $this->sanitizeAttributes($attributes);
 
-        $id = $productModel->getIdBySku($attributes['sku']);
+        $id = $this->model->getIdBySku($attributes['sku']);
         if ($id) {
-            $productModel->load($id);
+            $this->model->load($id);
         }
 
         if (!empty($attributes['type_id'])) {
-            $productModel->setTypeId($attributes['type_id']);
+            $this->model->setTypeId($attributes['type_id']);
         }
 
         $this->validateAttributes(array_keys($attributes));
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
 
-        $productModel
+        $this->model
             ->setWebsiteIds(array_map(function($website) {
                 return $website->getId();
             }, $websiteHelper->getWebsites()))
             ->setData($this->mergeAttributes($attributes))
-            ->setCreatedAt(null)
             ->save();
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
-        return $productModel->getId();
+        return $this;
     }
 
     /**
      * Delete the requested fixture from Magento DB
      *
-     * @param $identifier int object identifier
-     *
      * @return null
      */
-    public function delete($identifier)
+    public function delete()
     {
-        $model = $this->serviceContainer['productModel']();
-        $model->load($identifier);
-        $model->delete();
+        if ($this->model) {
+            $this->model->delete();
+        }
     }
 
     /**
