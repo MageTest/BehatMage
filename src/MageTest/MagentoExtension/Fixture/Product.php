@@ -80,6 +80,17 @@ class Product implements FixtureInterface
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
 
+        if (!empty($attributes['image'])) {
+            if (!$imagePath = getcwd() . DIRECTORY_SEPARATOR . $attributes['image']) {
+                throw new \RuntimeException("Image asset not found. $imagePath");
+            }
+
+            $visibility = array('thumbnail', 'small_image', 'image');
+            $this->model
+                ->addImageToMediaGallery($imagePath, $visibility, false, false)
+                ->save();
+        }
+
         $this->model
             ->setWebsiteIds(array_map(function($website) {
                 return $website->getId();

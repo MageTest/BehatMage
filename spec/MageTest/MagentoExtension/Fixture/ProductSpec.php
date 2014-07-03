@@ -100,6 +100,9 @@ class ProductSpec extends ObjectBehavior
         $this->model->shouldReceive('setCreatedAt')->with(null)
             ->once()->andReturn($this->model);
 
+        $this->model->shouldReceive('addImageToMediaGallery')->with('image.jpg', ['thumbnail', 'small_image', 'image'], false,
+            false)->once()->andReturn(true)->ordered();
+
         $this->model->shouldReceive('setTypeId')->with(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)->andReturn($this->model);
         $this->model->shouldReceive('getTypeId')->andReturn(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE);
         $this->model->shouldReceive('setData')->with(\Mockery::any())->once()->andReturn($this->model)->ordered();
