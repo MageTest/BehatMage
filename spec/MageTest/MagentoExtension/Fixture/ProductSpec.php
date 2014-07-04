@@ -137,6 +137,8 @@ class ProductSpec extends ObjectBehavior
             ->once()->andReturn($this->model);
         $this->model->shouldReceive('setData')
             ->with(\Mockery::any())->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('setCreatedAt')->with(null)
+            ->once()->andReturn($this->model);
         $this->model->shouldReceive('save')->once()->andReturn(true)->ordered();
         $this->model->shouldReceive('getId')->andReturn(1);
         $this->model->shouldReceive('getIdBySku')->andReturn(false);
@@ -175,6 +177,8 @@ class ProductSpec extends ObjectBehavior
             ->once()->andReturn($this->model);
         $this->model->shouldReceive('setData')
             ->with(\Mockery::any())->once()->andReturn($this->model)->ordered();
+        $this->model->shouldReceive('setCreatedAt')->with(null)
+            ->once()->andReturn($this->model);
         $this->model->shouldReceive('save')->once()->andReturn(true)->ordered();
         $this->model->shouldReceive('getId')->andReturn(1);
         $this->model->shouldReceive('load')->with(123)->once()->andReturn(1);
