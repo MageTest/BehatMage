@@ -180,7 +180,7 @@ CONF;
                 unset($row['qty']);
             }
 
-            $fixtureGenerator->create('product',$row);
+            $this->factory->create('product', $row);
         }
     }
 
