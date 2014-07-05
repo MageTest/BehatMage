@@ -84,16 +84,7 @@ class Product implements FixtureInterface
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
 
-        if (!empty($attributes['image'])) {
-            if (!$imagePath = getcwd() . DIRECTORY_SEPARATOR . $attributes['image']) {
-                throw new \RuntimeException("Image asset not found. $imagePath");
-            }
-
-            $visibility = array('thumbnail', 'small_image', 'image');
-            $this->model
-                ->addImageToMediaGallery($imagePath, $visibility, false, false)
-                ->save();
-        }
+        $this->setProductImageAssets($attributes);
 
         $this->model
             ->setWebsiteIds(array_map(function($website) {
@@ -211,5 +202,24 @@ class Product implements FixtureInterface
             ->getResource()
             ->getEntityType()
             ->getDefaultAttributeSetId();
+    }
+
+    /**
+     * Set media assets against a product if passed via example table.
+     *
+     * @param array $attributes
+     */
+    private function setProductImageAssets(array $attributes)
+    {
+        if (!empty($attributes['image'])) {
+            if (!$imagePath = getcwd() . DIRECTORY_SEPARATOR . $attributes['image']) {
+                throw new \RuntimeException("Image asset not found. $imagePath");
+            }
+
+            $visibility = array('thumbnail', 'small_image', 'image');
+            $this->model
+                ->addImageToMediaGallery($imagePath, $visibility, false, false)
+                ->save();
+        }
     }
 }
