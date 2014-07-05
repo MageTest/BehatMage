@@ -22,8 +22,8 @@
  */
 namespace MageTest\MagentoExtension\Service;
 
-use MageTest\MagentoExtension\Service\Config\CoreConfig,
-    MageTest\MagentoExtension\Service\Bootstrap;
+use MageTest\MagentoExtension\Service\Config\CoreConfig;
+use MageTest\MagentoExtension\Service\Bootstrap;
 
 /**
  * ConfigManager

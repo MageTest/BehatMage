@@ -568,7 +568,7 @@ class Order implements FixtureInterface
     /**
      * Retrieve admin session object
      *
-     * @return Mage_Adminhtml_Model_Session_Quote
+     * @return \Mage_Core_Model_Abstract
      */
     protected function getAdminSession()
     {
@@ -579,7 +579,7 @@ class Order implements FixtureInterface
      * Initialize order creation session data
      *
      * @param array $data
-     * @return \Mage_Adminhtml_Sales_Order_CreateController
+     * @return Order
      */
     protected function initSession($data)
     {

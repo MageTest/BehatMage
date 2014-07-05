@@ -23,15 +23,12 @@
 namespace MageTest\MagentoExtension\Context;
 
 use Mage_Core_Model_App as MageApp;
-use MageTest\MagentoExtension\Context\MagentoAwareContext,
-    MageTest\MagentoExtension\Service\ConfigManager,
-    MageTest\MagentoExtension\Service\CacheManager,
-    MageTest\MagentoExtension\Service,
-    MageTest\MagentoExtension\Fixture\FixtureFactory,
-    MageTest\MagentoExtension\Service\Session;
-
-use Behat\MinkExtension\Context\RawMinkContext,
-    Behat\Gherkin\Node\TableNode;
+use MageTest\MagentoExtension\Service\ConfigManager;
+use MageTest\MagentoExtension\Service\CacheManager;
+use MageTest\MagentoExtension\Fixture\FixtureFactory;
+use MageTest\MagentoExtension\Service\Session;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\TableNode;
 
 /**
  * MagentoContext
