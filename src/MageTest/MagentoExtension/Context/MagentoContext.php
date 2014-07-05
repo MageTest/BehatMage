@@ -165,7 +165,6 @@ CONF;
     public function theProductsExist(TableNode $table)
     {
         $hash = $table->getHash();
-        $fixtureGenerator = $this->factory->create('product');
         foreach ($hash as $row) {
             if (isset($row['is_in_stock'])) {
                 if (!isset($row['qty'])) {
@@ -181,7 +180,7 @@ CONF;
                 unset($row['qty']);
             }
 
-            $fixtureGenerator->create($row);
+            $fixtureGenerator->create('product',$row);
         }
     }
 
