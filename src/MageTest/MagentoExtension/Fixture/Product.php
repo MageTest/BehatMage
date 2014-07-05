@@ -67,6 +67,10 @@ class Product implements FixtureInterface
 
         $attributes   = $this->sanitizeAttributes($attributes);
 
+        if (empty($attributes['sku'])) {
+            throw new \RuntimeException("Cannot generate a product fixture when no 'sku' attribute is provided");
+        }
+
         $id = $this->model->getIdBySku($attributes['sku']);
         if ($id) {
             $this->model->load($id);
@@ -96,6 +100,7 @@ class Product implements FixtureInterface
                 return $website->getId();
             }, $websiteHelper->getWebsites()))
             ->setData($this->mergeAttributes($attributes))
+            ->setCreatedAt(null)
             ->save();
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);

@@ -22,6 +22,8 @@
  */
 namespace spec\MageTest\MagentoExtension\Context;
 
+use Behat\Gherkin\Node\TableNode;
+use MageTest\MagentoExtension\Fixture\FixtureFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -37,6 +39,10 @@ use Prophecy\Argument;
  */
 class MagentoContextSpec extends ObjectBehavior
 {
+    function let(FixtureFactory $factory)
+    {
+       $this->setFixtureFactory($factory);
+    }
     function it_should_support_mink()
     {
         $this->shouldBeAnInstanceOf("Behat\MinkExtension\Context\MinkAwareInterface");
@@ -47,4 +53,11 @@ class MagentoContextSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf("MageTest\MagentoExtension\Context\MagentoAwareInterface");
     }
 
+    function it_should_call_create_on_the_fixture_factory(FixtureFactory $factory, TableNode $table)
+    {
+        $dataRow = array('sku'=>'123');
+        $table->getHash()->willReturn(array($dataRow));
+        $factory->create('product', $dataRow)->shouldBeCalled();
+        $this->theProductsExist($table);
+    }
 }
