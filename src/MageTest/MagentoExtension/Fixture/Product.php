@@ -67,6 +67,10 @@ class Product implements FixtureInterface
 
         $attributes   = $this->sanitizeAttributes($attributes);
 
+        if (empty($attributes['sku'])) {
+            throw new \RuntimeException("Cannot generate a product fixture when no 'sku' attribute is provided");
+        }
+
         $id = $this->model->getIdBySku($attributes['sku']);
         if ($id) {
             $this->model->load($id);

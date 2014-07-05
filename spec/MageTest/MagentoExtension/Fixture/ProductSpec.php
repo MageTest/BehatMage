@@ -71,6 +71,11 @@ class ProductSpec extends ObjectBehavior
         $this->model->shouldReceive('getAttributes')->andReturn(array());
     }
 
+    function it_should_throw_exception_if_sku_is_not_defined()
+    {
+        $this->shouldThrow('\RuntimeException')->during('create', array());
+    }
+
     function it_should_create_a_product_given_all_required_attributes()
     {
         $data = array(
