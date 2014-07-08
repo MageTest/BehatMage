@@ -87,6 +87,9 @@ class Category implements FixtureInterface
         return array_merge($this->getDefaultAttributes(), $this->model->getData(), $attributes);
     }
 
+    /**
+     * @param string[] $attributes
+     */
     function validateAttributes($attributes)
     {
         foreach ($attributes as $attribute) {

@@ -23,7 +23,6 @@
 namespace MageTest\MagentoExtension\Fixture;
 use Mage;
 use Mage_Customer_Model_Customer;
-use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 /**
  * User fixtures functionality provider

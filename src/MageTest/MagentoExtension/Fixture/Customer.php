@@ -22,8 +22,8 @@
  */
 namespace MageTest\MagentoExtension\Fixture;
 
-use Mage,
-    MageTest\MagentoExtension\Helper\Website;
+use Mage;
+use MageTest\MagentoExtension\Helper\Website;
 
 /**
  * User fixtures functionality provider
@@ -139,7 +139,7 @@ class Customer implements FixtureInterface
     /**
      * Retrieve default Website helper used in the class
      *
-     * @return callable
+     * @return \Closure
      */
     private function defaultWebsiteHelperFactory()
     {

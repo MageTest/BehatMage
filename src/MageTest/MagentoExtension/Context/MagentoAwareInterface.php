@@ -23,10 +23,10 @@
 namespace MageTest\MagentoExtension\Context;
 
 use Mage_Core_Model_App as MageApp;
-use MageTest\MagentoExtension\Service\ConfigManager,
-    MageTest\MagentoExtension\Service\CacheManager,
-    MageTest\MagentoExtension\Fixture\FixtureFactory,
-    MageTest\MagentoExtension\Service\Session;
+use MageTest\MagentoExtension\Service\ConfigManager;
+use MageTest\MagentoExtension\Service\CacheManager;
+use MageTest\MagentoExtension\Fixture\FixtureFactory;
+use MageTest\MagentoExtension\Service\Session;
 
 /**
  * MagentoAwareInterface
@@ -39,9 +39,28 @@ use MageTest\MagentoExtension\Service\ConfigManager,
  */
 interface MagentoAwareInterface
 {
+    /**
+     * @return void
+     */
     public function setApp(MageApp $app);
+
+    /**
+     * @return void
+     */
     public function setConfigManager(ConfigManager $config);
+
+    /**
+     * @return void
+     */
     public function setCacheManager(CacheManager $cache);
+
+    /**
+     * @return void
+     */
     public function setFixtureFactory(FixtureFactory $factory);
+
+    /**
+     * @return void
+     */
     public function setSessionService(Session $session);
 }
