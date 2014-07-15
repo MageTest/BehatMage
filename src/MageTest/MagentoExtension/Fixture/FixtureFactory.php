@@ -54,6 +54,9 @@ class FixtureFactory
             case 'product':
                 $fixture = new Product();
                 break;
+            case 'bundle_product':
+                $fixture = new BundleProduct();
+                break;
             case 'user':
                 $fixture = new User();
                 break;
