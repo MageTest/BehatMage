@@ -34,14 +34,15 @@ use MageTest\MagentoExtension\Fixture;
  */
 class User implements FixtureInterface
 {
-    private $_modelFactory = null;
+    private $modelFactory = null;
+    private $model;
 
     /**
      * @param $productModelFactory \Closure optional
      */
     public function __construct($userModelFactory = null)
     {
-        $this->_modelFactory = $userModelFactory ?: $this->defaultModelFactory();
+        $this->modelFactory = $userModelFactory ?: $this->defaultModelFactory();
     }
 
     /**
@@ -49,38 +50,34 @@ class User implements FixtureInterface
      *
      * @param $attributes array attributes map using 'label' => 'value' format
      *
-     * @return int
+     * @return $this
      */
     public function create(array $attributes)
     {
-        $modelFactory = $this->_modelFactory;
-        $model = $modelFactory();
+        $modelFactory = $this->modelFactory;
+        $this->model = $modelFactory();
 
-        $model->setData($attributes);
-        if ($model->userExists()) {
+        $this->model->setData($attributes);
+        if ($this->model->userExists()) {
             throw new \Exception('Username provided to user fixture should not be existing');
         }
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
-        $model->save();
+        $this->model->save();
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
-        return $model->getId();
+        return $this;
     }
 
     /**
      * Delete the requested fixture from Magento DB
      *
-     * @param $identifier int object identifier
-     *
      * @return null
      */
-    public function delete($identifier)
+    public function delete()
     {
-        $modelFactory = $this->_modelFactory;
-        $model = $modelFactory();
-
-        $model->load($identifier);
-        $model->delete();
+        if ($this->model) {
+            $this->model->delete();
+        }
     }
 
     /**

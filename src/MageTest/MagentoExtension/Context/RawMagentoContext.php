@@ -22,11 +22,9 @@ namespace MageTest\MagentoExtension\Context;
 
 use Behat\MinkExtension\Context\MinkContext;
 use Mage_Core_Model_App as MageApp;
-use MageTest\MagentoExtension\Context\MagentoAwareContext;
 use MageTest\MagentoExtension\Fixture\FixtureFactory;
 use MageTest\MagentoExtension\Service\CacheManager;
 use MageTest\MagentoExtension\Service\ConfigManager;
-use MageTest\MagentoExtension\Service;
 use MageTest\MagentoExtension\Service\Session;
 
 /**

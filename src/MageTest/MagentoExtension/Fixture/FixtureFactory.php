@@ -22,6 +22,8 @@
  */
 namespace MageTest\MagentoExtension\Fixture;
 
+use MageTest\MagentoExtension\Fixture\FixtureInterface;
+
 /**
  * AfterScenarioListener
  *
@@ -33,6 +35,7 @@ namespace MageTest\MagentoExtension\Fixture;
  */
 class FixtureFactory
 {
+    private $fixtures = array();
     private $registry;
 
     public function __construct()
@@ -41,43 +44,38 @@ class FixtureFactory
     }
 
     /**
+     * @param string $name the identification key for the fixture
+     * @param FixtureInterface $fixture
+     */
+    public function addFixture($name, FixtureInterface $fixture)
+    {
+        $this->fixtures[$name] = $fixture;
+    }
+
+    /**
      * create the requested fixture generator
      *
-     * @param $identifier string name of fixture generator
+     * @param string $identifier name of fixture generator
+     * @param array $data
      *
-     * @return \MageTest\MagentoExtension\Fixture
      * @throws \InvalidArgumentException
      */
-    public function create($identifier)
+    public function create($identifier, $data = array())
     {
-        switch ($identifier) {
-            case 'product':
-                $fixture = new Product();
-                break;
-            case 'bundle_product':
-                $fixture = new BundleProduct();
-                break;
-            case 'user':
-                $fixture = new User();
-                break;
-            case 'customer':
-                $fixture = new Customer();
-                break;
-            case 'address':
-                $fixture = new Address();
-                break;
-            case 'order':
-                $fixture = new Order();
-                break;
-            case 'category':
-                $fixture = new Category();
-                break;
-            default: throw new \InvalidArgumentException();
+        if (0 === count($this->fixtures)) {
+            throw new \RuntimeException('You need to add a fixture to build');
+        }
+        if (!array_key_exists($identifier, $this->fixtures)) {
+            throw new \InvalidArgumentException(sprintf('Unable to create a fixture of type %s', $identifier));
         }
 
-        array_push($this->registry, $fixture);
-
-        return $fixture;
+        $fixture = clone $this->fixtures[$identifier];
+        try {
+            $fixture->create($data);
+            array_push($this->registry, $fixture);
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Unable to create the Magento fixture ' . $e->getMessage());
+        }
     }
 
     public function clean()
@@ -92,4 +90,5 @@ class FixtureFactory
     {
         return $this->registry;
     }
+
 }

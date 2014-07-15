@@ -35,59 +35,52 @@ use Mage_Customer_Model_Customer;
  */
 class Address implements FixtureInterface
 {
-    private $_modelFactory = null;
-
-    private $_customer = null;
-    private $_customerId = null;
+    private $modelFactory = null;
+    private $model;
+    private $customer = null;
+    private $customerId = null;
 
     /**
      * @param $modelFactory \Closure optional
      */
     public function __construct($modelFactory = null)
     {
-        $this->_modelFactory = $modelFactory ?: $this->defaultModelFactory();
+        $this->modelFactory = $modelFactory ?: $this->defaultModelFactory();
     }
 
     /**
      * Create a fixture in Magento DB using the given attributes map and return its ID
      *
      * @param $attributes array attributes map using 'label' => 'value' format
-     *
-     * @return int
+     * @return $this
      */
     public function create(array $attributes)
     {
-        $modelFactory = $this->_modelFactory;
-        $model = $modelFactory();
+        $modelFactory = $this->modelFactory;
+        $this->model = $modelFactory();
 
-        $model->setData($attributes);
+        $this->model->setData($attributes);
 
-        $model->setCustomerId($this->getCustomerId());
+        $this->model->setCustomerId($this->getCustomerId());
 
-        if ($this->validate($model)) {
-
-            $model->save();
-
-            return $model->getId();
+        if ($this->validate($this->model)) {
+            $this->model->save();
         }
 
-        return null;
+        return $this;
     }
 
     /**
      * Delete the requested fixture from Magento DB
      *
      * @param $identifier int object identifier
-     *
      * @return null
      */
-    public function delete($identifier)
+    public function delete()
     {
-        $modelFactory = $this->_modelFactory;
-        $model = $modelFactory();
-
-        $model->load($identifier);
-        $model->delete();
+        if ($this->model) {
+            $this->model->delete();
+        }
     }
 
     /**
@@ -130,8 +123,8 @@ class Address implements FixtureInterface
      */
     public function setCustomer(Mage_Customer_Model_Customer $customer)
     {
-        $this->_customer = $customer;
-        $this->_customerId = $customer->getId();
+        $this->customer = $customer;
+        $this->customerId = $customer->getId();
 
         return $this;
     }
@@ -143,7 +136,7 @@ class Address implements FixtureInterface
      */
     public function getCustomer()
     {
-        return $this->_customer;
+        return $this->customer;
     }
 
     /**
@@ -154,10 +147,10 @@ class Address implements FixtureInterface
      */
     public function setCustomerId($id)
     {
-        $this->_customerId = $id;
+        $this->customerId = $id;
 
-        if ($this->_customer instanceof Mage_Customer_Model_Customer && $this->_customer->getId() != $id) {
-            $this->_customer = null;
+        if ($this->customer instanceof Mage_Customer_Model_Customer && $this->customer->getId() != $id) {
+            $this->customer = null;
         }
 
         return $this;
@@ -170,9 +163,9 @@ class Address implements FixtureInterface
      */
     public function getCustomerId()
     {
-        if (!$this->_customerId && $this->_customer instanceof Mage_Customer_Model_Customer) {
-            return $this->_customer->getId();
+        if (!$this->customerId && $this->customer instanceof Mage_Customer_Model_Customer) {
+            return $this->customer->getId();
         }
-        return $this->_customerId;
+        return $this->customerId;
     }
 }

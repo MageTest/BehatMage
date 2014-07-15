@@ -23,6 +23,7 @@
 namespace MageTest\MagentoExtension\Fixture;
 
 use Mage;
+use MageTest\MagentoExtension\Helper\Website;
 
 /**
  * User fixtures functionality provider
@@ -35,14 +36,19 @@ use Mage;
  */
 class Customer implements FixtureInterface
 {
-    private $_modelFactory = null;
+    private $model;
+    /**
+     * @var \MageTest\MagentoExtension\Helper\Website
+     */
+    protected $serviceContainer;
 
     /**
-     * @param $modelFactory \Closure optional
+     * @param array $serviceContainer
      */
-    public function __construct($modelFactory = null)
+    public function __construct(array $serviceContainer = null)
     {
-        $this->_modelFactory = $modelFactory ?: $this->defaultModelFactory();
+        $this->serviceContainer['customerModel'] = isset($serviceContainer['customerModel']) ? $serviceContainer['customerModel'] : $this->defaultModelFactory();
+        $this->serviceContainer['websiteHelper'] = isset($serviceContainer['websiteHelper']) ? $serviceContainer['websiteHelper'] : $this->defaultWebsiteHelperFactory();
     }
 
     /**
@@ -54,64 +60,54 @@ class Customer implements FixtureInterface
      */
     public function create(array $attributes)
     {
-        $modelFactory = $this->_modelFactory;
-        $model = $modelFactory();
+        $this->model = $this->serviceContainer['customerModel']();
 
         if (!empty($attributes['email'])) {
 
             if (!empty($attributes['website_id'])) {
-                $model->setWebsiteId($attributes['website_id']);
+                $this->model->setWebsiteId($attributes['website_id']);
             } else {
-                $model->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
+                $this->model->setWebsiteId(Mage::app()->getStore()->getWebsiteId());
             }
 
-            $model->loadByEmail($attributes['email']);
+            $this->model->loadByEmail($attributes['email']);
         }
 
-        $model->addData($attributes);
+        $this->model->addData($attributes);
 
-        if ($this->validate($model)) {
+        if ($this->validate($this->model)) {
 
-            $model->save();
+            $this->model->save();
 
-            return $model->getId();
+            return $this->model->getId();
         }
 
-        return null;
+        return $this->model;
     }
 
     /**
      * Delete the requested fixture from Magento DB
      *
-     * @param $identifier int object identifier
-     *
      * @return null
      */
-    public function delete($identifier)
+    public function delete()
     {
-        $modelFactory = $this->_modelFactory;
-        $model = $modelFactory();
-
-        $model->load($identifier);
-        $model->delete();
+        if ($this->model) {
+            $this->model->delete();
+        }
     }
 
     /**
-     * retrieve default product model factory
-     *
-     * @return \Closure
-     */
-    public function defaultModelFactory()
-    {
-        return function () {
-            return Mage::getModel('customer/customer');
+        $model = $this->serviceContainer['customerModel']();
+        $model->load($identifier);
+        $model->delete();
         };
     }
 
     /**
      * Validates the model and ensures it is ready to be saved. Throws exception if validation fails
      *
-     * @param Mage_Core_Model_Abstract $model
+     * @param \Mage_Core_Model_Abstract $model
      * @return boolean
      * @throws \Exception
      */
@@ -125,6 +121,30 @@ class Customer implements FixtureInterface
 
     protected function getWebsiteIds()
     {
-        return Mage::app()->getWebsites();
+        return $this->serviceContainer['websiteHelper']()->getWebsiteIds();
+    }
+
+    /**
+     * retrieve default product model factory
+     *
+     * @return \Closure
+     */
+    public function defaultModelFactory()
+    {
+        return function () {
+            return \Mage::getModel('customer/customer');
+        };
+    }
+
+    /**
+     * Retrieve default Website helper used in the class
+     *
+     * @return \Closure
+     */
+    private function defaultWebsiteHelperFactory()
+    {
+        return function() {
+            return new Website();
+        };
     }
 }

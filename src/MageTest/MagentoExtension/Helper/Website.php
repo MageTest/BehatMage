@@ -16,32 +16,43 @@
  *
  * @category   MageTest
  * @package    MagentoExtension
+ * @subpackage Helper
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension;
-
-use Behat\Behat\Extension\Extension as BaseExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\Config\FileLocator;
+namespace MageTest\MagentoExtension\Helper;
 
 /**
- * Extension
+ * Website helper
  *
  * @category   MageTest
  * @package    MagentoExtension
+ * @subpackage Helper
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Extension extends BaseExtension
+class Website
 {
     /**
-     * {@inheritdoc}
+     * @param null $withDefault
+     * @param bool $codeKey
+     * @return array
      */
-    public function load(array $config, ContainerBuilder $container)
+    public function getWebsites($withDefault = null, $codeKey = false)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/services'));
-        $loader->load('core.xml');
+        return \Mage::app()->getWebsites($withDefault, $codeKey);
+    }
+
+    /**
+     * @return array
+     */
+    public function getWebsiteIds()
+    {
+        $ids = array();
+        foreach (\Mage::getModel('core/website')->getCollection() as $website) {
+            $ids[] = $website->getId();
+        }
+
+        return $ids;
     }
 }

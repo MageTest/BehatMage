@@ -49,5 +49,5 @@ interface FixtureInterface
      *
      * @return null
      */
-    public function delete($identifier);
+    public function delete();
 }

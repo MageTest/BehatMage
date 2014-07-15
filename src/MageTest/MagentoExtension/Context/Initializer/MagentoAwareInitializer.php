@@ -22,15 +22,14 @@
  */
 namespace MageTest\MagentoExtension\Context\Initializer;
 
-use MageTest\MagentoExtension\Service\Bootstrap,
-    MageTest\MagentoExtension\Service\CacheManager,
-    MageTest\MagentoExtension\Service\ConfigManager,
-    MageTest\MagentoExtension\Service\Session,
-    MageTest\MagentoExtension\Fixture\FixtureFactory,
-    MageTest\MagentoExtension\Context\MagentoAwareInterface;
-
-use Behat\Behat\Context\Initializer\InitializerInterface,
-    Behat\Behat\Context\ContextInterface;
+use MageTest\MagentoExtension\Service\Bootstrap;
+use MageTest\MagentoExtension\Service\CacheManager;
+use MageTest\MagentoExtension\Service\ConfigManager;
+use MageTest\MagentoExtension\Service\Session;
+use MageTest\MagentoExtension\Fixture\FixtureFactory;
+use MageTest\MagentoExtension\Context\MagentoAwareInterface;
+use Behat\Behat\Context\Initializer\InitializerInterface;
+use Behat\Behat\Context\ContextInterface;
 
 /**
  * MagentoAwareInitializer

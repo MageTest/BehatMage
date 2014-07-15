@@ -125,7 +125,7 @@ class Order implements FixtureInterface
      * Addresses can be skipped as long as there is at least one address associated with the customer
      *
      * @param $attributes array Order data can be passed as an associative array
-     * @return int Order id
+     * @return $this
      */
     public function create(array $attributes)
     {
@@ -135,7 +135,7 @@ class Order implements FixtureInterface
 
         $this->model = $this->createOrder();
 
-        return $this->model->getId();
+        return $this;
     }
 
     /**
@@ -367,19 +367,15 @@ class Order implements FixtureInterface
     /**
      * Delete the requested fixture from Magento DB
      *
-     * @param $identifier int object identifier
      * @return null
      */
-    public function delete($identifier)
+    public function delete()
     {
-        $modelFactory = $this->modelFactory;
-        $model = $modelFactory();
-
-        $model->load($identifier);
-
-        $this->enableSecureArea();
-        $model->delete();
-        $this->restoreSecureArea();
+        if ($this->model) {
+            $this->enableSecureArea();
+            $this->model->delete();
+            $this->restoreSecureArea();
+        }
     }
 
     /**
@@ -572,7 +568,7 @@ class Order implements FixtureInterface
     /**
      * Retrieve admin session object
      *
-     * @return Mage_Adminhtml_Model_Session_Quote
+     * @return \Mage_Core_Model_Abstract
      */
     protected function getAdminSession()
     {
@@ -583,7 +579,7 @@ class Order implements FixtureInterface
      * Initialize order creation session data
      *
      * @param array $data
-     * @return \Mage_Adminhtml_Sales_Order_CreateController
+     * @return Order
      */
     protected function initSession($data)
     {

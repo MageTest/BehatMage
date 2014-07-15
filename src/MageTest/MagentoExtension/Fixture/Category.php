@@ -55,7 +55,7 @@ class Category implements FixtureInterface
      *
      * @param $attributes array product attributes map using 'label' => 'value' format
      *
-     * @return int
+     * @return $this
      */
     public function create(array $attributes)
     {
@@ -79,7 +79,7 @@ class Category implements FixtureInterface
         $this->model->setData($this->mergeAttributes($attributes))->save();
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
-        return $this->model->getId();
+        return $this;
     }
 
     function mergeAttributes($attributes)
@@ -87,6 +87,9 @@ class Category implements FixtureInterface
         return array_merge($this->getDefaultAttributes(), $this->model->getData(), $attributes);
     }
 
+    /**
+     * @param string[] $attributes
+     */
     function validateAttributes($attributes)
     {
         foreach ($attributes as $attribute) {
@@ -104,17 +107,13 @@ class Category implements FixtureInterface
     /**
      * Delete the requested fixture from Magento DB
      *
-     * @param $identifier int object identifier
-     *
      * @return null
      */
-    public function delete($identifier)
+    public function delete()
     {
-        $modelFactory = $this->modelFactory;
-        $model = $modelFactory();
-
-        $model->load($identifier);
-        $model->delete();
+        if ($this->model) {
+            $this->model->delete();
+        }
     }
 
 
