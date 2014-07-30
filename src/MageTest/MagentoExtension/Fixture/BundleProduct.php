@@ -31,8 +31,8 @@ use MageTest\MagentoExtension\Helper\Website;
  *
  * Background:
  * Given the following products exist:
- * | sku         | name              | price | tax_class_id  | url_key        | qty   |is_in_stock |backorders|
- * | 678.678.679 | Product Name      | 5.00  | 11            | simple-product | 100   |1           |0         |
+ * | sku         | name              | price | tax_class_id  | url_key        | qty   |is_in_stock |
+ * | 678.678.679 | Product Name      | 5.00  | 11            | simple-product | 100   |1           |
  * And the following bundle products exist:
  * |sku_type    |sku           | name               |url_key              |price_type|was_price_presented|is_available_for_backorder|
  * |1           |BUNDLE-FIXTURE| Bundle Fixture     |bundle-fixture       |0         |1                  |0                         |
