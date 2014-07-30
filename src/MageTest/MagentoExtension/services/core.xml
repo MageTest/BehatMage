@@ -20,6 +20,7 @@
         <parameter key="mage.core.model.config">Mage_Core_Model_Config</parameter>
         <parameter key="mage.core.model.config.data">Mage_Core_Model_Config_Data</parameter>
         <parameter key="behat.magento.context.class_guesser">MageTest\MagentoExtension\Context\ClassGuesser</parameter>
+        <parameter key="behat.magento.fixture.bundle_product">MageTest\MagentoExtension\Fixture\BundleProduct</parameter>
     </parameters>
     <services>
         <service id="mage.core.model.config" class="%mage.core.model.config%" />
@@ -71,6 +72,10 @@
                 <argument>user</argument>
                 <argument type="service" id="behat.magento.fixture.user" />
             </call>
+            <call method="addFixture">
+                <argument>bundle_product</argument>
+                <argument type="service" id="behat.magento.fixture.bundle_product" />
+            </call>
         </service>
         <service id="behat.magento.fixture.address" class="%behat.magento.fixture.address%" />
         <service id="behat.magento.fixture.category" class="%behat.magento.fixture.category%" />
@@ -78,5 +83,6 @@
         <service id="behat.magento.fixture.order" class="%behat.magento.fixture.order%" />
         <service id="behat.magento.fixture.product" class="%behat.magento.fixture.product%" />
         <service id="behat.magento.fixture.user" class="%behat.magento.fixture.user%" />
+        <service id="behat.magento.fixture.bundle_product" class="%behat.magento.fixture.bundle_product%" />
     </services>
 </container>

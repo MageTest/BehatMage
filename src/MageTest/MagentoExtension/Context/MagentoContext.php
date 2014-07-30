@@ -29,6 +29,7 @@ use MageTest\MagentoExtension\Fixture\FixtureFactory;
 use MageTest\MagentoExtension\Service\Session;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
+use MageTest\MagentoExtension\Fixture\BundleProduct;
 
 /**
  * MagentoContext
@@ -162,6 +163,7 @@ CONF;
     public function theProductsExist(TableNode $table)
     {
         $hash = $table->getHash();
+
         foreach ($hash as $row) {
             if (isset($row['is_in_stock'])) {
                 if (!isset($row['qty'])) {
@@ -178,6 +180,95 @@ CONF;
             }
 
             $this->factory->create('product', $row);
+        }
+    }
+
+    /**
+     * @Given /^the following bundle products exist:$/
+     */
+    public function theFollowingBundleProductsExist(TableNode $table)
+    {
+        $hash             = $table->getHash();
+
+        foreach ($hash as $row)
+            $this->factory->create('bundle_product', $row);
+    }
+
+    /**
+     * @Given /^the bundle with sku "([^"]*)" have the following option data:$/
+     */
+    public function theBundleWithSkuHaveTheFollowingOptionData($sku, TableNode $table)
+    {
+        $bundleInRegistry = \Mage::registry(BundleProduct::REGISTRY_FIXTURE_PREFIX . $sku);
+
+        if (is_null($bundleInRegistry))
+            throw new \InvalidArgumentException("Bundle product with sku $sku could not be found in registry");
+
+        $hash = $table->getHash();
+
+        foreach ($hash as $row) {
+            $optionRawData    = array();
+            $optionRawData[0] = $row;
+            $optionRawData[0]['option_id'] = '';
+            $optionRawData[0]['delete'] = '';
+
+            $bundleInRegistry->setCanSaveConfigurableAttributes(false);
+            $bundleInRegistry->setCanSaveCustomOptions(true);
+            $bundleInRegistry->setBundleOptionsData($optionRawData);
+        }
+    }
+
+    /**
+     * @Given /^the following products are added to the bundle with "([^"]*)" sku:$/
+     */
+    public function theFollowingProductsAreAddedToTheBundleWithSku($sku, TableNode $table)
+    {
+        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
+
+        $bundleInRegistry = \Mage::registry(BundleProduct::REGISTRY_FIXTURE_PREFIX . $sku);
+
+        if (is_null($bundleInRegistry))
+            throw new \InvalidArgumentException("Bundle product with sku $sku could not be found in registry");
+
+        $model = \Mage::getModel('catalog/product');
+        $hash = $table->getHash();
+
+        $selectionRawData    = array();
+        $selectionRawData[0] = array();
+        $bundleProductId      = $model->getIdBySku($sku);
+        $bundledProductIds   = array();
+
+        if($bundleProductId > 0) {
+            $bundledProductIds = $bundleInRegistry->getTypeInstance(true)->getChildrenIds($bundleInRegistry->getId(), false);
+        }
+
+        foreach ($hash as $index => $row) {
+            $productId = $model->getIdBySku($row['sku']);
+            // this is to prevent SQLSTATE[23000]: Integrity constraint violation
+            if (BundleProduct::isSelectionProduct($productId, $bundledProductIds))
+                continue;
+
+            if ((int) $productId == 0)
+                throw new \Exception("Simple product with sku {$row['sku']} could not be found");
+
+            unset($row['sku']);
+
+            $row['product_id'] = $productId;
+            $row['selection_id'] = '';
+            $row['option_id'] = '';
+            $row['delete'] = '';
+
+            $selectionRawData[0][$index] = $row;
+        }
+
+        if (count($selectionRawData[0]) > 0) {
+            \Mage::register('current_product', $bundleInRegistry, true);
+            $bundleInRegistry->setBundleSelectionsData($selectionRawData);
+            $bundleInRegistry->setCanSaveBundleSelections(true);
+            $bundleInRegistry->setAffectBundleProductSelections(true);
+            $bundleInRegistry->save();
+            var_dump($bundleInRegistry->getId());
+            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
     }
 
