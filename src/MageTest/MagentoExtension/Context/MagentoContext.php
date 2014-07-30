@@ -267,7 +267,6 @@ CONF;
             $bundleInRegistry->setCanSaveBundleSelections(true);
             $bundleInRegistry->setAffectBundleProductSelections(true);
             $bundleInRegistry->save();
-            var_dump($bundleInRegistry->getId());
             \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
     }
