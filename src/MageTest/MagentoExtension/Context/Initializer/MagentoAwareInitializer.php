@@ -33,7 +33,6 @@ use MageTest\MagentoExtension\Service\Bootstrap,
 
 use Behat\Behat\Context\Initializer\InitializerInterface,
     Behat\Behat\Context\ContextInterface;
-
 /**
  * MagentoAwareInitializer
  *

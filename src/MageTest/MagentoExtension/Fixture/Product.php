@@ -21,7 +21,9 @@
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
 namespace MageTest\MagentoExtension\Fixture;
+
 use MageTest\MagentoExtension\Fixture;
+use MageTest\MagentoExtension\Helper\Website;
 
 /**
  * Product fixtures functionality provider
@@ -34,17 +36,21 @@ use MageTest\MagentoExtension\Fixture;
  */
 class Product implements FixtureInterface
 {
-    private $modelFactory = null;
     private $model;
-    private $attributes;
     private $defaultAttributes;
 
     /**
-     * @param $productModelFactory \Closure optional
+     * @var \MageTest\MagentoExtension\Helper\Website
      */
-    public function __construct($productModelFactory = null)
+    protected $serviceContainer;
+
+    /**
+     * @param array $serviceContainer
+     */
+    public function __construct(array $serviceContainer = null)
     {
-        $this->modelFactory = $productModelFactory ?: $this->defaultModelFactory();
+        $this->serviceContainer['productModel']  = isset($serviceContainer['productModel'])  ? $serviceContainer['productModel']  : $this->defaultModelFactory();
+        $this->serviceContainer['websiteHelper'] = isset($serviceContainer['websiteHelper']) ? $serviceContainer['websiteHelper'] : $this->defaultWebsiteHelperFactory();
     }
 
     /**
@@ -52,62 +58,58 @@ class Product implements FixtureInterface
      *
      * @param $attributes array product attributes map using 'label' => 'value' format
      *
-     * @return int
+     * @return $this
      */
     public function create(array $attributes)
     {
-        $modelFactory = $this->modelFactory;
-        $this->model = $modelFactory();
+        $this->model = $this->serviceContainer['productModel']();
+        $websiteHelper = $this->serviceContainer['websiteHelper']();
+
+        $attributes   = $this->sanitizeAttributes($attributes);
+
+        if (empty($attributes['sku'])) {
+            throw new \RuntimeException("Cannot generate a product fixture when no 'sku' attribute is provided");
+        }
 
         $id = $this->model->getIdBySku($attributes['sku']);
         if ($id) {
             $this->model->load($id);
         }
 
+        if (!empty($attributes['type_id'])) {
+            $this->model->setTypeId($attributes['type_id']);
+        }
+
         $this->validateAttributes(array_keys($attributes));
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
-        $this->model->setData($this->mergeAttributes($attributes))->save();
+
+        $this->setProductImageAssets($attributes);
+
+        $this->model
+            ->setWebsiteIds(array_map(function($website) {
+                return $website->getId();
+            }, $websiteHelper->getWebsites()))
+            ->setData($this->mergeAttributes($attributes))
+            ->setCreatedAt(null)
+            ->save();
+
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
-        return $this->model->getId();
-    }
-
-    function mergeAttributes($attributes)
-    {
-        return array_merge($this->getDefaultAttributes(), $this->model->getData(), $attributes);
-    }
-
-    function validateAttributes($attributes)
-    {
-        foreach ($attributes as $attribute) {
-            if (!$this->attributeExists($attribute)) {
-                throw new \RuntimeException("$attribute is not yet defined as an attribute of Product");
-            }
-        }
-    }
-
-    function attributeExists($attribute)
-    {
-        return in_array($attribute, array_keys($this->getDefaultAttributes()));
+        return $this;
     }
 
     /**
      * Delete the requested fixture from Magento DB
      *
-     * @param $identifier int object identifier
-     *
      * @return null
      */
-    public function delete($identifier)
+    public function delete()
     {
-        $modelFactory = $this->modelFactory;
-        $model = $modelFactory();
-
-        $model->load($identifier);
-        $model->delete();
+        if ($this->model) {
+            $this->model->delete();
+        }
     }
-
 
     /**
      * retrieve default product model factory
@@ -121,37 +123,103 @@ class Product implements FixtureInterface
         };
     }
 
-    protected function getDefaultAttributes()
+    /**
+     * Retrieve default Website helper used in the class
+     *
+     * @return \Closure
+     */
+    private function defaultWebsiteHelperFactory()
     {
-        if ($this->defaultAttributes) {
-            return $this->defaultAttributes;
+        return function() {
+            return new Website();
+        };
+    }
+
+    private function validateAttributes($attributes)
+    {
+        foreach ($attributes as $attribute) {
+            if (!$this->attributeExists($attribute)) {
+                throw new \RuntimeException("$attribute is not yet defined as an attribute of Product");
+            }
         }
-        $eavAttributes = $this->model->getAttributes();
-        $attributeCodes = array();
-        foreach ($eavAttributes as $attributeObject) {
-            $attributeCodes[$attributeObject->getAttributeCode()] = "";
+    }
+
+    protected function sanitizeAttributes($attributes)
+    {
+        foreach ($attributes as $key => $value) {
+            if (!$this->attributeExists($key) && empty($value)) {
+                unset($attributes[$key]);
+            }
         }
 
-        return $this->defaultAttributes = array_merge($attributeCodes, array(
-            'sku' => '',
-            'attribute_set_id' => $this->retrieveDefaultAttributeSetId(),
-            'name' => 'product name',
-            'weight' => 2,
-            'visibility'=> \Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
-            'status' => \Mage_Catalog_Model_Product_Status::STATUS_ENABLED,
-            'price' => 100,
-            'description' => 'Product description',
+        return $attributes;
+    }
+
+    private function mergeAttributes($attributes)
+    {
+        return array_merge($this->getDefaultAttributes(), $this->serviceContainer['productModel']()->getData(), $attributes);
+    }
+
+    private function attributeExists($attribute)
+    {
+        return in_array($attribute, array_keys($this->getDefaultAttributes()));
+    }
+
+    protected function getDefaultAttributes()
+    {
+        $productModel = $this->serviceContainer['productModel']();
+        $typeId       = $productModel->getTypeId();
+
+        if ($this->defaultAttributes[$typeId]) {
+            return $this->defaultAttributes[$typeId];
+        }
+
+        $attributeCodes = array();
+        foreach ($productModel->getAttributes() as $attributeObject) {
+            $attributeCodes[$attributeObject->getAttributeCode()] = '';
+        }
+
+        return $this->defaultAttributes[$typeId] = array_merge($attributeCodes, array(
+            'sku'               => '',
+            'attribute_set_id'  => $this->retrieveDefaultAttributeSetId(),
+            'name'              => 'product name',
+            'weight'            => 2,
+            'visibility'        => \Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
+            'status'            => \Mage_Catalog_Model_Product_Status::STATUS_ENABLED,
+            'price'             => 100,
+            'description'       => 'Product description',
             'short_description' => 'Product short description',
-            'tax_class_id' => 1,
-            'type_id' => \Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
-            'stock_data' => array( 'is_in_stock' => 1, 'qty' => 99999 )
+            'tax_class_id'      => 1,
+            'type_id'           => \Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
+            'stock_data'        => array( 'is_in_stock' => 1, 'qty' => 99999 ),
+            'website_ids'       => $this->serviceContainer['websiteHelper']()->getWebsiteIds(),
         ));
     }
 
     protected function retrieveDefaultAttributeSetId()
     {
-        return $this->model->getResource()
+        return $this->serviceContainer['productModel']()
+            ->getResource()
             ->getEntityType()
             ->getDefaultAttributeSetId();
+    }
+
+    /**
+     * Set media assets against a product if passed via example table.
+     *
+     * @param array $attributes
+     */
+    private function setProductImageAssets(array $attributes)
+    {
+        if (!empty($attributes['image'])) {
+            if (!$imagePath = getcwd() . DIRECTORY_SEPARATOR . $attributes['image']) {
+                throw new \RuntimeException("Image asset not found. $imagePath");
+            }
+
+            $visibility = array('thumbnail', 'small_image', 'image');
+            $this->model
+                ->addImageToMediaGallery($imagePath, $visibility, false, false)
+                ->save();
+        }
     }
 }
