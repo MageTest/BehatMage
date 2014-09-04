@@ -16,37 +16,43 @@
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Helper
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
-
-use MageTest\MagentoExtension\Service\Config\CoreConfig;
-use MageTest\MagentoExtension\Service\Bootstrap;
+namespace MageTest\MagentoExtension\Helper;
 
 /**
- * ConfigManager
+ * Website helper
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Helper
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class ConfigManager
+class Website
 {
-    protected $bootstrap;
-    protected $coreConfig;
-
-    public function __construct(Bootstrap $bootstrap, CoreConfig $coreConfig)
+    /**
+     * @param null $withDefault
+     * @param bool $codeKey
+     * @return array
+     */
+    public function getWebsites($withDefault = null, $codeKey = false)
     {
-        $this->bootstrap = $bootstrap;
-        $this->coreConfig = $coreConfig;
+        return \Mage::app()->getWebsites($withDefault, $codeKey);
     }
 
-    public function setCoreConfig($path, $value, $scope = null)
+    /**
+     * @return array
+     */
+    public function getWebsiteIds()
     {
-        $this->coreConfig->set($path, $value, $scope);
+        $ids = array();
+        foreach (\Mage::getModel('core/website')->getCollection() as $website) {
+            $ids[] = $website->getId();
+        }
+
+        return $ids;
     }
 }

@@ -22,6 +22,8 @@
  */
 namespace spec\MageTest\MagentoExtension\Fixture;
 
+use MageTest\MagentoExtension\Fixture\FixtureInterface;
+use MageTest\MagentoExtension\Fixture\Product;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -37,9 +39,15 @@ use Prophecy\Argument;
  */
 class FixtureFactorySpec extends ObjectBehavior
 {
-    function it_should_return_a_product_fixture_when_requested()
+    function let(FixtureInterface $product)
     {
-        $this->create('product')->shouldBeAnInstanceOf('\MageTest\MagentoExtension\Fixture\Product');
+        $this->addFixture('product', $product);
+    }
+
+    function it_is_constructed_without_fixtures()
+    {
+        $this->beConstructedWith();
+        $this->shouldThrow('\RuntimeException')->during('create', array('product'));
     }
 
     function it_should_throw_when_invalid_generator_requested()
@@ -47,17 +55,31 @@ class FixtureFactorySpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringCreate('invalid');
     }
 
-    function it_should_clean_the_registry_when_clean_is_envoked()
+    function it_should_be_created_with_an_empty_registry()
     {
-        $this->clean();
+        $this->getRegistry()->shouldBeLike(array());
+    }
 
+    function it_should_call_create_on_the_fixture_and_pass_data(FixtureInterface $product)
+    {
+        $product->create(array('sku' => '123'))->shouldBeCalled();
+        $this->create('product', array('sku' => '123'));
+    }
+
+    function it_should_add_the_fixture_to_the_registry_after_creation(FixtureInterface $product)
+    {
+        $this->create('product');
+        $this->getRegistry()->shouldBeLike(array($product));
+    }
+
+    function it_should_clean_the_registry_when_clean_is_envoked(FixtureInterface $product)
+    {
+        $data = array('id' => 42);
+        $product->create($data)->shouldBeCalled();
+        $product->delete()->shouldBeCalled();
+        $this->create('product', $data);
+        $this->clean();
         $this->getRegistry()->shouldBe(array());
     }
 
-    function it_should_add_any_requested_fixtures_to_the_registry()
-    {
-        $fixture = $this->create('product');
-
-        $this->getRegistry()->shouldBeLike(array($fixture->getWrappedObject()));
-    }
 }

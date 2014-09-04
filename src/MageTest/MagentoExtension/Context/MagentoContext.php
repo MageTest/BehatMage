@@ -24,15 +24,12 @@ namespace MageTest\MagentoExtension\Context;
 
 use Behat\Behat\Context\Context;
 use Mage_Core_Model_App as MageApp;
-use MageTest\MagentoExtension\Context\MagentoAwareContext,
-    MageTest\MagentoExtension\Service\ConfigManager,
-    MageTest\MagentoExtension\Service\CacheManager,
-    MageTest\MagentoExtension\Service,
-    MageTest\MagentoExtension\Fixture\FixtureFactory,
-    MageTest\MagentoExtension\Service\Session;
-
-use Behat\MinkExtension\Context\RawMinkContext,
-    Behat\Gherkin\Node\TableNode;
+use MageTest\MagentoExtension\Service\ConfigManager;
+use MageTest\MagentoExtension\Service\CacheManager;
+use MageTest\MagentoExtension\Fixture\FixtureFactory;
+use MageTest\MagentoExtension\Service\Session;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\TableNode;
 
 /**
  * MagentoContext
@@ -166,7 +163,6 @@ CONF;
     public function theProductsExist(TableNode $table)
     {
         $hash = $table->getHash();
-        $fixtureGenerator = $this->factory->create('product');
         foreach ($hash as $row) {
             if (isset($row['is_in_stock'])) {
                 if (!isset($row['qty'])) {
@@ -182,7 +178,7 @@ CONF;
                 unset($row['qty']);
             }
 
-            $fixtureGenerator->create($row);
+            $this->factory->create('product', $row);
         }
     }
 

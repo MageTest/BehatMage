@@ -40,9 +40,28 @@ use MageTest\MagentoExtension\Service\ConfigManager,
  */
 interface MagentoAwareInterface extends Context
 {
+    /**
+     * @return void
+     */
     public function setApp(MageApp $app);
+
+    /**
+     * @return void
+     */
     public function setConfigManager(ConfigManager $config);
+
+    /**
+     * @return void
+     */
     public function setCacheManager(CacheManager $cache);
+
+    /**
+     * @return void
+     */
     public function setFixtureFactory(FixtureFactory $factory);
+
+    /**
+     * @return void
+     */
     public function setSessionService(Session $session);
 }

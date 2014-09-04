@@ -5,7 +5,7 @@ default:
                 name: progress
     extensions:
         MageTest\MagentoExtension\Extension: ~
-        Behat\MinkExtension\Extension:
+        Behat\MinkExtension:
             base_url: test.magento.loc
             goutte:
                 server_parameters: ~
