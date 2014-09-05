@@ -22,6 +22,7 @@
  */
 namespace MageTest\MagentoExtension\Context;
 
+use Behat\Behat\Context\Context;
 use Mage_Core_Model_App as MageApp;
 use MageTest\MagentoExtension\Service\ConfigManager;
 use MageTest\MagentoExtension\Service\CacheManager;
@@ -39,7 +40,7 @@ use Behat\Gherkin\Node\TableNode;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class MagentoContext extends RawMinkContext implements MagentoAwareInterface
+class MagentoContext extends RawMinkContext implements MagentoAwareInterface, Context
 {
     /**
      * @var MageApp

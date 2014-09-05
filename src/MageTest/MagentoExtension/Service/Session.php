@@ -21,6 +21,7 @@
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
 namespace MageTest\MagentoExtension\Service;
+use Mage_Admin_Model_User;
 
 /**
  * Session
@@ -51,15 +52,18 @@ class Session
     public function adminLogin($username, $password)
     {
         $_SESSION = null;
+
         $session = \Mage::getModel('admin/session');
         @$session->start();
 
         $_POST['login']=array('username'=>$username);
 
         $this->app->setResponse(new \Mage_Core_Controller_Response_Http());
+        $this->app->getStore()->setId(\Mage_Core_Model_App::ADMIN_STORE_ID);
 
         /** @var $user Mage_Admin_Model_User */
         $user = \Mage::getModel('admin/user');
+
         $user->login($username, $password);
         if ($user->getId()) {
             @$session->renewSession();
@@ -79,6 +83,7 @@ class Session
         session_write_close();
         $_SESSION = null;
         $_POST = array();
+
         return $id;
     }
 
