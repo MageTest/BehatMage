@@ -10,7 +10,6 @@
         <parameter key="behat.magento.listener.before_scenario">MageTest\MagentoExtension\EventListener\BeforeScenarioListener</parameter>
         <parameter key="behat.magento.context.initializer">MageTest\MagentoExtension\Context\Initializer\MagentoAwareInitializer</parameter>
         <parameter key="behat.magento.fixture.fixture_factory">MageTest\MagentoExtension\Fixture\FixtureFactory</parameter>
-        <parameter key="behat.magento.fixture.category">MageTest\MagentoExtension\Fixture\Category</parameter>
         <parameter key="behat.magento.fixture.customer">MageTest\MagentoExtension\Fixture\Customer</parameter>
         <parameter key="behat.magento.fixture.order">MageTest\MagentoExtension\Fixture\Order</parameter>
         <parameter key="behat.magento.fixture.product">MageTest\MagentoExtension\Fixture\Product</parameter>
@@ -47,10 +46,6 @@
         </service>
         <service id="behat.magento.fixture.fixture_factory" class="%behat.magento.fixture.fixture_factory%">
             <call method="addFixture">
-                <argument>category</argument>
-                <argument type="service" id="behat.magento.fixture.category" />
-            </call>
-            <call method="addFixture">
                 <argument>customer</argument>
                 <argument type="service" id="behat.magento.fixture.customer" />
             </call>
@@ -67,7 +62,6 @@
                 <argument type="service" id="behat.magento.fixture.user" />
             </call>
         </service>
-        <service id="behat.magento.fixture.category" class="%behat.magento.fixture.category%" />
         <service id="behat.magento.fixture.customer" class="%behat.magento.fixture.customer%" />
         <service id="behat.magento.fixture.order" class="%behat.magento.fixture.order%" />
         <service id="behat.magento.fixture.product" class="%behat.magento.fixture.product%" />
