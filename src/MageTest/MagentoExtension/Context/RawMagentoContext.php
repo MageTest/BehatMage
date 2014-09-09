@@ -39,7 +39,6 @@ class RawMagentoContext extends MinkContext implements MagentoAwareInterface
     private $app;
     private $configManager;
     private $cacheManager;
-    private $factory;
     private $sessionService;
 
     public function setApp(MageApp $app)
@@ -70,24 +69,6 @@ class RawMagentoContext extends MinkContext implements MagentoAwareInterface
     public function getCacheManager()
     {
         return $this->cacheManager;
-    }
-
-    public function setFixtureFactory(FixtureFactory $factory)
-    {
-        $this->factory = $factory;
-    }
-
-    public function getFixtureFactory()
-    {
-        if (!$this->factory) {
-            $this->factory = new FixtureFactory;
-        }
-        return $this->factory;
-    }
-
-    public function getFixture($identifier)
-    {
-        return $this->getFixtureFactory()->create($identifier);
     }
 
     public function setSessionService(Session $session)
