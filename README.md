@@ -1,6 +1,6 @@
 ## BehatMage
 
-[![Build Status](https://travis-ci.org/MageTest/BehatMage.png?branch=develop)](https://travis-ci.org/MageTest/BehatMage) 
+[![Build Status](https://travis-ci.org/MageTest/BehatMage.png?branch=develop)](https://travis-ci.org/MageTest/BehatMage)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MageTest/BehatMage/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/MageTest/BehatMage/?branch=develop)
 
 Behat extension for Magento, providing Behat context with specific Magento requirements allowing you to quickly define Magento scenarios and steps to enable BDD within Magento projects.
@@ -68,7 +68,7 @@ First, add BehatMage to the list of dependencies inside your `composer.json` and
         "php": ">=5.3.0"
     },
     "require-dev": {
-        "magetest/magento-behat-extension": "dev-develop"
+        "magetest/magento-behat-extension": "feature/Behat3"
     },
     "autoload": {
         "psr-0": {
