@@ -58,11 +58,6 @@ class MagentoContext extends RawMinkContext implements MagentoAwareInterface, Co
     private $cacheManager;
 
     /**
-     * @var FixtureFactory
-     */
-    private $factory;
-
-    /**
      * @var Session
      */
     private $sessionService;
@@ -157,31 +152,6 @@ CONF;
         $this->cacheManager->clear();
     }
 
-    /**
-     * @Given /the following products exist:/
-     */
-    public function theProductsExist(TableNode $table)
-    {
-        $hash = $table->getHash();
-        foreach ($hash as $row) {
-            if (isset($row['is_in_stock'])) {
-                if (!isset($row['qty'])) {
-                    throw new \InvalidArgumentException('You have specified is_in_stock but not qty, please add value for qty.');
-                };
-
-                $row['stock_data'] = array(
-                    'is_in_stock' => $row['is_in_stock'],
-                    'qty' => $row['qty']
-                );
-
-                unset($row['is_in_stock']);
-                unset($row['qty']);
-            }
-
-            $this->factory->create('product', $row);
-        }
-    }
-
     public function setApp(MageApp $app)
     {
         $this->app = $app;
@@ -207,11 +177,6 @@ CONF;
         return $this->cacheManager;
     }
 
-    public function setFixtureFactory(FixtureFactory $factory)
-    {
-        $this->factory = $factory;
-    }
-
     public function setSessionService(Session $session)
     {
         $this->sessionService = $session;
@@ -220,10 +185,5 @@ CONF;
     public function getSessionService()
     {
         return $this->sessionService;
-    }
-
-    public function getFixture($identifier)
-    {
-        return $this->factory->create($identifier);
     }
 }

@@ -44,19 +44,18 @@ use Prophecy\Argument;
  */
 class MagentoAwareInitializerSpec extends ObjectBehavior
 {
-    function let(Bootstrap $bootstrap, Mage_Core_Model_App $app, ConfigManager $config, CacheManager $cache, FixtureFactory $factory, Session $session)
+    function let(Bootstrap $bootstrap, Mage_Core_Model_App $app, ConfigManager $config, CacheManager $cache, Session $session)
     {
         $bootstrap->app()->willReturn($app);
 
-        $this->beConstructedWith($bootstrap, $cache, $config, $factory, $session);
+        $this->beConstructedWith($bootstrap, $cache, $config, $session);
     }
 
-    function it_initialises_the_context(MagentoContext $context, Mage_Core_Model_App $app, ConfigManager $config, CacheManager $cache, FixtureFactory $factory, Session $session)
+    function it_initialises_the_context(MagentoContext $context, Mage_Core_Model_App $app, ConfigManager $config, CacheManager $cache, Session $session)
     {
         $context->setApp($app)->shouldBeCalled();
         $context->setConfigManager($config)->shouldBeCalled();
         $context->setCacheManager($cache)->shouldBeCalled();
-        $context->setFixtureFactory($factory)->shouldBeCalled();
         $context->setSessionService($session)->shouldBeCalled();
 
         $this->initializeContext($context);

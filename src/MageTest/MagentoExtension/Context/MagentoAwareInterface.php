@@ -58,10 +58,5 @@ interface MagentoAwareInterface extends Context
     /**
      * @return void
      */
-    public function setFixtureFactory(FixtureFactory $factory);
-
-    /**
-     * @return void
-     */
     public function setSessionService(Session $session);
 }
