@@ -66,8 +66,9 @@ class ProductSpec extends ObjectBehavior
 
         $productResourceModel = \Mockery::mock('Mage_Catalog_Model_Resource_Product');
         $productResourceModel->shouldReceive('getEntityType')->andReturn($entityType);
+        $productResourceModel->shouldReceive('save')->andReturnSelf();
 
-        $this->model->shouldReceive('getResource')->andReturn($productResourceModel)->ordered();
+        $this->model->shouldReceive('getResource')->andReturn($productResourceModel);
         $this->model->shouldReceive('getAttributes')->andReturn(array());
     }
 
