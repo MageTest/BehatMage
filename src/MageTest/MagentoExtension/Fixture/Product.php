@@ -80,6 +80,10 @@ class Product implements FixtureInterface
             $this->model->setTypeId($attributes['type_id']);
         }
 
+        if (!empty($attributes['attribute_set_id'])) {
+            $this->model->setAttributeSetId($attributes['attribute_set_id']);
+        }
+
         $this->validateAttributes(array_keys($attributes));
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
@@ -169,6 +173,11 @@ class Product implements FixtureInterface
     protected function getDefaultAttributes()
     {
         $productModel = $this->serviceContainer['productModel']();
+
+        if ($productModel->getTypeId() == '') {
+            $productModel->setTypeId(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE);
+        }
+
         $typeId       = $productModel->getTypeId();
 
         if ($this->defaultAttributes[$typeId]) {
