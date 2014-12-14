@@ -70,6 +70,8 @@ class ProductSpec extends ObjectBehavior
 
         $this->model->shouldReceive('getResource')->andReturn($productResourceModel);
         $this->model->shouldReceive('getAttributes')->andReturn(array());
+        $this->model->shouldReceive('setAttributeSetId')->andReturn($productModel);
+        $this->model->shouldReceive('setTypeId')->andReturn($productModel);
     }
 
     function it_should_throw_exception_if_sku_is_not_defined()
@@ -220,5 +222,24 @@ class ProductSpec extends ObjectBehavior
         $this->model->shouldReceive('delete')->once()->andReturn(null)->ordered();
 
         $this->delete(554);
+    }
+
+    function it_should_fill_attribute_set_and_type_id_before_loading_attributes()
+    {
+        $productData = array(
+            'sku' => 'test_sku',
+            'attribute_set_id' => 123,
+        );
+
+        $this->model->shouldReceive('setData')->andReturn($this->model);
+        $this->model->shouldReceive('setCreatedAt')->andReturn($this->model);
+        $this->model->shouldReceive('setWebsiteIds')->andReturn($this->model);
+        $this->model->shouldReceive('getIdBySku')->andReturn(false);
+
+        $this->model->shouldReceive('setAttributeSetId')->with(123)->once()->ordered();
+        $this->model->shouldReceive('setTypeId')->with('simple')->atLeast()->once()->ordered();
+        $this->model->shouldReceive('getAttributes')->atLeast()->once()->ordered();
+
+        $this->create($productData);
     }
 }
