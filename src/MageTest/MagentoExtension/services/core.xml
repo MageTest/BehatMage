@@ -7,7 +7,7 @@
         <parameter key="behat.magento.service.config_manager">MageTest\MagentoExtension\Service\ConfigManager</parameter>
         <parameter key="behat.magento.service.config.core_config">MageTest\MagentoExtension\Service\Config\CoreConfig</parameter>
         <parameter key="behat.magento.service.bootstrap">MageTest\MagentoExtension\Service\Bootstrap</parameter>
-        <parameter key="behat.magento.listener.before_scenario">MageTest\MagentoExtension\EventListener\BeforeScenarioListener</parameter>
+        <parameter key="behat.magento.listener.after_scenario">MageTest\MagentoExtension\EventListener\AfterScenarioListener</parameter>
         <parameter key="behat.magento.context.initializer">MageTest\MagentoExtension\Context\Initializer\MagentoAwareInitializer</parameter>
         <parameter key="behat.magento.fixture.fixture_factory">MageTest\MagentoExtension\Fixture\FixtureFactory</parameter>
         <parameter key="behat.magento.fixture.address">MageTest\MagentoExtension\Fixture\Address</parameter>
@@ -37,6 +37,10 @@
         </service>
         <service id="behat.magento.service.session" class="%behat.magento.service.session%">
             <argument type="service" id="behat.magento.service.bootstrap" />
+        </service>
+        <service id="behat.magento.listener.after_scenario" class="%behat.magento.listener.after_scenario%">
+            <argument type="service" id="behat.magento.fixture.fixture_factory" />
+            <tag name="behat.event_subscriber" priority="0" />
         </service>
         <service id="behat.magento.context.initializer" class="%behat.magento.context.initializer%">
             <argument type="service" id="behat.magento.service.bootstrap" />
