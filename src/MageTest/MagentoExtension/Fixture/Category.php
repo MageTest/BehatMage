@@ -22,6 +22,7 @@
  */
 namespace MageTest\MagentoExtension\Fixture;
 use MageTest\MagentoExtension\Fixture;
+use MageTest\MagentoExtension\Helper\Website;
 
 /**
  * Product fixtures functionality provider
@@ -37,17 +38,27 @@ class Category implements FixtureInterface
     const DEFAULT_ROOT_CATEGORY_ID = 1;
     const DEFAULT_ATTRIBUTE_SET_ID = 3;
 
-    private $modelFactory = null;
+    /** @var \Mage_Catalog_Model_Category $model */
     private $model;
-    private $attributes;
+
+    /** @var array $defaultAttributes */
     private $defaultAttributes;
 
+    /** @var array $serviceContainer List of factory methods indexed by service name. */
+    protected $serviceContainer = [];
+
     /**
-     * @param $productModelFactory \Closure optional
+     * @param array $serviceContainer
      */
-    public function __construct($modelFactory = null)
+    public function __construct($serviceContainer = array())
     {
-        $this->modelFactory = $modelFactory ?: $this->defaultModelFactory();
+        $this->serviceContainer['categoryModel'] = isset($serviceContainer['categoryModel'])
+            ? $serviceContainer['categoryModel']
+            : $this->defaultModelFactory();
+
+        $this->serviceContainer['websiteHelper'] = isset($serviceContainer['websiteHelper'])
+            ? $serviceContainer['websiteHelper']
+            : $this->defaultWebsiteHelperFactory();
     }
 
     /**
@@ -65,10 +76,9 @@ class Category implements FixtureInterface
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
 
-        $modelFactory = $this->modelFactory;
-        $this->model = $modelFactory();
+        $this->model = $this->serviceContainer['categoryModel']();
 
-        $id = $this->getIdByName($attributes['name']);
+        $id = $this->getIdByName($attributes['name'], $this->getPath($attributes));
         if ($id) {
             $this->model->load($id);
         }
@@ -129,6 +139,18 @@ class Category implements FixtureInterface
         };
     }
 
+    /**
+     * Retrieve default Website helper used in the class
+     *
+     * @return \Closure
+     */
+    private function defaultWebsiteHelperFactory()
+    {
+        return function() {
+            return new Website();
+        };
+    }
+
     protected function getDefaultAttributes()
     {
         if ($this->defaultAttributes) {
@@ -154,11 +176,10 @@ class Category implements FixtureInterface
 
     protected function getWebsiteIds()
     {
-        $ids = array();
-        foreach (\Mage::getModel('core/website')->getCollection() as $website) {
-            $ids[] = $website->getId();
-        }
-        return $ids;
+        $websiteHelper = $this->serviceContainer['websiteHelper']();
+        return array_map(function($website) {
+                return $website->getId();
+            }, $websiteHelper->getWebsites());
     }
 
     protected function retrieveDefaultAttributeSetId()
@@ -168,10 +189,23 @@ class Category implements FixtureInterface
             ->getDefaultAttributeSetId();
     }
 
-    protected function getIdByName($name)
+    protected function getIdByName($name, $path)
     {
-        $category = $this->model->getCollection()->addFieldToFilter('name', $name)->getFirstItem();
+        $category = $this->model->getCollection()
+            ->addFieldToFilter('name', $name)
+            ->addPathsFilter($path)
+            ->getFirstItem();
 
         return $category ? $category->getId() : null;
+    }
+
+    /**
+     * @param array $attributes
+     *
+     * @return mixed
+     */
+    protected function getPath(array $attributes)
+    {
+        return isset($attributes['path']) ? $attributes['path'] : self::DEFAULT_ROOT_CATEGORY_ID;
     }
 }
