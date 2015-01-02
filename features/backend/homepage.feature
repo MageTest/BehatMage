@@ -8,5 +8,5 @@ Feature: Index Page
 
   Scenario: Display Header
     Given I am logged in as admin "admintest" with credentials "admin"
-     When I open admin URI "/admin/dashboard/"
-     Then I should that the page title is "Dashboard"
+     When I open admin URI "/admin/system_account/"
+     Then I should see that the page title is "Dashboard"

@@ -11,7 +11,8 @@
         "behat/mink-extension": "*",
         "behat/mink-browserkit-driver": "*",
         "behat/mink-goutte-driver": ">=1.0.3",
-	    "sensiolabs/behat-page-object-extension": "*"
+	    "sensiolabs/behat-page-object-extension": "*",
+        "symfony/http-kernel": "~2.6"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.0",

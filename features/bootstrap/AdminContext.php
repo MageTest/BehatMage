@@ -39,9 +39,9 @@ class AdminContext extends MagentoContext
     }
 
     /**
-     * @Then I should that the page title is :title
+     * @Then I should see that the page title is :title
      */
-    public function iShouldThatThePageTitleIs($title)
+    public function iShouldSeeThatThePageTitleIs($title)
     {
         $page = $this->getSession()->getPage();
         expect($page->find('css', 'h3')->getText())->toBe($title);

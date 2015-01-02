@@ -13,6 +13,7 @@ namespace MageTest\MagentoExtension;
 
 use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
+use MageTest\MagentoExtension\Driver\MagentoFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,6 +38,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class Extension implements ExtensionInterface
 {
+    const KERNEL_ID = 'behat.magento.driver.app';
+
     /**
      * Returns the extension config key.
      *
@@ -59,7 +62,9 @@ class Extension implements ExtensionInterface
      */
     public function initialize(ExtensionManager $extensionManager)
     {
-
+        if (null !== $minkExtension = $extensionManager->getExtension('mink')) {
+            $minkExtension->registerDriverFactory(new MagentoFactory());
+        }
     }
 
     /**
@@ -82,6 +87,11 @@ class Extension implements ExtensionInterface
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/services'));
         $loader->load('core.xml');
+
+        $container->setDefinition(
+            self::KERNEL_ID,
+            new Definition('MageTest\MagentoExtension\Driver\MageApp', array($container))
+        );
     }
 
     /**

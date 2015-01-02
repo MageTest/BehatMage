@@ -9,6 +9,8 @@
         <parameter key="behat.magento.service.bootstrap">MageTest\MagentoExtension\Service\Bootstrap</parameter>
         <parameter key="behat.magento.context.initializer">MageTest\MagentoExtension\Context\Initializer\MagentoAwareInitializer</parameter>
         <parameter key="behat.magento.service.session">MageTest\MagentoExtension\Service\Session</parameter>
+        <parameter key="behat.magento.driver.app">MageTest\MagentoExtension\Driver\MageApp</parameter>
+        <parameter key="behat.magento.test_client">MageTest\MagentoExtension\Client\TestClient</parameter>
         <parameter key="mage.core.model.config">Mage_Core_Model_Config</parameter>
         <parameter key="mage.core.model.config.data">Mage_Core_Model_Config_Data</parameter>
         <parameter key="behat.magento.context.class_guesser">MageTest\MagentoExtension\Context\ClassGuesser</parameter>
@@ -36,6 +38,9 @@
             <argument type="service" id="behat.magento.service.config_manager" />
             <argument type="service" id="behat.magento.service.session" />
             <tag name="context.initializer" />
+        </service>
+        <service id="behat.magento.test_client" class="%behat.magento.test_client%">
+            <argument type="service" id="behat.magento.driver.app"></argument>
         </service>
     </services>
 </container>
