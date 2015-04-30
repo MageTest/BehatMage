@@ -7,9 +7,9 @@
     "license": "MIT",
     "require": {
         "php": "~5.3",
-        "behat/behat": "~3.0",
-        "behat/mink": "~1.6.0",
-        "behat/mink-extension": "~2.0.0",
+        "behat/behat": "~3",
+        "behat/mink": "~1",
+        "behat/mink-extension": "~2",
         "behat/mink-goutte-driver": "~1.1.0",
         "behat/mink-selenium2-driver": "*",
 	"sensiolabs/behat-page-object-extension": "*"
