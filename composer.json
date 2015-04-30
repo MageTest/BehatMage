@@ -8,10 +8,11 @@
     "require": {
         "php": "~5.3",
         "behat/behat": "~3.0",
-        "behat/mink-extension": "*",
-        "behat/mink-browserkit-driver": "*",
-        "behat/mink-goutte-driver": ">=1.0.3",
-	    "sensiolabs/behat-page-object-extension": "*"
+        "behat/mink": "~1.6.0",
+        "behat/mink-extension": "~2.0.0",
+        "behat/mink-goutte-driver": "~1.1.0",
+        "behat/mink-selenium2-driver": "*",
+	"sensiolabs/behat-page-object-extension": "*"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.0",
