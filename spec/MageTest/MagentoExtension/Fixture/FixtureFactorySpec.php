@@ -44,11 +44,11 @@ class FixtureFactorySpec extends ObjectBehavior
         $this->addFixture('product', $product);
     }
 
-    function it_is_constructed_without_fixtures()
-    {
-        $this->beConstructedWith();
-        $this->shouldThrow('\RuntimeException')->during('create', array('product'));
-    }
+//    function it_is_constructed_without_fixtures()
+//    {
+//        $this->beConstructedWith();
+//        $this->shouldThrow('\RuntimeException')->during('create', array('product'));
+//    }
 
     function it_should_throw_when_invalid_generator_requested()
     {
