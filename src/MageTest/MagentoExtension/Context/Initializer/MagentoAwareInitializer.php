@@ -28,6 +28,7 @@ use MageTest\MagentoExtension\Service\Bootstrap,
     MageTest\MagentoExtension\Service\CacheManager,
     MageTest\MagentoExtension\Service\ConfigManager,
     MageTest\MagentoExtension\Service\Session,
+    MageTest\MagentoExtension\Fixture\FixtureFactory,
     MageTest\MagentoExtension\Context\MagentoAwareInterface;
 
 use Behat\Behat\Context\Initializer\InitializerInterface,
@@ -49,20 +50,24 @@ class MagentoAwareInitializer implements ContextInitializer
 
     private $configManager = null;
 
+    private $factory = null;
+
     private $session = null;
 
     /**
      * @param Bootstrap         $bootstrap
      * @param CacheManager      $cache
      * @param ConfigManager     $config
+     * @param FixtureFactory    $factory
      * @param Session           $session
      */
     public function __construct(Bootstrap $bootstrap, CacheManager $cache,
-                                ConfigManager $config, Session $session)
+                                ConfigManager $config, FixtureFactory $factory, Session $session)
     {
         $this->app = $bootstrap->app();
         $this->cacheManager = $cache;
         $this->configManager = $config;
+        $this->factory = $factory;
         $this->session = $session;
     }
     /**
@@ -79,6 +84,7 @@ class MagentoAwareInitializer implements ContextInitializer
         $context->setApp($this->app);
         $context->setConfigManager($this->configManager);
         $context->setCacheManager($this->cacheManager);
+        $context->setFixtureFactory($this->factory);
         $context->setSessionService($this->session);
     }
 

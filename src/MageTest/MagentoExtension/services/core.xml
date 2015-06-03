@@ -7,7 +7,15 @@
         <parameter key="behat.magento.service.config_manager">MageTest\MagentoExtension\Service\ConfigManager</parameter>
         <parameter key="behat.magento.service.config.core_config">MageTest\MagentoExtension\Service\Config\CoreConfig</parameter>
         <parameter key="behat.magento.service.bootstrap">MageTest\MagentoExtension\Service\Bootstrap</parameter>
+        <parameter key="behat.magento.listener.before_scenario">MageTest\MagentoExtension\EventListener\BeforeScenarioListener</parameter>
         <parameter key="behat.magento.context.initializer">MageTest\MagentoExtension\Context\Initializer\MagentoAwareInitializer</parameter>
+        <parameter key="behat.magento.fixture.fixture_factory">MageTest\MagentoExtension\Fixture\FixtureFactory</parameter>
+        <parameter key="behat.magento.fixture.address">MageTest\MagentoExtension\Fixture\Address</parameter>
+        <parameter key="behat.magento.fixture.category">MageTest\MagentoExtension\Fixture\Category</parameter>
+        <parameter key="behat.magento.fixture.customer">MageTest\MagentoExtension\Fixture\Customer</parameter>
+        <parameter key="behat.magento.fixture.order">MageTest\MagentoExtension\Fixture\Order</parameter>
+        <parameter key="behat.magento.fixture.product">MageTest\MagentoExtension\Fixture\Product</parameter>
+        <parameter key="behat.magento.fixture.user">MageTest\MagentoExtension\Fixture\User</parameter>
         <parameter key="behat.magento.service.session">MageTest\MagentoExtension\Service\Session</parameter>
         <parameter key="mage.core.model.config">Mage_Core_Model_Config</parameter>
         <parameter key="mage.core.model.config.data">Mage_Core_Model_Config_Data</parameter>
@@ -34,8 +42,41 @@
             <argument type="service" id="behat.magento.service.bootstrap" />
             <argument type="service" id="behat.magento.service.cache_manager" />
             <argument type="service" id="behat.magento.service.config_manager" />
+            <argument type="service" id="behat.magento.fixture.fixture_factory" />
             <argument type="service" id="behat.magento.service.session" />
             <tag name="context.initializer" />
         </service>
+        <service id="behat.magento.fixture.fixture_factory" class="%behat.magento.fixture.fixture_factory%">
+            <call method="addFixture">
+                <argument>address</argument>
+                <argument type="service" id="behat.magento.fixture.address" />
+            </call>
+            <call method="addFixture">
+                <argument>category</argument>
+                <argument type="service" id="behat.magento.fixture.category" />
+            </call>
+            <call method="addFixture">
+                <argument>customer</argument>
+                <argument type="service" id="behat.magento.fixture.customer" />
+            </call>
+            <call method="addFixture">
+                <argument>order</argument>
+                <argument type="service" id="behat.magento.fixture.order" />
+            </call>
+            <call method="addFixture">
+                <argument>product</argument>
+                <argument type="service" id="behat.magento.fixture.product" />
+            </call>
+            <call method="addFixture">
+                <argument>user</argument>
+                <argument type="service" id="behat.magento.fixture.user" />
+            </call>
+        </service>
+        <service id="behat.magento.fixture.address" class="%behat.magento.fixture.address%" />
+        <service id="behat.magento.fixture.category" class="%behat.magento.fixture.category%" />
+        <service id="behat.magento.fixture.customer" class="%behat.magento.fixture.customer%" />
+        <service id="behat.magento.fixture.order" class="%behat.magento.fixture.order%" />
+        <service id="behat.magento.fixture.product" class="%behat.magento.fixture.product%" />
+        <service id="behat.magento.fixture.user" class="%behat.magento.fixture.user%" />
     </services>
 </container>
