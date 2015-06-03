@@ -62,7 +62,15 @@ class User implements FixtureInterface
             throw new \Exception('Username provided to user fixture should not be existing');
         }
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
+
         $this->model->save();
+
+        if (array_key_exists('role_id', $attributes)) {
+            $this->model->setRoleIds(array($attributes['role_id']))
+                ->setRoleUserId($this->model->getUserId())
+                ->saveRelations();
+        }
+
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
         return $this;

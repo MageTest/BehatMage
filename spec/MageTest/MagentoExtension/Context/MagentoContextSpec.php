@@ -60,4 +60,10 @@ class MagentoContextSpec extends ObjectBehavior
         $factory->create('product', $dataRow)->shouldBeCalled();
         $this->theProductsExist($table);
     }
+
+    function it_should_expose_the_fixture_factory(FixtureFactory $factory)
+    {
+        $this->getFixtureFactory()->shouldReturn($factory);
+    }
+
 }

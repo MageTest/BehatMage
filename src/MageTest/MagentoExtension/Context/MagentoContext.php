@@ -212,6 +212,11 @@ CONF;
         $this->factory = $factory;
     }
 
+    public function getFixtureFactory()
+    {
+        return $this->factory;
+    }
+
     public function setSessionService(Session $session)
     {
         $this->sessionService = $session;

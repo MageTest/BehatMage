@@ -80,19 +80,24 @@ class Product implements FixtureInterface
             $this->model->setTypeId($attributes['type_id']);
         }
 
+        if (!empty($attributes['attribute_set_id'])) {
+            $this->model->setAttributeSetId($attributes['attribute_set_id']);
+        }
+
         $this->validateAttributes(array_keys($attributes));
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
-
-        $this->setProductImageAssets($attributes);
 
         $this->model
             ->setWebsiteIds(array_map(function($website) {
                 return $website->getId();
             }, $websiteHelper->getWebsites()))
             ->setData($this->mergeAttributes($attributes))
-            ->setCreatedAt(null)
-            ->save();
+            ->setCreatedAt(null);
+
+        $this->setProductImageAssets($attributes);
+
+        $this->model->save();
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
@@ -168,6 +173,11 @@ class Product implements FixtureInterface
     protected function getDefaultAttributes()
     {
         $productModel = $this->serviceContainer['productModel']();
+
+        if ($productModel->getTypeId() == '') {
+            $productModel->setTypeId(\Mage_Catalog_Model_Product_Type::TYPE_SIMPLE);
+        }
+
         $typeId       = $productModel->getTypeId();
 
         if ($this->defaultAttributes[$typeId]) {
@@ -217,9 +227,7 @@ class Product implements FixtureInterface
             }
 
             $visibility = array('thumbnail', 'small_image', 'image');
-            $this->model
-                ->addImageToMediaGallery($imagePath, $visibility, false, false)
-                ->save();
+            $this->model->addImageToMediaGallery($imagePath, $visibility, false, false);
         }
     }
 }
