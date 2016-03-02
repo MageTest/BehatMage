@@ -50,6 +50,11 @@ class Order implements FixtureInterface
     protected $customer;
 
     /**
+     * @var int
+     */
+    protected $storeId;
+
+    /**
      * @var array
      */
     protected $items;
@@ -201,6 +206,10 @@ class Order implements FixtureInterface
 
         if (isset($attributes['paymentMethod'])) {
             $this->setPaymentMethod($attributes['paymentMethod']);
+        }
+
+        if (isset($attributes['session']['store_id'])) {
+            $this->setStoreId($attributes['session']['store_id']);
         }
     }
 
@@ -365,6 +374,25 @@ class Order implements FixtureInterface
     }
 
     /**
+     * Set store id
+     * @param string $storeId
+     * @return $this
+     */
+    public function setStoreId($storeId)
+    {
+        $this->storeId = (int) $storeId;
+        return $this;
+    }
+
+    /**
+     * Get store id
+     * @return int
+     */
+    public function getStoreId()
+    {
+        return $this->storeId ?: 1;
+    }
+    /**
      * Delete the requested fixture from Magento DB
      *
      * @param $identifier int object identifier
@@ -461,6 +489,7 @@ class Order implements FixtureInterface
         $orderData = $this->getDefaultAttributes();
 
         $orderData['session']['customer_id']    = $customer->getId();
+        $orderData['session']['store_id']       = $this->getStoreId();
         $orderData['order']['account']['email'] = $customer->getEmail();
 
         $address = $this->getBillingAddress();
