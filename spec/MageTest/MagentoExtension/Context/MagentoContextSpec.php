@@ -39,6 +39,10 @@ use Prophecy\Argument;
  */
 class MagentoContextSpec extends ObjectBehavior
 {
+    function let(FixtureFactory $factory)
+    {
+       $this->setFixtureFactory($factory);
+    }
     function it_should_support_mink()
     {
         $this->shouldBeAnInstanceOf("Behat\MinkExtension\Context\MinkAwareContext");
@@ -48,4 +52,18 @@ class MagentoContextSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf("MageTest\MagentoExtension\Context\MagentoAwareInterface");
     }
+
+    function it_should_call_create_on_the_fixture_factory(FixtureFactory $factory, TableNode $table)
+    {
+        $dataRow = array('sku'=>'123');
+        $table->getHash()->willReturn(array($dataRow));
+        $factory->create('product', $dataRow)->shouldBeCalled();
+        $this->theProductsExist($table);
+    }
+
+    function it_should_expose_the_fixture_factory(FixtureFactory $factory)
+    {
+        $this->getFixtureFactory()->shouldReturn($factory);
+    }
+
 }
