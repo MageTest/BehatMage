@@ -8,7 +8,7 @@
     "repositories": {
         "inviqa/magento-community": {
             "type": "vcs",
-            "url": "git@github.com:inviqa/magento-community.git"
+            "url": "https://github.com/inviqa/magento-community.git"
         }
     },
     "require": {
