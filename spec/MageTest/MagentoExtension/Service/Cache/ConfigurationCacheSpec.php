@@ -16,37 +16,38 @@
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Service\Cache
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
+namespace spec\MageTest\MagentoExtension\Service\Cache;
 
-use MageTest\MagentoExtension\Service\Config\CoreConfig;
-use MageTest\MagentoExtension\Service\Bootstrap;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * ConfigManager
+ * ConfigurationCacheSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Service\Cache
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class ConfigManager
+class ConfigurationCacheSpec extends ObjectBehavior
 {
-    protected $bootstrap;
-    protected $coreConfig;
-
-    public function __construct(Bootstrap $bootstrap, CoreConfig $coreConfig)
+    function let(\Mage_Core_Model_App $mageApp, \Mage_Core_Model_Cache $cacheInstance)
     {
-        $this->bootstrap = $bootstrap;
-        $this->coreConfig = $coreConfig;
+        $mageApp->getCacheInstance()->willReturn($cacheInstance);
+        $mageApp->cleanCache(Argument::any())->shouldBeCalled();
+        $cacheInstance->getTagsByType(Argument::any())->willReturn(array("config"));
+
+        $this->beConstructedWith($mageApp);
     }
 
-    public function setCoreConfig($path, $value, $scope = null)
+    function it_should_clear_the_configuration_cache()
     {
-        $this->coreConfig->set($path, $value, $scope);
+        $this->clear();
     }
 }

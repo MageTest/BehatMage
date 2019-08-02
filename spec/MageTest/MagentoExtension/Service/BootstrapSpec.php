@@ -20,13 +20,14 @@
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
+namespace spec\MageTest\MagentoExtension\Service;
 
-use MageTest\MagentoExtension\Service\Config\CoreConfig;
-use MageTest\MagentoExtension\Service\Bootstrap;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
 
 /**
- * ConfigManager
+ * BootstrapSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -34,19 +35,20 @@ use MageTest\MagentoExtension\Service\Bootstrap;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class ConfigManager
+class BootstrapSpec extends ObjectBehavior
 {
-    protected $bootstrap;
-    protected $coreConfig;
-
-    public function __construct(Bootstrap $bootstrap, CoreConfig $coreConfig)
+    function it_bootstraps_a_mage_app()
     {
-        $this->bootstrap = $bootstrap;
-        $this->coreConfig = $coreConfig;
+        $this->app()->shouldBeAnInstanceOf('Mage_Core_Model_App');
     }
 
-    public function setCoreConfig($path, $value, $scope = null)
+    function it_provides_a_reflection_of_Mage()
     {
-        $this->coreConfig->set($path, $value, $scope);
+        $this->getMageReflection()->shouldBeAnInstanceOf('ReflectionClass');
+    }
+
+    function it_provides_a_reflection_of_Mage_Core_Model_App()
+    {
+        $this->getMageCoreModelAppReflection()->shouldBeAnInstanceOf('ReflectionClass');
     }
 }

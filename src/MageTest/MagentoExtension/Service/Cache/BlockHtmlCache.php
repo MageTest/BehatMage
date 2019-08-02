@@ -16,37 +16,22 @@
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Service\Cache
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
-
-use MageTest\MagentoExtension\Service\Config\CoreConfig;
-use MageTest\MagentoExtension\Service\Bootstrap;
+namespace MageTest\MagentoExtension\Service\Cache;
 
 /**
- * ConfigManager
+ * ConfigurationCache
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Service
+ * @subpackage Service\Cache
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class ConfigManager
+class BlockHtmlCache extends BaseCache
 {
-    protected $bootstrap;
-    protected $coreConfig;
-
-    public function __construct(Bootstrap $bootstrap, CoreConfig $coreConfig)
-    {
-        $this->bootstrap = $bootstrap;
-        $this->coreConfig = $coreConfig;
-    }
-
-    public function setCoreConfig($path, $value, $scope = null)
-    {
-        $this->coreConfig->set($path, $value, $scope);
-    }
+    protected $cacheTypes = array('block_html');
 }

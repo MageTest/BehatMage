@@ -7,9 +7,7 @@
         <parameter key="behat.magento.service.config_manager">MageTest\MagentoExtension\Service\ConfigManager</parameter>
         <parameter key="behat.magento.service.config.core_config">MageTest\MagentoExtension\Service\Config\CoreConfig</parameter>
         <parameter key="behat.magento.service.bootstrap">MageTest\MagentoExtension\Service\Bootstrap</parameter>
-        <parameter key="behat.magento.listener.before_scenario">MageTest\MagentoExtension\EventListener\BeforeScenarioListener</parameter>
         <parameter key="behat.magento.context.initializer">MageTest\MagentoExtension\Context\Initializer\MagentoAwareInitializer</parameter>
-        <parameter key="behat.magento.fixture.fixture_factory">MageTest\MagentoExtension\Fixture\FixtureFactory</parameter>
         <parameter key="behat.magento.service.session">MageTest\MagentoExtension\Service\Session</parameter>
         <parameter key="mage.core.model.config">Mage_Core_Model_Config</parameter>
         <parameter key="mage.core.model.config.data">Mage_Core_Model_Config_Data</parameter>
@@ -32,21 +30,12 @@
         <service id="behat.magento.service.session" class="%behat.magento.service.session%">
             <argument type="service" id="behat.magento.service.bootstrap" />
         </service>
-        <service id="behat.magento.listener.before_scenario" class="%behat.magento.listener.before_scenario%">
-            <argument type="service" id="behat.magento.service.cache_manager" />
-            <tag name="behat.event_subscriber" priority="0" />
-        </service>
         <service id="behat.magento.context.initializer" class="%behat.magento.context.initializer%">
             <argument type="service" id="behat.magento.service.bootstrap" />
             <argument type="service" id="behat.magento.service.cache_manager" />
             <argument type="service" id="behat.magento.service.config_manager" />
-            <argument type="service" id="behat.magento.fixture.fixture_factory" />
             <argument type="service" id="behat.magento.service.session" />
-            <tag name="behat.context.initializer" />
-        </service>
-        <service id="behat.magento.fixture.fixture_factory" class="%behat.magento.fixture.fixture_factory%" />
-        <service id="behat.magento.context.class_guesser" class="%behat.magento.context.class_guesser%">
-          <tag name="behat.context.class_guesser" priority="-1" />
+            <tag name="context.initializer" />
         </service>
     </services>
 </container>

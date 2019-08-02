@@ -20,13 +20,13 @@
  *
  * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Service;
+namespace spec\MageTest\MagentoExtension\Service;
 
-use MageTest\MagentoExtension\Service\Config\CoreConfig;
 use MageTest\MagentoExtension\Service\Bootstrap;
+use PhpSpec\ObjectBehavior;
 
 /**
- * ConfigManager
+ * SessionSpec
  *
  * @category   MageTest
  * @package    MagentoExtension
@@ -34,19 +34,15 @@ use MageTest\MagentoExtension\Service\Bootstrap;
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class ConfigManager
+class SessionSpec extends ObjectBehavior
 {
-    protected $bootstrap;
-    protected $coreConfig;
-
-    public function __construct(Bootstrap $bootstrap, CoreConfig $coreConfig)
+    function let(Bootstrap $bootstrap)
     {
-        $this->bootstrap = $bootstrap;
-        $this->coreConfig = $coreConfig;
+        $this->beConstructedWith($bootstrap);
     }
 
-    public function setCoreConfig($path, $value, $scope = null)
+    function it_should_exist()
     {
-        $this->coreConfig->set($path, $value, $scope);
+        $this->shouldNotBe(null);
     }
 }
