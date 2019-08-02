@@ -24,14 +24,11 @@ namespace spec\MageTest\MagentoExtension\Context\Initializer;
 
 use Mage_Core_Model_App;
 use MageTest\MagentoExtension\Context\MagentoContext;
-use MageTest\MagentoExtension\Fixture\FixtureFactory;
 use MageTest\MagentoExtension\Service\Bootstrap;
 use MageTest\MagentoExtension\Service\CacheManager;
 use MageTest\MagentoExtension\Service\ConfigManager;
 use MageTest\MagentoExtension\Service\Session;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
 
 /**
  * MagentoAwareInitializerSpec

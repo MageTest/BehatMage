@@ -22,11 +22,8 @@
  */
 namespace spec\MageTest\MagentoExtension\Context;
 
-use Behat\Gherkin\Node\TableNode;
 use MageTest\MagentoExtension\Fixture\FixtureFactory;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
 
 /**
  * MagentoContextSpec
