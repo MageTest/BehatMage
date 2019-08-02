@@ -16,6 +16,9 @@ php:
   # aliased to a recent 7.3.x version
   - "7.3"
 
+before_install:
+  - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer install --prefer-dist --no-interaction
+
 before_script:
   - composer install --dev
 # omitting "script:" will default to phpunit
