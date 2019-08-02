@@ -22,9 +22,9 @@
  */
 namespace spec\MageTest\MagentoExtension\Service;
 
+use MageTest\MagentoExtension\Service\Bootstrap;
+use MageTest\MagentoExtension\Service\Cache\ConfigurationCache;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
 
 /**
  * CacheManagerSpec
@@ -37,18 +37,12 @@ use Prophecy\Argument;
  */
 class CacheManagerSpec extends ObjectBehavior
 {
-    /**
-     * @param MageTest\MagentoExtension\Service\Bootstrap $bootstrap
-     */
-    function let($bootstrap)
+    function let(Bootstrap $bootstrap)
     {
         $this->beConstructedWith($bootstrap);
     }
 
-    /**
-     * @param MageTest\MagentoExtension\Service\Cache\ConfigurationCache $cache
-     */
-    function it_should_clear_configuration_by_default($cache)
+    function it_should_clear_configuration_by_default(ConfigurationCache $cache)
     {
         $this->addSection('configuration', $cache);
 

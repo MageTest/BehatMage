@@ -22,9 +22,9 @@
  */
 namespace spec\MageTest\MagentoExtension\Service;
 
+use MageTest\MagentoExtension\Service\Bootstrap;
+use MageTest\MagentoExtension\Service\Config\CoreConfig;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
 
 /**
  * ConfigManagerSpec
@@ -37,11 +37,7 @@ use Prophecy\Argument;
  */
 class ConfigManagerSpec extends ObjectBehavior
 {
-    /**
-     * @param MageTest\MagentoExtension\Service\Bootstrap         $bootstrap
-     * @param MageTest\MagentoExtension\Service\Config\CoreConfig $coreConfig
-     */
-    function let($bootstrap, $coreConfig)
+    function let(Bootstrap $bootstrap, CoreConfig $coreConfig)
     {
         $this->beConstructedWith($bootstrap, $coreConfig);
     }

@@ -37,11 +37,7 @@ use Prophecy\Argument;
  */
 class ConfigurationCacheSpec extends ObjectBehavior
 {
-    /**
-     * @param Mage_Core_Model_App   $mageApp
-     * @param Mage_Core_Model_Cache $cacheInstance
-     */
-    function let($mageApp, $cacheInstance)
+    function let(\Mage_Core_Model_App $mageApp, \Mage_Core_Model_Cache $cacheInstance)
     {
         $mageApp->getCacheInstance()->willReturn($cacheInstance);
         $mageApp->cleanCache(Argument::any())->shouldBeCalled();

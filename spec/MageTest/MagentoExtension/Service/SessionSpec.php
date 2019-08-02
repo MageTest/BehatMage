@@ -22,9 +22,8 @@
  */
 namespace spec\MageTest\MagentoExtension\Service;
 
+use MageTest\MagentoExtension\Service\Bootstrap;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
 
 /**
  * SessionSpec
@@ -37,10 +36,7 @@ use Prophecy\Argument;
  */
 class SessionSpec extends ObjectBehavior
 {
-    /**
-     * @param MageTest\MagentoExtension\Service\Bootstrap $bootstrap
-     */
-    function let($bootstrap)
+    function let(Bootstrap $bootstrap)
     {
         $this->beConstructedWith($bootstrap);
     }
